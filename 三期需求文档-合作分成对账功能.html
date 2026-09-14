@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智数后台 - 合作分成对账功能三期需求文档 V3.0</title>
+    <style>
+        /* ====== 基础重置与字体 ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Noto Sans CJK SC", "WenQuanYi Micro Hei", "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: #f0f2f5;
+            color: #1f2937;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* ====== 整体布局 ====== */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ====== 侧边栏导航 ====== */
+        .sidebar {
+            width: 260px;
+            background: #1a1f36;
+            color: #cbd5e1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            padding: 0 0 24px 0;
+            z-index: 100;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-header {
+            padding: 22px 20px 18px 20px;
+            border-bottom: 1px solid #2d3561;
+        }
+
+        .sidebar-header .logo {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 12px;
+            color: #8b93b0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 8px 0;
+        }
+
+        .sidebar-nav > li {
+            margin: 0;
+        }
+
+        .sidebar-nav .nav-group-title {
+            padding: 10px 20px 6px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6b7494;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 8px 20px 8px 24px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav a:hover {
+            background: #252b48;
+            color: #fff;
+            border-left-color: #2b6cb0;
+        }
+
+        .sidebar-nav a.level-2 {
+            padding-left: 40px;
+            font-size: 12.5px;
+            color: #9ca6c4;
+        }
+
+        .sidebar-nav a.level-2:hover {
+            color: #fff;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #2d3561;
+            font-size: 11px;
+            color: #6b7494;
+        }
+
+        /* ====== 主内容区 ====== */
+        .main-content {
+            margin-left: 260px;
+            padding: 40px 48px 80px 48px;
+            max-width: 1100px;
+        }
+
+        /* ====== 标题样式 ====== */
+        h1 {
+            font-size: 28px;
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 8px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #2b6cb0;
+        }
+
+        h1 .doc-version {
+            display: inline-block;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 13px;
+            padding: 3px 12px;
+            border-radius: 4px;
+            margin-left: 12px;
+            vertical-align: middle;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #1e293b;
+            font-weight: 700;
+            margin-top: 48px;
+            margin-bottom: 20px;
+            padding-left: 14px;
+            border-left: 5px solid #2b6cb0;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #1e293b;
+            font-weight: 600;
+            margin-top: 36px;
+            margin-bottom: 16px;
+        }
+
+        h3 .badge {
+            margin-left: 10px;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        h4 {
+            font-size: 15px;
+            color: #334155;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            color: #475569;
+        }
+
+        /* ====== 标签徽章 ====== */
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .badge-optimize {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-new {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-confirm {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .badge-todo {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-phase {
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        /* ====== 卡片 ====== */
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card-info-list {
+            list-style: none;
+        }
+
+        .card-info-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #e5e7eb;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .card-info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .card-info-list .label {
+            font-weight: 600;
+            color: #1e293b;
+            min-width: 120px;
+            flex-shrink: 0;
+        }
+
+        .card-info-list .value {
+            color: #475569;
+        }
+
+        /* ====== 表格 ====== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px 0;
+            font-size: 13px;
+            background: #fff;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        thead {
+            background: #2b6cb0;
+        }
+
+        th {
+            padding: 12px 14px;
+            text-align: left;
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 11px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #334155;
+            vertical-align: top;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tbody tr:hover {
+            background: #eff6ff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-num {
+            width: 50px;
+            text-align: center;
+            color: #2b6cb0;
+            font-weight: 600;
+        }
+
+        .table-priority {
+            text-align: center;
+        }
+
+        .priority-high {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .priority-medium {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        .priority-low {
+            color: #6b7280;
+        }
+
+        /* ====== 信息提示框 ====== */
+        .alert {
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-orange {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-left: 4px solid #f97316;
+            color: #9a3412;
+        }
+
+        .alert-purple {
+            background: #faf5ff;
+            border: 1px solid #e9d5ff;
+            border-left: 4px solid #a855f7;
+            color: #6b21a8;
+        }
+
+        .alert-blue {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .alert-green {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 4px solid #22c55e;
+            color: #166534;
+        }
+
+        .alert ul {
+            margin: 6px 0 0 18px;
+        }
+
+        .alert li {
+            margin-bottom: 6px;
+        }
+
+        /* ====== 功能描述框 ====== */
+        .feature-desc {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin: 14px 0;
+        }
+
+        .feature-desc p {
+            margin-bottom: 8px;
+        }
+
+        .feature-desc p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ====== 章节元信息 ====== */
+        .section-meta {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* ====== 步骤列表 ====== */
+        .process-list {
+            list-style: none;
+            counter-reset: step;
+            margin: 16px 0;
+        }
+
+        .process-list li {
+            position: relative;
+            padding: 8px 0 8px 44px;
+            margin-bottom: 4px;
+        }
+
+        .process-list li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 30px;
+            height: 30px;
+            background: #2b6cb0;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* ====== 引用框 ====== */
+        .quote-box {
+            background: #f1f5f9;
+            border-left: 3px solid #64748b;
+            padding: 12px 18px;
+            margin: 12px 0;
+            color: #475569;
+            font-size: 13px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* ====== 对比表 ====== */
+        .compare-table th {
+            background: #475569;
+        }
+
+        .compare-table .col-current {
+            background: #fef2f2;
+        }
+
+        .compare-table .col-optimized {
+            background: #f0fdf4;
+        }
+
+        /* ====== 目标量化卡片 ====== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #2b6cb0 0%, #1e40af 100%);
+            color: #fff;
+            padding: 20px 22px;
+            border-radius: 8px;
+        }
+
+        .metric-card .metric-value {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .metric-card .metric-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* ====== 章节锚点 ====== */
+        .section {
+            scroll-margin-top: 20px;
+        }
+
+        /* ====== 底部 ====== */
+        .doc-footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* ====== 响应式 ====== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+            .main-content {
+                margin-left: 220px;
+                padding: 32px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 24px;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- ====== 侧边栏导航 ====== -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">合作分成对账功能</div>
+                <div class="subtitle">三期需求文档 V3.0</div>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="#doc-summary">文档概要</a></li>
+                <li><a href="#project-bg">项目背景</a></li>
+                <li><a href="#pain-goals">痛点与目标</a></li>
+
+                <li class="nav-group-title">二期优化需求</li>
+                <li><a href="#opt-confirm" class="level-2">认款优化（礼品-亿玩赏）</a></li>
+                <li><a href="#opt-ui" class="level-2">界面交互优化</a></li>
+                <li><a href="#opt-bwy-list" class="level-2">爆玩宇宙门店对账单列表优化</a></li>
+
+                <li class="nav-group-title">三期新增需求</li>
+                <li><a href="#new-yws-rk" class="level-2">亿玩赏入库对账</a></li>
+                <li><a href="#new-yws-fh" class="level-2">亿玩赏有消耗全发货对账</a></li>
+                <li><a href="#new-bwy-cust" class="level-2">爆玩宇宙客户不认可流程</a></li>
+                <li><a href="#new-blind-box" class="level-2">盲盒/其他对账单</a></li>
+                <li><a href="#new-auto-confirm" class="level-2">自动认款</a></li>
+                <li><a href="#new-wecom-push" class="level-2">企微数据推送</a></li>
+                <li><a href="#new-auto-reminder" class="level-2">自动催款推送</a></li>
+                <li><a href="#new-pc-bill" class="level-2">数智全开PC端对账单</a></li>
+                <li><a href="#new-warning" class="level-2">预警推送</a></li>
+
+                <li><a href="#pending">待确认事项</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                智数后台 · 规划中<br>
+                更新日期：2026-08
+            </div>
+        </aside>
+
+        <!-- ====== 主内容区 ====== -->
+        <main class="main-content">
+
+            <!-- ============ 1. 文档概要 ============ -->
+            <section id="doc-summary" class="section">
+                <h1>合作分成对账功能 三期需求文档 <span class="doc-version">V3.0</span></h1>
+
+                <div class="card">
+                    <ul class="card-info-list">
+                        <li>
+                            <span class="label">项目名称</span>
+                            <span class="value">智数后台 - 合作分成对账功能</span>
+                        </li>
+                        <li>
+                            <span class="label">文档版本</span>
+                            <span class="value">V3.0（三期需求文档）</span>
+                        </li>
+                        <li>
+                            <span class="label">覆盖范围</span>
+                            <span class="value">二期优化需求（3项） + 三期新增需求（9项）</span>
+                        </li>
+                        <li>
+                            <span class="label">涉及系统</span>
+                            <span class="value">智数后台（PC管理端）、数智全开小程序、数智全开PC端（三期新增）</span>
+                        </li>
+                        <li>
+                            <span class="label">文档状态</span>
+                            <span class="value"><span class="badge badge-confirm">规划中</span></span>
+                        </li>
+                        <li>
+                            <span class="label">说明</span>
+                            <span class="value">本文档不包含二期已上线功能的完整描述，仅包含优化和新增部分。二期已上线功能详见《二期需求文档》。</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ============ 2. 项目背景 ============ -->
+            <section id="project-bg" class="section">
+                <h2>项目背景</h2>
+                <div class="card">
+                    <h4>二期已上线核心功能</h4>
+                    <p>二期已完成合作分成对账的核心功能建设，包括：认款管理（认款列表、认款弹窗）、基础对账类型（消耗对账、发货对账等）、对账单生成与小程序查看等。当前已支撑业务的基本对账流转。</p>
+
+                    <h4>当前不足</h4>
+                    <ul style="margin: 8px 0 16px 20px; color: #475569;">
+                        <li>对账类型覆盖不全，部分业务场景（入库对账、全发货对账、盲盒对账）尚未支持</li>
+                        <li>认款仍依赖人工逐条核对银行流水，效率低、错误率高</li>
+                        <li>对账数据推送依赖人工，客户确认渠道有限（仅小程序）</li>
+                        <li>缺少自动化预警与催款机制，风险发现滞后</li>
+                    </ul>
+
+                    <h4>三期目标</h4>
+                    <div class="alert alert-blue">
+                        <div class="alert-title">核心目标</div>
+                        <p style="margin-bottom:0;">通过二期优化与三期新增需求落地，减少人工干预、提升数据准确性和回款效率，实现认款自动化、推送自动化与客户对账PC化。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 3. 痛点与目标 ============ -->
+            <section id="pain-goals" class="section">
+                <h2>痛点与目标</h2>
+
+                <h3>业务痛点</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="table-num">#</th>
+                            <th>痛点</th>
+                            <th>现状描述</th>
+                            <th>影响</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-num">1</td>
+                            <td>对账方式多样流程分散</td>
+                            <td>各类型流程不同，缺乏统一管理</td>
+                            <td>业务员操作复杂，培训成本高</td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">2</td>
+                            <td>认款依赖人工</td>
+                            <td>银行流水逐条核对，手动认款</td>
+                            <td>认款耗时长，错误率高</td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">3</td>
+                            <td>对账数据推送不及时</td>
+                            <td>手动推送客户群</td>
+                            <td>回款周期长，逾期率高</td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">4</td>
+                            <td>客户对账确认渠道有限</td>
+                            <td>仅小程序查看，无法PC端确认</td>
+                            <td>对账确认周期长</td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">5</td>
+                            <td>数据准确性问题</td>
+                            <td>6月前数据不准确</td>
+                            <td>对账争议多，信任度低</td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">6</td>
+                            <td>缺少预警机制</td>
+                            <td>异常情况无主动预警</td>
+                            <td>风险发现晚，处理被动</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>需求目标</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="table-num">#</th>
+                            <th>目标</th>
+                            <th>说明</th>
+                            <th>所属阶段</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-num">1</td>
+                            <td>完善对账类型覆盖</td>
+                            <td>补充入库/全发货/客户不认可/盲盒对账</td>
+                            <td><span class="badge badge-new">三期新增</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">2</td>
+                            <td>实现自动认款</td>
+                            <td>识别码匹配自动认款</td>
+                            <td><span class="badge badge-new">三期新增</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">3</td>
+                            <td>自动化数据推送</td>
+                            <td>企微群推送/自动催款/可认款推送</td>
+                            <td><span class="badge badge-new">三期新增</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">4</td>
+                            <td>客户PC端对账</td>
+                            <td>数智全开PC端查看确认异议</td>
+                            <td><span class="badge badge-new">三期新增</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">5</td>
+                            <td>建立预警体系</td>
+                            <td>开票监控/设备异常/未对账催办</td>
+                            <td><span class="badge badge-new">三期新增</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">6</td>
+                            <td>数据准确性提升</td>
+                            <td>历史数据批量修正</td>
+                            <td><span class="badge badge-phase">持续</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>目标量化</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">90%+</div>
+                        <div class="metric-label">自动认款覆盖率目标</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">7天 &rarr; 3天</div>
+                        <div class="metric-label">对账确认周期缩短</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">催款自动化率</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">2种 &rarr; 9种+</div>
+                        <div class="metric-label">对账类型扩展</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 4. 二期优化需求 ============ -->
+            <section id="phase2" class="section">
+                <h2>二期优化需求</h2>
+                <p>以下为二期已上线功能基础上的优化与补充需求，均标记为 <span class="badge badge-optimize">二期优化</span>。</p>
+
+                <!-- 4.1 认款优化-礼品-亿玩赏 -->
+                <div id="opt-confirm" class="section">
+                    <h3>4.1 认款优化 - 礼品 - 亿玩赏 <span class="badge badge-optimize">二期优化</span></h3>
+
+                    <div class="alert alert-blue">
+                        <div class="alert-title">业务背景</div>
+                        <p style="margin-bottom:0;">亿玩赏存在需要开礼品发票的情况，要开礼品发票，款项类型必须为"礼品"。</p>
+                    </div>
+
+                    <h4>改动点</h4>
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th>配置项</th>
+                                <th class="col-current">当前</th>
+                                <th class="col-optimized">优化后</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>分成所属机台选项</td>
+                                <td class="col-current">分成 - 盲盒 / 亿玩堂 / 爆玩宇宙 / 其他</td>
+                                <td class="col-optimized">新增"礼品 - 亿玩赏"选项</td>
+                            </tr>
+                            <tr>
+                                <td>款项类型联动</td>
+                                <td class="col-current">选择分成 - xxx 时，款项类型为"分成"</td>
+                                <td class="col-optimized">选择礼品 - 亿玩赏时，自动带出"礼品"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>业务规则</h4>
+                    <ul style="margin: 8px 0 16px 20px; color: #475569;">
+                        <li>选择"礼品 - 亿玩赏"时，款项类型自动设置为"礼品"且<strong>不可修改</strong></li>
+                        <li>选择"分成 - xxx"时，款项类型默认为"分成"</li>
+                        <li>礼品发票走独立发票流程</li>
+                    </ul>
+
+                    <div class="quote-box">
+                        说明：认款管理仅保留本次修改优化部分（礼品-亿玩赏），不重复描述已上线的认款列表和弹窗完整功能。
+                    </div>
+                </div>
+
+                <!-- 4.2 界面交互优化 -->
+                <div id="opt-ui" class="section">
+                    <h3>4.2 界面交互优化 <span class="badge badge-optimize">二期优化</span></h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-num">#</th>
+                                <th>优化项</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-num">1</td>
+                                <td>系统名称统一</td>
+                                <td>统一为"世宇智数管理系统"（不同页面现有"世宇智数管理系统"和"世宇数智管理系统"两种写法）</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">2</td>
+                                <td>菜单层级调整</td>
+                                <td>统一"爆玩宇宙门店对账单"的菜单层级位置</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">3</td>
+                                <td>字段命名统一</td>
+                                <td>认款相关字段在不同页面表述统一</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 4.3 爆玩宇宙门店对账单列表优化 -->
+                <div id="opt-bwy-list" class="section">
+                    <h3>4.3 爆玩宇宙门店对账单列表优化 <span class="badge badge-optimize">二期优化</span></h3>
+
+                    <div class="feature-desc">
+                        <p><strong>优化原因：</strong>原列表展示单个机台收币分成情况，信息过于分散。</p>
+                    </div>
+
+                    <h4>优化内容</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-num">#</th>
+                                <th>优化项</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-num">1</td>
+                                <td><strong>统一"机台分成明细"字段</strong></td>
+                                <td>不展示单个机台的收币分成，统一为一个"机台分成明细"字段，点击后弹窗查看详情</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">2</td>
+                                <td><strong>增加"是否对账"开关</strong></td>
+                                <td>列表增加是否对账开关列</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">3</td>
+                                <td><strong>发票支持下载</strong></td>
+                                <td>发票列增加下载功能</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">4</td>
+                                <td><strong>去除删除功能</strong></td>
+                                <td>操作下拉中移除"删除"选项</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>明细列表弹窗样式</h4>
+                    <div class="feature-desc">
+                        <p><strong>顶部蓝色信息栏：</strong>门店名称、客户名称、对账月份、约定币值、分成比例</p>
+                        <p><strong>6个统计卡片：</strong>摸鱼达人、乖巧派对、勇者大陆、向阳而生、世宇分成、合计金额</p>
+                        <p><strong>操作栏：</strong>刷新按钮、搜索框、视图切换（表格/卡片）、导出按钮</p>
+                        <p><strong>表格列：</strong>日期、摸鱼达人币数、乖巧派对币数、勇者大陆币数、向阳而生币数、合计币数、合计金额、世宇分成金额、乐园分成金额、操作（编辑按钮-绿色）</p>
+                        <p><strong>操作列：</strong>每行右侧绿色"编辑"按钮</p>
+                    </div>
+
+                    <h4>编辑功能说明</h4>
+                    <div class="alert alert-blue">
+                        <div class="alert-title">编辑方式优化</div>
+                        <ul>
+                            <li><strong>当前：</strong>只能修改当天的收币币值</li>
+                            <li><strong>优化后：</strong>可以直接修改整个机台/整款游戏的总投币数</li>
+                            <li><strong>建议方案：</strong>修改总投币数后，系统按原有每日投币数的比例，自动均分到每一天</li>
+                        </ul>
+                    </div>
+                    <p><strong>示例：</strong>摸鱼达人原总投币1000个（7天分别是100/200/150/300/50/100/100），修改总投币为2000个，则每天翻倍（200/400/300/600/100/200/200）。</p>
+                </div>
+            </section>
+
+            <!-- ============ 5. 三期新增需求 ============ -->
+            <section id="phase3" class="section">
+                <h2>三期新增需求</h2>
+                <p>以下为三期全新规划的需求，均标记为 <span class="badge badge-new">三期新增</span>。</p>
+
+                <!-- 5.1 亿玩赏入库对账 -->
+                <div id="new-yws-rk" class="section">
+                    <h3>5.1 亿玩赏入库对账 <span class="badge badge-new">三期新增</span></h3>
+
+                    <div class="feature-desc">
+                        <p><strong>功能描述：</strong>按客户发送的入库单进行对账，需与系统内发货单做数据对比。支持跨月入库（本月发货下月入库对账）。</p>
+                        <p><strong>实现方式：</strong>在现有生成弹窗"对账类型"下拉中新增"入库对账"选项。</p>
+                    </div>
+
+                    <div class="alert alert-orange">
+                        <div class="alert-title">待确认事项</div>
+                        <ul>
+                            <li>入库单录入方式（Excel导入 / 手动录入 / 系统对接）</li>
+                            <li>入库对账与发货对账是否重复计算金额</li>
+                            <li>入库对账具体对比维度</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 5.2 亿玩赏有消耗全发货对账 -->
+                <div id="new-yws-fh" class="section">
+                    <h3>5.2 亿玩赏有消耗全发货对账 <span class="badge badge-new">三期新增</span></h3>
+
+                    <div class="feature-desc">
+                        <p><strong>功能描述：</strong>亿玩赏目前卖的是套餐系列，一个套餐包含很多不同礼品。</p>
+                        <p>若客户发货未对账的套餐中，有任何礼品产生了消耗，则该套餐<strong>全部发起对账</strong>（按整个套餐的发货金额对账）。</p>
+                        <p><strong>与消耗对账的区别：</strong>消耗对账是按套餐里<strong>有消耗的礼品</strong>对账，只算消耗部分；全发货对账是<strong>整个套餐</strong>全部对账，不管消耗了多少。</p>
+                        <p><strong>实现方式：</strong>在现有生成弹窗"对账类型"下拉中新增"有消耗全发货对账"选项。</p>
+                    </div>
+
+                    <h4>消耗对账 vs 有消耗全发货对账 对比</h4>
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th>对比项</th>
+                                <th class="col-current">消耗对账</th>
+                                <th class="col-optimized">有消耗全发货对账</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>对账依据</td>
+                                <td class="col-current">套餐中有消耗的礼品</td>
+                                <td class="col-optimized">有消耗的套餐，按全部发货</td>
+                            </tr>
+                            <tr>
+                                <td>对账范围</td>
+                                <td class="col-current">仅消耗的礼品部分</td>
+                                <td class="col-optimized">整个套餐（含未消耗礼品）</td>
+                            </tr>
+                            <tr>
+                                <td>触发条件</td>
+                                <td class="col-current">有消耗的礼品</td>
+                                <td class="col-optimized">套餐内任一礼品有消耗</td>
+                            </tr>
+                            <tr>
+                                <td>金额计算</td>
+                                <td class="col-current">消耗礼品金额</td>
+                                <td class="col-optimized">套餐全部发货金额</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-orange">
+                        <div class="alert-title">待确认事项</div>
+                        <ul>
+                            <li>与消耗对账的具体区别确认</li>
+                            <li>适用场景（是否由特定客户合同条款决定）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 5.3 爆玩宇宙客户不认可流程 -->
+                <div id="new-bwy-cust" class="section">
+                    <h3>5.3 爆玩宇宙客户不认可流程 <span class="badge badge-new">三期新增</span></h3>
+
+                    <div class="feature-desc">
+                        <p><strong>功能描述：</strong>部分客户不认可系统生成的对账单数据，需将数据发送给综合组（即业务员），双方线下沟通后确定最终收币数。系统可提供异常提醒功能。</p>
+                        <p><strong>整体流程：</strong>还是和之前一样生成对账单 → 在对账单基础上支持<strong>修改单个机台的投币数</strong> → 根据投币数 × 币值 × 分成比例 自动算出分成。</p>
+                        <p><strong>修改入口：</strong>通过"机台分成明细"弹窗进入，点击单条数据的"编辑"按钮修改。</p>
+                    </div>
+
+                    <h4>编辑方式（可讨论）</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-num">#</th>
+                                <th>方式</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-num">A</td>
+                                <td>按天修改</td>
+                                <td>直接修改某一天某款游戏的投币数</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">B</td>
+                                <td>按总投币修改（推荐）</td>
+                                <td>修改整个机台的总投币数，系统自动按比例均分到每一天，效率更高</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-purple">
+                        <div class="alert-title">待确认</div>
+                        <p style="margin-bottom:0;">采用哪种编辑方式，还是两种都支持。</p>
+                    </div>
+
+                    <div class="alert alert-orange">
+                        <div class="alert-title">待确认事项</div>
+                        <ul>
+                            <li>数据发送方式（系统导出 / 系统内查看）</li>
+                            <li>最终收币数回写方式</li>
+                            <li>异常提醒实现方式和推送对象</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 5.4 盲盒/其他对账单 -->
+                <div id="new-blind-box" class="section">
+                    <h3>5.4 盲盒/其他对账单 <span class="badge badge-new">三期新增</span> <span class="badge badge-todo">待新建</span></h3>
+
+                    <div class="feature-desc">
+                        <p><strong>功能描述：</strong>客户拍摄码表发送，系统生成期末码表数，按"期末码表数 - 期初码表数"差值对账。</p>
+                        <p><strong>说明：</strong>此模块需从零设计页面和流程。</p>
+                    </div>
+
+                    <div class="alert alert-orange">
+                        <div class="alert-title">待确认事项</div>
+                        <ul>
+                            <li>码表录入方式（拍照上传 / 手动录入）</li>
+                            <li>期初码表数来源</li>
+                            <li>对账金额计算方式</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 5.5 自动认款 -->
+                <div id="new-auto-confirm" class="section">
+                    <h3>5.5 自动认款 <span class="badge badge-new">三期新增</span> <span class="badge badge-confirm">方案修订中</span></h3>
+
+                    <div class="feature-desc">
+                        <p><strong>核心流程：</strong></p>
+                        <ol class="process-list">
+                            <li>客户银行转账，备注填写识别码</li>
+                            <li>银行流水导入智数后台</li>
+                            <li>系统提取备注中的识别码</li>
+                            <li>匹配对账单</li>
+                            <li>自动认款</li>
+                        </ol>
+                    </div>
+
+                    <h4>已确认规则</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>规则项</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>识别码</td>
+                                <td>已开发完成，规则由开发团队制定</td>
+                            </tr>
+                            <tr>
+                                <td>识别码填写位置</td>
+                                <td>客户在银行转账备注 / 附言中填写</td>
+                            </tr>
+                            <tr>
+                                <td>二维码收款</td>
+                                <td>仅支持微信扫码，有效期最长半个月</td>
+                            </tr>
+                            <tr>
+                                <td>容差值</td>
+                                <td>不设定</td>
+                            </tr>
+                            <tr>
+                                <td>金额不一致处理</td>
+                                <td>也自动认款，后续打款叠加补充，根据剩余待打款金额查看补充</td>
+                            </tr>
+                            <tr>
+                                <td>多个识别码处理</td>
+                                <td>若对账金额一致则对应分配；不一致需均分或优先最早一期（待讨论）</td>
+                            </tr>
+                            <tr>
+                                <td>异常处理</td>
+                                <td>不走OA审批，每天早上9:15推送给业务员人工处理</td>
+                            </tr>
+                            <tr>
+                                <td>认款操作</td>
+                                <td>自动认款无需客户操作；业务员也可手动认款</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-purple">
+                        <div class="alert-title">待确认事项</div>
+                        <ul>
+                            <li>多识别码金额不一致时的分配方案</li>
+                            <li>自动认款方案完整修订文档</li>
+                            <li>影响功能范围中各关联模块的具体改动点</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 5.6 企微数据推送 -->
+                <div id="new-wecom-push" class="section">
+                    <h3>5.6 企微数据推送 <span class="badge badge-new">三期新增</span> <span class="badge badge-todo">待开发</span></h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-num">#</th>
+                                <th>推送场景</th>
+                                <th>推送内容</th>
+                                <th>推送对象</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-num">1</td>
+                                <td>对账单生成</td>
+                                <td>对账单数据已生成通知</td>
+                                <td>客户企微群</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">2</td>
+                                <td>逾期推送</td>
+                                <td>逾期账款提醒</td>
+                                <td>业务员 / 客户群</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">3</td>
+                                <td>可认款推送</td>
+                                <td>可认款流水提醒</td>
+                                <td>业务员</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 5.7 自动催款推送 -->
+                <div id="new-auto-reminder" class="section">
+                    <h3>5.7 自动催款推送 <span class="badge badge-new">三期新增</span> <span class="badge badge-todo">待开发</span></h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>规则项</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>触发时机</td>
+                                <td>账期到期前2天</td>
+                            </tr>
+                            <tr>
+                                <td>推送时间</td>
+                                <td>早上 10:00</td>
+                            </tr>
+                            <tr>
+                                <td>推送渠道</td>
+                                <td>企业微信群</td>
+                            </tr>
+                            <tr>
+                                <td>推送内容</td>
+                                <td>催款信息（含应付金额、截止日期）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 5.8 数智全开PC端对账单 -->
+                <div id="new-pc-bill" class="section">
+                    <h3>5.8 数智全开PC端对账单 <span class="badge badge-new">三期新增</span> <span class="badge badge-todo">待开发</span></h3>
+
+                    <div class="feature-desc">
+                        <p><strong>定位：</strong>面向合作客户的独立网站，客户可PC端查看对账单详情、确认或提出异议。</p>
+                        <p><strong>数据来源：</strong>智数后台，字段精简（认款显示为"打款"，去除内部管理字段）。</p>
+                    </div>
+
+                    <h4>对账单列表</h4>
+                    <ul style="margin: 8px 0 16px 20px; color: #475569;">
+                        <li><strong>筛选条件：</strong>对账月份、合作类型、确认状态等</li>
+                        <li><strong>表格列：</strong>对账月份、合作类型、客户名称、应付金额、打款金额、待打款金额、确认状态、操作</li>
+                    </ul>
+
+                    <h4>对账单详情</h4>
+                    <ul style="margin: 8px 0 16px 20px; color: #475569;">
+                        <li>基本信息区</li>
+                        <li>对账数据明细区</li>
+                        <li>底部操作区：确认对账单 / 提出异议</li>
+                    </ul>
+
+                    <h4>提出异议弹窗</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>字段</th>
+                                <th>类型</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>异议原因</td>
+                                <td>文本域（必填）</td>
+                                <td>客户填写异议说明</td>
+                            </tr>
+                            <tr>
+                                <td>附件上传</td>
+                                <td>文件上传</td>
+                                <td>支持图片 / PDF</td>
+                            </tr>
+                            <tr>
+                                <td>联系方式</td>
+                                <td>文本输入</td>
+                                <td>便于业务员后续沟通</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>确认状态</h4>
+                    <p>
+                        <span class="badge badge-phase">待确认</span>
+                        <span class="badge" style="background:#dcfce7;color:#166534;">已确认</span>
+                        <span class="badge" style="background:#fee2e2;color:#991b1b;">已异议</span>
+                    </p>
+                </div>
+
+                <!-- 5.9 预警推送 -->
+                <div id="new-warning" class="section">
+                    <h3>5.9 预警推送 <span class="badge badge-new">三期新增</span> <span class="badge badge-todo">待开发</span></h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="table-num">#</th>
+                                <th>预警类型</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-num">1</td>
+                                <td>开票监控</td>
+                                <td>监控开票状态异常</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">2</td>
+                                <td>设备异常监控</td>
+                                <td>机台设备异常告警</td>
+                            </tr>
+                            <tr>
+                                <td class="table-num">3</td>
+                                <td>未对账催办</td>
+                                <td>未生成对账单的催办清单</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ============ 6. 待确认事项汇总 ============ -->
+            <section id="pending" class="section">
+                <h2>待确认事项汇总</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="table-num">#</th>
+                            <th>所属功能</th>
+                            <th>待确认内容</th>
+                            <th>优先级</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-num">1</td>
+                            <td>亿玩赏入库对账</td>
+                            <td>入库单录入方式 / 重复计算 / 对比维度</td>
+                            <td class="table-priority"><span class="badge badge-new">三期</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">2</td>
+                            <td>亿玩赏全发货对账</td>
+                            <td>与消耗对账区别 / 适用场景</td>
+                            <td class="table-priority"><span class="badge badge-new">三期</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">3</td>
+                            <td>爆玩宇宙客户不认可</td>
+                            <td>数据发送方式 / 回写方式 / 异常提醒 / 编辑方式</td>
+                            <td class="table-priority"><span class="badge badge-new">三期</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">4</td>
+                            <td>盲盒对账单</td>
+                            <td>码表录入方式 / 期初数 / 计算方式</td>
+                            <td class="table-priority"><span class="badge badge-new">三期</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">5</td>
+                            <td>自动认款</td>
+                            <td>多识别码分配方案 / 方案修订文档</td>
+                            <td class="table-priority"><span class="badge badge-new">三期</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">6</td>
+                            <td>PC端对账单</td>
+                            <td>具体精简字段清单</td>
+                            <td class="table-priority"><span class="badge badge-new">三期</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-num">7</td>
+                            <td>历史数据</td>
+                            <td>综合组整理后的批量调整范围和时间</td>
+                            <td class="table-priority priority-low">后续</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert alert-green">
+                    <div class="alert-title">标签说明</div>
+                    <p style="margin-bottom:4px;"><span class="badge badge-optimize">二期优化</span> 对二期已上线功能的优化与补充</p>
+                    <p style="margin-bottom:4px;"><span class="badge badge-new">三期新增</span> 三期全新规划的功能需求</p>
+                    <p style="margin-bottom:4px;"><span class="badge badge-confirm">待确认</span> 需要业务方进一步确认的事项</p>
+                    <p style="margin-bottom:0;"><span class="badge badge-todo">待开发</span> 需求明确但尚未进入开发阶段</p>
+                </div>
+            </section>
+
+            <div class="doc-footer">
+                智数后台 - 合作分成对账功能三期需求文档 V3.0 &middot; 规划中 &middot; 2026-08
+            </div>
+        </main>
+    </div>
+</body>
+</html>

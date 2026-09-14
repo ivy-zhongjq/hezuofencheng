@@ -1,0 +1,3000 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light" class=""><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智数后台 - 合作分成对账功能需求文档</title>
+<style>
+  :root {
+    --primary: #2b6cb0;
+    --primary-light: #ebf4ff;
+    --primary-dark: #1a4d8c;
+    --accent: #d97706;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --border: #e5e7eb;
+    --bg: #ffffff;
+    --bg-muted: #f9fafb;
+    --radius: 8px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans CJK SC", "WenQuanYi Micro Hei", "Segoe UI", sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    line-height: 1.7;
+    font-size: 14px;
+  }
+  /* Sidebar */
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 280px;
+    background: #1a1f36; color: #cbd5e1;
+    overflow-y: auto; padding: 20px 0;
+    z-index: 100;
+  }
+  .sidebar-header { padding: 0 24px 20px; border-bottom: 1px solid #2d3561; }
+  .sidebar-header h1 { font-size: 16px; color: #fff; margin-bottom: 4px; }
+  .sidebar-header p { font-size: 12px; color: #64748b; }
+  .sidebar-nav { padding: 12px 0; }
+  .sidebar-nav a {
+    display: block; padding: 8px 24px; color: #94a3b8;
+    text-decoration: none; font-size: 13px;
+    transition: all 0.15s;
+  }
+  .sidebar-nav a:hover { background: #2d3561; color: #fff; }
+  .sidebar-nav a.active { background: var(--primary); color: #fff; border-left: 3px solid #60a5fa; }
+  .sidebar-nav a.sub { padding-left: 40px; font-size: 12px; }
+  .sidebar-nav a.sub2 { padding-left: 56px; font-size: 12px; color: #64748b; }
+  .sidebar-nav .nav-group-title {
+    padding: 12px 24px 4px; font-size: 11px; font-weight: 700;
+    color: #475569; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  /* Main content */
+  .main { margin-left: 280px; padding: 40px 48px; max-width: 1100px; }
+  .main section { margin-bottom: 48px; }
+  h1.doc-title {
+    font-size: 28px; font-weight: 700; color: var(--gray-900);
+    margin-bottom: 8px; padding-bottom: 16px; border-bottom: 2px solid var(--primary);
+  }
+  h2 { font-size: 22px; font-weight: 600; color: var(--gray-900); margin-bottom: 16px; margin-top: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--gray-200); }
+  h3 { font-size: 17px; font-weight: 600; color: var(--gray-700); margin-bottom: 12px; margin-top: 24px; }
+  h4 { font-size: 15px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; margin-top: 16px; }
+  p { margin-bottom: 10px; color: var(--gray-700); }
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { background: var(--gray-100); padding: 8px 12px; text-align: left; font-weight: 600; color: var(--gray-700); border: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 8px 12px; border: 1px solid var(--border); color: var(--gray-700); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--gray-50); }
+  /* Badges */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-done { background: #d1fae5; color: #065f46; }
+  .badge-optimize { background: #fef3c7; color: #92400e; }
+  .badge-new { background: #dbeafe; color: #1e40af; }
+  .badge-todo { background: #fee2e2; color: #991b1b; }
+  .badge-confirm { background: #f3e8ff; color: #6b21a8; }
+  /* Cards */
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin: 12px 0; box-shadow: var(--shadow-sm); }
+  .card-blue { border-left: 4px solid var(--primary); }
+  .card-amber { border-left: 4px solid var(--accent); }
+  .card-green { border-left: 4px solid var(--success); }
+  .card-red { border-left: 4px solid var(--danger); }
+  /* Info blocks */
+  .info-block { background: var(--primary-light); border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 12px 16px; margin: 12px 0; }
+  .info-block strong { color: var(--primary-dark); }
+  .warn-block { background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius); padding: 12px 16px; margin: 12px 0; }
+  .warn-block strong { color: #92400e; }
+  .confirm-block { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: var(--radius); padding: 12px 16px; margin: 12px 0; }
+  .confirm-block strong { color: #6b21a8; }
+  /* Lists */
+  ul, ol { margin: 8px 0 12px 20px; }
+  li { margin-bottom: 4px; color: var(--gray-700); }
+  /* Code */
+  code { background: var(--gray-100); padding: 1px 6px; border-radius: 3px; font-size: 13px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+  /* Flow diagram */
+  .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .flow-step { background: var(--primary-light); border: 1px solid #bfdbfe; border-radius: 6px; padding: 6px 14px; font-size: 13px; color: var(--primary-dark); }
+  .flow-arrow { color: var(--gray-500); font-size: 16px; }
+  /* Stats */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+  .stat-card .num { font-size: 24px; font-weight: 700; color: var(--primary); }
+  .stat-card .label { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
+  /* Section anchor */
+  section { scroll-margin-top: 20px; }
+  /* TOC at top */
+  .toc { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; }
+  .toc h3 { margin-top: 0; }
+  .toc ul { list-style: none; margin-left: 0; }
+  .toc li { margin-bottom: 3px; }
+  .toc a { color: var(--primary); text-decoration: none; font-size: 13px; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-sub { padding-left: 20px; }
+  .toc .toc-sub2 { padding-left: 40px; font-size: 12px; }
+  /* Phase tags */
+  .phase-tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+  .phase-2 { background: #d1fae5; color: #065f46; }
+  .phase-2o { background: #fef3c7; color: #92400e; }
+  .phase-3 { background: #dbeafe; color: #1e40af; }
+  /* Field definition */
+  .field-table th { white-space: nowrap; min-width: 100px; }
+  .field-table .req { color: var(--danger); font-weight: 700; }
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 20px; }
+  }
+</style>
+<style>.trae-browser-inspect-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999997;pointer-events:auto;background:rgba(0,0,0,0)}.trae-browser-inspect-highlight-box{position:absolute;top:0;left:0;z-index:999998;display:none}.trae-browser-inspect-highlight-tag{position:absolute;left:0px;top:0px;height:18px;padding:0 6px;box-sizing:border-box;border-radius:4px;background-color:var(--vscode-icube-colorSuccessHover, "#2FB287");color:var(--vscode-icube-colorSnow, "#fff");font-size:12px;font-weight:400;display:none;align-items:center;z-index:999999}.trae-browser-inspect-highlight-box-show{display:flex}.trae-browser-inspect-select-button.trae-browser-inspect-highlight-box-show{display:flex !important}.trae-browser-inspect-select-button{position:absolute;top:0;left:0;background-color:var(--vscode-icube--bg-bg-base-secondary, "#222427");color:var(--vscode-icube--text-text-default-active, "#F5F9FE");font-size:11px;font-weight:500;border:1px solid var(--vscode-icube--border-neutral-l1, "#E0E2F217");border-radius:6px;padding:0 8px;height:32px;display:none;align-items:center;cursor:pointer;z-index:999999;gap:4px}.trae-browser-inspect-select-button svg,.trae-browser-inspect-select-button span{z-index:1}.trae-browser-inspect-select-highlight-box{background:rgba(0,0,0,0) !important}.trae-browser-inspect-select-highlight-box .trae-browser-inspect-highlight-tag{background-color:var(--vscode-icube--status-success-active, "#1E8B56")}.trae-browser-inspect-comment-card-container{position:fixed;top:0;left:0;z-index:9999999;pointer-events:auto}.trae-browser-inspect-comment-card-container .trae-browser-inspect-comment-card{display:flex;padding-top:0px !important;align-items:center;z-index:9999999 !important;background-color:var(--vscode-icube--bg-bg-menu)}*[contenteditable]{outline:none}.trae-browser-inspect-click-effect{position:fixed;width:40px;height:40px;margin-left:-20px;margin-top:-20px;border-radius:50%;background-color:var(--vscode-icube-colorSuccessHover, #2FB287);pointer-events:none;animation:trae-browser-inspect-ripple 500ms ease-out forwards;z-index:999999}@keyframes trae-browser-inspect-ripple{0%{transform:scale(0.3);opacity:.8}100%{transform:scale(2);opacity:0}}.trae-browser-inspect-ref-box{position:absolute;border:2px solid var(--vscode-icube-colorSuccessHover, "#2FB287");pointer-events:none;z-index:999998;animation:trae-browser-inspect-fadeInOut 2s ease-in-out forwards}.trae-browser-inspect-ref-label{position:absolute;top:-14px;left:0;height:14px;padding:0 4px;box-sizing:border-box;border-radius:2px;background-color:var(--vscode-icube-colorSuccessHover, "#2FB287");color:var(--vscode-icube-colorSnow, "#fff");font-size:9px;font-weight:500;display:flex;align-items:center;white-space:nowrap;z-index:999999}@keyframes trae-browser-inspect-fadeInOut{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}.trae-browser-inspect-input-highlight{position:absolute;border:2px solid var(--vscode-icube-colorSuccessHover, "#2FB287");border-radius:4px;pointer-events:none;z-index:999998;box-shadow:0 0 8px var(--vscode-icube-colorSuccessHover, "#2FB287");animation:trae-browser-inspect-input-pulse 600ms ease-out forwards}@keyframes trae-browser-inspect-input-pulse{0%{opacity:0;box-shadow:0 0 0 var(--vscode-icube-colorSuccessHover, "#2FB287")}30%{opacity:1;box-shadow:0 0 12px var(--vscode-icube-colorSuccessHover, "#2FB287")}100%{opacity:0;box-shadow:0 0 0 var(--vscode-icube-colorSuccessHover, "#2FB287")}}.trae-browser-inspect-virtual-cursor{position:fixed;width:20px;height:20px;pointer-events:none;z-index:9999999;opacity:0;transition:opacity .2s ease}.trae-browser-inspect-virtual-cursor.trae-browser-inspect-cursor-visible{opacity:1}.trae-browser-inspect-virtual-cursor.trae-browser-inspect-cursor-idle{animation:trae-browser-inspect-cursor-breathe 2s ease-in-out infinite}.trae-browser-inspect-virtual-cursor svg{width:20px;height:20px;filter:drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3))}@keyframes trae-browser-inspect-cursor-breathe{0%,100%{opacity:.7}50%{opacity:1}}.trae-browser-inspect-scroll-indicator{position:fixed;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:8px;background-color:rgba(0,0,0,.7);color:#fff;font-size:13px;font-weight:500;pointer-events:none;z-index:999999;animation:trae-browser-inspect-indicator-fade 800ms ease-out forwards;backdrop-filter:blur(4px)}.trae-browser-inspect-scroll-indicator svg{width:16px;height:16px;fill:#fff}.trae-browser-inspect-scroll-indicator.trae-scroll-up{top:12px;left:50%;transform:translateX(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-down{bottom:12px;left:50%;transform:translateX(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-left{left:12px;top:50%;transform:translateY(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-right{right:12px;top:50%;transform:translateY(-50%)}@keyframes trae-browser-inspect-indicator-fade{0%{opacity:0;transform:translateX(-50%) scale(0.9)}15%{opacity:1;transform:translateX(-50%) scale(1)}85%{opacity:1}100%{opacity:0}}.trae-browser-inspect-scroll-indicator.trae-scroll-left,.trae-browser-inspect-scroll-indicator.trae-scroll-right{animation-name:trae-browser-inspect-indicator-fade-y}@keyframes trae-browser-inspect-indicator-fade-y{0%{opacity:0;transform:translateY(-50%) scale(0.9)}15%{opacity:1;transform:translateY(-50%) scale(1)}85%{opacity:1}100%{opacity:0}}.trae-browser-inspect-key-badge{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);padding:8px 20px;border-radius:8px;background-color:rgba(0,0,0,.8);color:#fff;font-size:18px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,monospace;pointer-events:none;z-index:999999;animation:trae-browser-inspect-key-pop 500ms ease-out forwards;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.15);box-shadow:0 4px 12px rgba(0,0,0,.3);letter-spacing:1px}@keyframes trae-browser-inspect-key-pop{0%{opacity:0;transform:translateX(-50%) translateY(10px) scale(0.9)}20%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}.trae-browser-inspect-step-badge{position:fixed;top:12px;left:12px;padding:6px 12px;border-radius:6px;background-color:var(--vscode-icube-colorSuccessHover, #2FB287);color:#fff;font-size:12px;font-weight:600;pointer-events:none;z-index:999999;animation:trae-browser-inspect-step-slide 600ms ease-out forwards;box-shadow:0 2px 8px rgba(47,178,135,.3);max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trae-browser-inspect-step-badge.trae-step-old{opacity:.4;transform:translateY(0)}@keyframes trae-browser-inspect-step-slide{0%{opacity:0;transform:translateX(-20px)}20%{opacity:1;transform:translateX(0)}100%{opacity:1;transform:translateX(0)}}.trae-browser-inspect-drag-trail{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999998}.trae-browser-inspect-drag-trail svg{width:100%;height:100%}.trae-browser-inspect-drag-trail .trae-drag-path{fill:none;stroke:var(--vscode-icube-colorSuccessHover, #2FB287);stroke-width:2;stroke-dasharray:8 4;opacity:.6;animation:trae-browser-inspect-dash 600ms linear forwards}.trae-browser-inspect-drag-trail .trae-drag-dot{fill:var(--vscode-icube-colorSuccessHover, #2FB287);filter:drop-shadow(0 0 4px rgba(47, 178, 135, 0.6))}.trae-browser-inspect-drag-trail .trae-drag-endpoint{fill:none;stroke:var(--vscode-icube-colorSuccessHover, #2FB287);stroke-width:2;opacity:.5}@keyframes trae-browser-inspect-dash{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}.trae-browser-inspect-drag-trail.trae-drag-fade{animation:trae-browser-inspect-trail-fade 400ms ease-out forwards}@keyframes trae-browser-inspect-trail-fade{0%{opacity:1}100%{opacity:0}}</style><script type="module">(async () => {
+  try {
+    const client = await import('/@vite/client');
+    const hmr = client.createHotContext('hmr-handler/fake.js');
+    hmr.on('vite:afterUpdate', window['__ICUBE_WEBVIEW_HMR_CALLBACK_1787271712971']);
+  } catch {}
+})();</script><style>.buttonsCard-bTXa5j {
+  padding: var(--spacer-4);
+  background: none;
+  align-items: center;
+  gap: 0;
+  display: inline-flex;
+}
+
+.actionButton-opZL8g {
+  align-items: center;
+  gap: var(--spacer-4);
+  padding: var(--spacer-4) var(--spacer-8);
+  border-radius: var(--radius-4);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  background: none;
+  border: none;
+  display: inline-flex;
+}
+
+.actionButton-opZL8g:hover {
+  background: var(--bg-bg-overlay-l2);
+}
+
+.actionButton-opZL8g:active {
+  background: var(--bg-bg-overlay-l3);
+}
+
+.actionButton-opZL8g:focus-visible {
+  outline: 2px solid var(--status-primary-default);
+  outline-offset: 1px;
+}
+
+.icon-ObJEMt {
+  width: 16px;
+  height: 16px;
+  color: var(--icon-icon-default);
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.title-GptGAg {
+  font-family: var(--font-family-default);
+  color: var(--text-text-default);
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.shortcut-nbwTG4 {
+  color: var(--icon-icon-secondary);
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2px;
+  display: flex;
+}
+
+.shortcutKey-EE6xrE {
+  font-family: var(--font-family-default);
+  color: var(--icon-icon-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.divider-cFGVKQ {
+  box-sizing: content-box;
+  background-clip: content-box;
+  background-color: var(--border-border-neutral-l2);
+  flex-shrink: 0;
+  width: 1px;
+  height: 12px;
+  padding: 0 6px;
+}
+
+</style><style>.commentEditorCard-Un4Xaa {
+  width: 320px;
+  padding: var(--spacing-sm);
+  background: none;
+  flex-direction: column;
+  display: flex;
+}
+
+.textContainer-ZISwbW {
+  padding: var(--spacing-sm);
+  background: var(--bg-bg-overlay-l1);
+  border: 1px solid var(--border-border-neutral-l3);
+  border-radius: var(--radius-sm);
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding-right: 0;
+  display: flex;
+}
+
+.textarea-ggj4j6 {
+  padding: 0 var(--spacing-sm) 0 2px;
+  font-family: var(--font-family-default);
+  color: var(--text-text-default);
+  resize: none;
+  scrollbar-width: thin;
+  scrollbar-color: #56637726 transparent;
+  background: none;
+  border: none;
+  outline: none;
+  flex: 1;
+  max-height: 140px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  overflow-y: auto;
+}
+
+.textarea-ggj4j6::-webkit-scrollbar {
+  width: 6px;
+}
+
+.textarea-ggj4j6::-webkit-scrollbar-track {
+  background: none;
+}
+
+.textarea-ggj4j6::-webkit-scrollbar-thumb {
+  background: #56637726;
+  border-radius: 3px;
+}
+
+.textarea-ggj4j6::placeholder {
+  color: var(--text-text-tertiary);
+}
+
+.actionBar-u_t8vc {
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  max-height: 0;
+  transition: max-height .2s ease-out, opacity .2s ease-out, margin-top .2s ease-out;
+  display: flex;
+  overflow: hidden;
+}
+
+.actionBarVisible-PxXsje {
+  opacity: 1;
+  max-height: 32px;
+  margin-top: var(--spacing-sm);
+}
+
+.actionBarNoExpandAnimation-FCra2J {
+  transition: opacity .2s ease-out;
+}
+
+.actionBarNoExpandAnimation-FCra2J.actionBarVisible-PxXsje {
+  max-height: 32px;
+  margin-top: var(--spacing-sm);
+}
+
+.cancelButton-Lu0me9 {
+  height: 24px;
+  padding: 0 var(--spacing-xs);
+  background: var(--bg-bg-overlay-l2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  border: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.cancelButton-Lu0me9:hover, .cancelButton-Lu0me9:active {
+  background: var(--bg-bg-overlay-l3);
+}
+
+.cancelButton-Lu0me9:focus-visible {
+  outline: 2px solid var(--status-primary-default);
+  outline-offset: 1px;
+}
+
+.cancelText-j1RS1q {
+  font-family: var(--font-family-default);
+  color: var(--text-text-default);
+  white-space: nowrap;
+  padding: 0 var(--spacing-xs);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.submitButton-BqyEd7 {
+  height: 24px;
+  padding: 0 var(--spacing-sm);
+  background: var(--bg-bg-invert);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  border: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.submitButton-BqyEd7:hover:not(:disabled) {
+  background: var(--bg-bg-invert-hover);
+}
+
+.submitButton-BqyEd7:active:not(:disabled) {
+  background: var(--bg-bg-invert-active);
+}
+
+.submitButton-BqyEd7:disabled {
+  background: var(--bg-bg-invert-disabled);
+  color: var(--text-text-disabled);
+  cursor: not-allowed;
+}
+
+.submitButton-BqyEd7:focus-visible {
+  outline: 2px solid var(--status-primary-default);
+  outline-offset: 1px;
+}
+
+.submitText-N58QRq {
+  font-family: var(--font-family-default);
+  color: var(--text-text-onaccent);
+  white-space: nowrap;
+  padding: 0 var(--spacing-xs);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.submitButton-BqyEd7:disabled .submitText-N58QRq {
+  color: var(--text-text-disabled);
+}
+
+.submitIcon-vyKSKQ {
+  width: 12px;
+  height: 12px;
+  color: var(--icon-icon-onaccent);
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.submitButton-BqyEd7:disabled .submitIcon-vyKSKQ {
+  color: var(--text-text-disabled);
+}
+
+.limitWarning-Hocj0v {
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--status-warning-default);
+  user-select: none;
+  flex: 1;
+  display: flex;
+}
+
+.limitText-hBXEaq {
+  font-family: var(--font-family-default);
+  color: var(--status-warning-default);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+</style><style>.previewCommentCardContainer-HEkpU8 {
+  border-radius: var(--radius-8);
+  background: var(--bg-bg-menu);
+  border: 1px solid var(--border-border-neutral-l1);
+  transition: width .25s cubic-bezier(.4, 0, .2, 1), height .25s cubic-bezier(.4, 0, .2, 1);
+  display: inline-block;
+  overflow: hidden;
+  box-shadow: 0 2px 6px #0003, 0 .5px #ffffff0f, inset 0 .5px #ffffff0f;
+}
+
+.previewCommentCardContent-ELaLah {
+  width: max-content;
+  position: relative;
+}
+
+.previewCommentCardFadeEnter-OMhMD9 {
+  opacity: 0;
+}
+
+.previewCommentCardFadeEnterActive-Eacuvn {
+  opacity: 1;
+  transition: opacity .2s ease-in;
+}
+
+.previewCommentCardFadeExit-ms9vgc {
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.previewCommentCardFadeExitActive-vyQTsd {
+  opacity: 0;
+  transition: opacity .15s ease-out;
+}
+
+.previewCommentCardSuccessCard-PWnm2o {
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  display: flex;
+}
+
+.previewCommentCardSuccessIcon-Oht9Ir {
+  width: 16px;
+  height: 16px;
+  color: var(--status-success-default);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.previewCommentCardSuccessText-s40BWG {
+  font-family: var(--font-family-default);
+  color: var(--text-text-default);
+  user-select: none;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+</style><style id="trae-browser-inspect-drag-styles">
+            .trae-browser-inspect-draggable {
+                cursor: grab !important;
+            }
+            .trae-browser-inspect-dragging-active {
+                cursor: grabbing !important;
+            }
+            .trae-browser-inspect-drag-ghost {
+                opacity: 0.7;
+                pointer-events: none;
+                position: fixed;
+                z-index: 999998;
+                transform: scale(0.95);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                transition: none;
+            }
+            .trae-browser-inspect-element-placeholder {
+                opacity: 0.3;
+            }
+        </style><style>.trae-browser-inspect-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999997;pointer-events:auto;background:rgba(0,0,0,0)}.trae-browser-inspect-highlight-box{position:absolute;top:0;left:0;z-index:999998;display:none}.trae-browser-inspect-highlight-tag{position:absolute;left:0px;top:0px;height:18px;padding:0 6px;box-sizing:border-box;border-radius:4px;background-color:var(--vscode-icube-colorSuccessHover, "#2FB287");color:var(--vscode-icube-colorSnow, "#fff");font-size:12px;font-weight:400;display:none;align-items:center;z-index:999999}.trae-browser-inspect-highlight-box-show{display:flex}.trae-browser-inspect-select-button.trae-browser-inspect-highlight-box-show{display:flex !important}.trae-browser-inspect-select-button{position:absolute;top:0;left:0;background-color:var(--vscode-icube--bg-bg-base-secondary, "#222427");color:var(--vscode-icube--text-text-default-active, "#F5F9FE");font-size:11px;font-weight:500;border:1px solid var(--vscode-icube--border-neutral-l1, "#E0E2F217");border-radius:6px;padding:0 8px;height:32px;display:none;align-items:center;cursor:pointer;z-index:999999;gap:4px}.trae-browser-inspect-select-button svg,.trae-browser-inspect-select-button span{z-index:1}.trae-browser-inspect-select-highlight-box{background:rgba(0,0,0,0) !important}.trae-browser-inspect-select-highlight-box .trae-browser-inspect-highlight-tag{background-color:var(--vscode-icube--status-success-active, "#1E8B56")}.trae-browser-inspect-comment-card-container{position:fixed;top:0;left:0;z-index:9999999;pointer-events:auto}.trae-browser-inspect-comment-card-container .trae-browser-inspect-comment-card{display:flex;padding-top:0px !important;align-items:center;z-index:9999999 !important;background-color:var(--vscode-icube--bg-bg-menu)}*[contenteditable]{outline:none}.trae-browser-inspect-click-effect{position:fixed;width:40px;height:40px;margin-left:-20px;margin-top:-20px;border-radius:50%;background-color:var(--vscode-icube-colorSuccessHover, #2FB287);pointer-events:none;animation:trae-browser-inspect-ripple 500ms ease-out forwards;z-index:999999}@keyframes trae-browser-inspect-ripple{0%{transform:scale(0.3);opacity:.8}100%{transform:scale(2);opacity:0}}.trae-browser-inspect-ref-box{position:absolute;border:2px solid var(--vscode-icube-colorSuccessHover, "#2FB287");pointer-events:none;z-index:999998;animation:trae-browser-inspect-fadeInOut 2s ease-in-out forwards}.trae-browser-inspect-ref-label{position:absolute;top:-14px;left:0;height:14px;padding:0 4px;box-sizing:border-box;border-radius:2px;background-color:var(--vscode-icube-colorSuccessHover, "#2FB287");color:var(--vscode-icube-colorSnow, "#fff");font-size:9px;font-weight:500;display:flex;align-items:center;white-space:nowrap;z-index:999999}@keyframes trae-browser-inspect-fadeInOut{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}.trae-browser-inspect-input-highlight{position:absolute;border:2px solid var(--vscode-icube-colorSuccessHover, "#2FB287");border-radius:4px;pointer-events:none;z-index:999998;box-shadow:0 0 8px var(--vscode-icube-colorSuccessHover, "#2FB287");animation:trae-browser-inspect-input-pulse 600ms ease-out forwards}@keyframes trae-browser-inspect-input-pulse{0%{opacity:0;box-shadow:0 0 0 var(--vscode-icube-colorSuccessHover, "#2FB287")}30%{opacity:1;box-shadow:0 0 12px var(--vscode-icube-colorSuccessHover, "#2FB287")}100%{opacity:0;box-shadow:0 0 0 var(--vscode-icube-colorSuccessHover, "#2FB287")}}.trae-browser-inspect-virtual-cursor{position:fixed;width:20px;height:20px;pointer-events:none;z-index:9999999;opacity:0;transition:opacity .2s ease}.trae-browser-inspect-virtual-cursor.trae-browser-inspect-cursor-visible{opacity:1}.trae-browser-inspect-virtual-cursor.trae-browser-inspect-cursor-idle{animation:trae-browser-inspect-cursor-breathe 2s ease-in-out infinite}.trae-browser-inspect-virtual-cursor svg{width:20px;height:20px;filter:drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3))}@keyframes trae-browser-inspect-cursor-breathe{0%,100%{opacity:.7}50%{opacity:1}}.trae-browser-inspect-scroll-indicator{position:fixed;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:8px;background-color:rgba(0,0,0,.7);color:#fff;font-size:13px;font-weight:500;pointer-events:none;z-index:999999;animation:trae-browser-inspect-indicator-fade 800ms ease-out forwards;backdrop-filter:blur(4px)}.trae-browser-inspect-scroll-indicator svg{width:16px;height:16px;fill:#fff}.trae-browser-inspect-scroll-indicator.trae-scroll-up{top:12px;left:50%;transform:translateX(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-down{bottom:12px;left:50%;transform:translateX(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-left{left:12px;top:50%;transform:translateY(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-right{right:12px;top:50%;transform:translateY(-50%)}@keyframes trae-browser-inspect-indicator-fade{0%{opacity:0;transform:translateX(-50%) scale(0.9)}15%{opacity:1;transform:translateX(-50%) scale(1)}85%{opacity:1}100%{opacity:0}}.trae-browser-inspect-scroll-indicator.trae-scroll-left,.trae-browser-inspect-scroll-indicator.trae-scroll-right{animation-name:trae-browser-inspect-indicator-fade-y}@keyframes trae-browser-inspect-indicator-fade-y{0%{opacity:0;transform:translateY(-50%) scale(0.9)}15%{opacity:1;transform:translateY(-50%) scale(1)}85%{opacity:1}100%{opacity:0}}.trae-browser-inspect-key-badge{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);padding:8px 20px;border-radius:8px;background-color:rgba(0,0,0,.8);color:#fff;font-size:18px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,monospace;pointer-events:none;z-index:999999;animation:trae-browser-inspect-key-pop 500ms ease-out forwards;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.15);box-shadow:0 4px 12px rgba(0,0,0,.3);letter-spacing:1px}@keyframes trae-browser-inspect-key-pop{0%{opacity:0;transform:translateX(-50%) translateY(10px) scale(0.9)}20%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}.trae-browser-inspect-step-badge{position:fixed;top:12px;left:12px;padding:6px 12px;border-radius:6px;background-color:var(--vscode-icube-colorSuccessHover, #2FB287);color:#fff;font-size:12px;font-weight:600;pointer-events:none;z-index:999999;animation:trae-browser-inspect-step-slide 600ms ease-out forwards;box-shadow:0 2px 8px rgba(47,178,135,.3);max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trae-browser-inspect-step-badge.trae-step-old{opacity:.4;transform:translateY(0)}@keyframes trae-browser-inspect-step-slide{0%{opacity:0;transform:translateX(-20px)}20%{opacity:1;transform:translateX(0)}100%{opacity:1;transform:translateX(0)}}.trae-browser-inspect-drag-trail{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999998}.trae-browser-inspect-drag-trail svg{width:100%;height:100%}.trae-browser-inspect-drag-trail .trae-drag-path{fill:none;stroke:var(--vscode-icube-colorSuccessHover, #2FB287);stroke-width:2;stroke-dasharray:8 4;opacity:.6;animation:trae-browser-inspect-dash 600ms linear forwards}.trae-browser-inspect-drag-trail .trae-drag-dot{fill:var(--vscode-icube-colorSuccessHover, #2FB287);filter:drop-shadow(0 0 4px rgba(47, 178, 135, 0.6))}.trae-browser-inspect-drag-trail .trae-drag-endpoint{fill:none;stroke:var(--vscode-icube-colorSuccessHover, #2FB287);stroke-width:2;opacity:.5}@keyframes trae-browser-inspect-dash{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}.trae-browser-inspect-drag-trail.trae-drag-fade{animation:trae-browser-inspect-trail-fade 400ms ease-out forwards}@keyframes trae-browser-inspect-trail-fade{0%{opacity:1}100%{opacity:0}}</style><script type="module">(async () => {
+  try {
+    const client = await import('/@vite/client');
+    const hmr = client.createHotContext('hmr-handler/fake.js');
+    hmr.on('vite:afterUpdate', window['__ICUBE_WEBVIEW_HMR_CALLBACK_1787271712987']);
+  } catch {}
+})();</script><style>.buttonsCard-bTXa5j {
+  padding: var(--spacer-4);
+  background: none;
+  align-items: center;
+  gap: 0;
+  display: inline-flex;
+}
+
+.actionButton-opZL8g {
+  align-items: center;
+  gap: var(--spacer-4);
+  padding: var(--spacer-4) var(--spacer-8);
+  border-radius: var(--radius-4);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  background: none;
+  border: none;
+  display: inline-flex;
+}
+
+.actionButton-opZL8g:hover {
+  background: var(--bg-bg-overlay-l2);
+}
+
+.actionButton-opZL8g:active {
+  background: var(--bg-bg-overlay-l3);
+}
+
+.actionButton-opZL8g:focus-visible {
+  outline: 2px solid var(--status-primary-default);
+  outline-offset: 1px;
+}
+
+.icon-ObJEMt {
+  width: 16px;
+  height: 16px;
+  color: var(--icon-icon-default);
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.title-GptGAg {
+  font-family: var(--font-family-default);
+  color: var(--text-text-default);
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.shortcut-nbwTG4 {
+  color: var(--icon-icon-secondary);
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2px;
+  display: flex;
+}
+
+.shortcutKey-EE6xrE {
+  font-family: var(--font-family-default);
+  color: var(--icon-icon-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.divider-cFGVKQ {
+  box-sizing: content-box;
+  background-clip: content-box;
+  background-color: var(--border-border-neutral-l2);
+  flex-shrink: 0;
+  width: 1px;
+  height: 12px;
+  padding: 0 6px;
+}
+
+</style><style>.commentEditorCard-Un4Xaa {
+  width: 320px;
+  padding: var(--spacing-sm);
+  background: none;
+  flex-direction: column;
+  display: flex;
+}
+
+.textContainer-ZISwbW {
+  padding: var(--spacing-sm);
+  background: var(--bg-bg-overlay-l1);
+  border: 1px solid var(--border-border-neutral-l3);
+  border-radius: var(--radius-sm);
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding-right: 0;
+  display: flex;
+}
+
+.textarea-ggj4j6 {
+  padding: 0 var(--spacing-sm) 0 2px;
+  font-family: var(--font-family-default);
+  color: var(--text-text-default);
+  resize: none;
+  scrollbar-width: thin;
+  scrollbar-color: #56637726 transparent;
+  background: none;
+  border: none;
+  outline: none;
+  flex: 1;
+  max-height: 140px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  overflow-y: auto;
+}
+
+.textarea-ggj4j6::-webkit-scrollbar {
+  width: 6px;
+}
+
+.textarea-ggj4j6::-webkit-scrollbar-track {
+  background: none;
+}
+
+.textarea-ggj4j6::-webkit-scrollbar-thumb {
+  background: #56637726;
+  border-radius: 3px;
+}
+
+.textarea-ggj4j6::placeholder {
+  color: var(--text-text-tertiary);
+}
+
+.actionBar-u_t8vc {
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  max-height: 0;
+  transition: max-height .2s ease-out, opacity .2s ease-out, margin-top .2s ease-out;
+  display: flex;
+  overflow: hidden;
+}
+
+.actionBarVisible-PxXsje {
+  opacity: 1;
+  max-height: 32px;
+  margin-top: var(--spacing-sm);
+}
+
+.actionBarNoExpandAnimation-FCra2J {
+  transition: opacity .2s ease-out;
+}
+
+.actionBarNoExpandAnimation-FCra2J.actionBarVisible-PxXsje {
+  max-height: 32px;
+  margin-top: var(--spacing-sm);
+}
+
+.cancelButton-Lu0me9 {
+  height: 24px;
+  padding: 0 var(--spacing-xs);
+  background: var(--bg-bg-overlay-l2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  border: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.cancelButton-Lu0me9:hover, .cancelButton-Lu0me9:active {
+  background: var(--bg-bg-overlay-l3);
+}
+
+.cancelButton-Lu0me9:focus-visible {
+  outline: 2px solid var(--status-primary-default);
+  outline-offset: 1px;
+}
+
+.cancelText-j1RS1q {
+  font-family: var(--font-family-default);
+  color: var(--text-text-default);
+  white-space: nowrap;
+  padding: 0 var(--spacing-xs);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.submitButton-BqyEd7 {
+  height: 24px;
+  padding: 0 var(--spacing-sm);
+  background: var(--bg-bg-invert);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  border: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.submitButton-BqyEd7:hover:not(:disabled) {
+  background: var(--bg-bg-invert-hover);
+}
+
+.submitButton-BqyEd7:active:not(:disabled) {
+  background: var(--bg-bg-invert-active);
+}
+
+.submitButton-BqyEd7:disabled {
+  background: var(--bg-bg-invert-disabled);
+  color: var(--text-text-disabled);
+  cursor: not-allowed;
+}
+
+.submitButton-BqyEd7:focus-visible {
+  outline: 2px solid var(--status-primary-default);
+  outline-offset: 1px;
+}
+
+.submitText-N58QRq {
+  font-family: var(--font-family-default);
+  color: var(--text-text-onaccent);
+  white-space: nowrap;
+  padding: 0 var(--spacing-xs);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.submitButton-BqyEd7:disabled .submitText-N58QRq {
+  color: var(--text-text-disabled);
+}
+
+.submitIcon-vyKSKQ {
+  width: 12px;
+  height: 12px;
+  color: var(--icon-icon-onaccent);
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.submitButton-BqyEd7:disabled .submitIcon-vyKSKQ {
+  color: var(--text-text-disabled);
+}
+
+.limitWarning-Hocj0v {
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--status-warning-default);
+  user-select: none;
+  flex: 1;
+  display: flex;
+}
+
+.limitText-hBXEaq {
+  font-family: var(--font-family-default);
+  color: var(--status-warning-default);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+</style><style>.previewCommentCardContainer-HEkpU8 {
+  border-radius: var(--radius-8);
+  background: var(--bg-bg-menu);
+  border: 1px solid var(--border-border-neutral-l1);
+  transition: width .25s cubic-bezier(.4, 0, .2, 1), height .25s cubic-bezier(.4, 0, .2, 1);
+  display: inline-block;
+  overflow: hidden;
+  box-shadow: 0 2px 6px #0003, 0 .5px #ffffff0f, inset 0 .5px #ffffff0f;
+}
+
+.previewCommentCardContent-ELaLah {
+  width: max-content;
+  position: relative;
+}
+
+.previewCommentCardFadeEnter-OMhMD9 {
+  opacity: 0;
+}
+
+.previewCommentCardFadeEnterActive-Eacuvn {
+  opacity: 1;
+  transition: opacity .2s ease-in;
+}
+
+.previewCommentCardFadeExit-ms9vgc {
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.previewCommentCardFadeExitActive-vyQTsd {
+  opacity: 0;
+  transition: opacity .15s ease-out;
+}
+
+.previewCommentCardSuccessCard-PWnm2o {
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  display: flex;
+}
+
+.previewCommentCardSuccessIcon-Oht9Ir {
+  width: 16px;
+  height: 16px;
+  color: var(--status-success-default);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.previewCommentCardSuccessText-s40BWG {
+  font-family: var(--font-family-default);
+  color: var(--text-text-default);
+  user-select: none;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+</style><style id="icube-theme-variables">:root {--vscode-foreground: #31353a;--vscode-disabledForeground: #8a9096;--vscode-errorForeground: #cc4b53;--vscode-descriptionForeground: #5b6066;--vscode-icon-foreground: #5b6066;--vscode-focusBorder: rgba(0, 0, 0, 0);--vscode-textLink-foreground: #006ab1;--vscode-textLink-activeForeground: #387bff;--vscode-textSeparator-foreground: rgba(0, 0, 0, 0.18);--vscode-textPreformat-foreground: #a31515;--vscode-textPreformat-background: rgba(0, 0, 0, 0.1);--vscode-textBlockQuote-background: #f2f2f2;--vscode-textBlockQuote-border: rgba(0, 122, 204, 0.5);--vscode-textCodeBlock-background: rgba(220, 220, 220, 0.4);--vscode-sash-hoverBorder: #0fdc78;--vscode-badge-background: #c4c4c4;--vscode-badge-foreground: #333333;--vscode-activityWarningBadge-foreground: #ffffff;--vscode-activityWarningBadge-background: #b27c00;--vscode-activityErrorBadge-foreground: #ffffff;--vscode-activityErrorBadge-background: #e51400;--vscode-scrollbar-shadow: #dddddd;--vscode-scrollbarSlider-background: rgba(100, 100, 100, 0.4);--vscode-scrollbarSlider-hoverBackground: rgba(100, 100, 100, 0.7);--vscode-scrollbarSlider-activeBackground: rgba(0, 0, 0, 0.6);--vscode-progressBar-background: #2f74ff;--vscode-chart-line: #236b8e;--vscode-chart-axis: rgba(0, 0, 0, 0.6);--vscode-chart-guide: rgba(0, 0, 0, 0.2);--vscode-editor-background: #ffffff;--vscode-editor-foreground: #31353a;--vscode-editorStickyScroll-background: #ffffff;--vscode-editorStickyScrollGutter-background: #ffffff;--vscode-editorStickyScrollHover-background: rgba(91, 146, 255, 0.08);--vscode-editorStickyScroll-shadow: #dddddd;--vscode-editorWidget-background: #f3f3f3;--vscode-editorWidget-foreground: #31353a;--vscode-editorWidget-border: #c8c8c8;--vscode-editorError-foreground: #e51400;--vscode-editorWarning-foreground: #bf8803;--vscode-editorInfo-foreground: #0063d3;--vscode-editorHint-foreground: #6c6c6c;--vscode-editorLink-activeForeground: #36393d;--vscode-editor-selectionBackground: rgba(47, 116, 255, 0.18);--vscode-editor-inactiveSelectionBackground: #e5ebf1;--vscode-editor-selectionHighlightBackground: rgba(173, 214, 255, 0.5);--vscode-editor-compositionBorder: #000000;--vscode-editor-findMatchBackground: #a8ac94;--vscode-editor-findMatchHighlightBackground: rgba(234, 92, 0, 0.33);--vscode-editor-findRangeHighlightBackground: rgba(180, 180, 180, 0.3);--vscode-editor-hoverHighlightBackground: rgba(173, 214, 255, 0.15);--vscode-editorHoverWidget-background: #ffffff;--vscode-editorHoverWidget-foreground: #31353a;--vscode-editorHoverWidget-border: rgba(77, 107, 153, 0.09);--vscode-editorHoverWidget-statusBarBackground: #f2f2f2;--vscode-editorInlayHint-foreground: #969696;--vscode-editorInlayHint-background: rgba(196, 196, 196, 0.1);--vscode-editorInlayHint-typeForeground: #969696;--vscode-editorInlayHint-typeBackground: rgba(196, 196, 196, 0.1);--vscode-editorInlayHint-parameterForeground: #969696;--vscode-editorInlayHint-parameterBackground: rgba(196, 196, 196, 0.1);--vscode-editorLightBulb-foreground: #ddb100;--vscode-editorLightBulbAutoFix-foreground: #007acc;--vscode-editorLightBulbAi-foreground: #ddb100;--vscode-editor-snippetTabstopHighlightBackground: rgba(10, 50, 100, 0.2);--vscode-editor-snippetFinalTabstopHighlightBorder: rgba(10, 50, 100, 0.5);--vscode-diffEditor-insertedTextBackground: rgba(64, 176, 139, 0.18);--vscode-diffEditor-removedTextBackground: rgba(232, 70, 58, 0.16);--vscode-diffEditor-insertedLineBackground: rgba(64, 176, 139, 0.12);--vscode-diffEditor-removedLineBackground: rgba(232, 70, 58, 0.12);--vscode-diffEditorOverview-insertedForeground: rgba(64, 176, 139, 0.18);--vscode-diffEditorOverview-removedForeground: rgba(232, 70, 58, 0.16);--vscode-diffEditor-diagonalFill: rgba(34, 34, 34, 0.2);--vscode-diffEditor-unchangedRegionBackground: #ffffff;--vscode-diffEditor-unchangedRegionForeground: #31353a;--vscode-diffEditor-unchangedCodeBackground: rgba(184, 184, 184, 0.16);--vscode-widget-shadow: rgba(0, 0, 0, 0.08);--vscode-widget-border: rgba(77, 107, 153, 0.09);--vscode-toolbar-hoverBackground: rgba(86, 99, 119, 0.11);--vscode-toolbar-activeBackground: rgba(86, 99, 119, 0.15);--vscode-breadcrumb-foreground: rgba(49, 53, 58, 0.8);--vscode-breadcrumb-background: #ffffff;--vscode-breadcrumb-focusForeground: #272a2e;--vscode-breadcrumb-activeSelectionForeground: #272a2e;--vscode-breadcrumbPicker-background: #ffffff;--vscode-merge-currentHeaderBackground: rgba(64, 200, 174, 0.5);--vscode-merge-currentContentBackground: rgba(64, 200, 174, 0.2);--vscode-merge-incomingHeaderBackground: rgba(64, 166, 255, 0.5);--vscode-merge-incomingContentBackground: rgba(64, 166, 255, 0.2);--vscode-merge-commonHeaderBackground: rgba(96, 96, 96, 0.4);--vscode-merge-commonContentBackground: rgba(96, 96, 96, 0.16);--vscode-editorOverviewRuler-currentContentForeground: rgba(64, 200, 174, 0.5);--vscode-editorOverviewRuler-incomingContentForeground: rgba(64, 166, 255, 0.5);--vscode-editorOverviewRuler-commonContentForeground: rgba(96, 96, 96, 0.4);--vscode-editorOverviewRuler-findMatchForeground: rgba(209, 134, 22, 0.49);--vscode-editorOverviewRuler-selectionHighlightForeground: rgba(160, 160, 160, 0.8);--vscode-problemsErrorIcon-foreground: #e51400;--vscode-problemsWarningIcon-foreground: #bf8803;--vscode-problemsInfoIcon-foreground: #0063d3;--vscode-minimap-findMatchHighlight: #d18616;--vscode-minimap-selectionOccurrenceHighlight: #c9c9c9;--vscode-minimap-selectionHighlight: #add6ff;--vscode-minimap-infoHighlight: #0063d3;--vscode-minimap-warningHighlight: #bf8803;--vscode-minimap-errorHighlight: rgba(255, 18, 18, 0.7);--vscode-minimap-foregroundOpacity: #000000;--vscode-minimapSlider-background: rgba(100, 100, 100, 0.2);--vscode-minimapSlider-hoverBackground: rgba(100, 100, 100, 0.35);--vscode-minimapSlider-activeBackground: rgba(0, 0, 0, 0.3);--vscode-charts-foreground: #31353a;--vscode-charts-lines: rgba(49, 53, 58, 0.5);--vscode-charts-red: #e51400;--vscode-charts-blue: #0063d3;--vscode-charts-yellow: #bf8803;--vscode-charts-orange: #d18616;--vscode-charts-green: #388a34;--vscode-charts-purple: #652d90;--vscode-input-background: rgba(86, 99, 119, 0.07);--vscode-input-foreground: #31353a;--vscode-inputOption-activeBorder: rgba(77, 107, 153, 0.36);--vscode-inputOption-hoverBackground: rgba(184, 184, 184, 0.31);--vscode-inputOption-activeBackground: rgba(0, 0, 0, 0);--vscode-inputOption-activeForeground: #000000;--vscode-input-placeholderForeground: #5b6066;--vscode-inputValidation-infoBackground: #d6ecf2;--vscode-inputValidation-infoBorder: #007acc;--vscode-inputValidation-warningBackground: #f6f5d2;--vscode-inputValidation-warningBorder: #b89500;--vscode-inputValidation-errorBackground: #f2dede;--vscode-inputValidation-errorBorder: #e8463a;--vscode-dropdown-background: #ffffff;--vscode-dropdown-foreground: #31353a;--vscode-dropdown-border: #cecece;--vscode-button-foreground: #ffffff;--vscode-button-separator: rgba(193, 195, 205, 0.12);--vscode-button-background: #31353a;--vscode-button-hoverBackground: #72767b;--vscode-button-secondaryForeground: #ffffff;--vscode-button-secondaryBackground: #5f6a79;--vscode-button-secondaryHoverBackground: #4c5561;--vscode-radio-activeForeground: #000000;--vscode-radio-activeBackground: rgba(0, 0, 0, 0);--vscode-radio-activeBorder: rgba(77, 107, 153, 0.36);--vscode-radio-inactiveBorder: rgba(0, 0, 0, 0.2);--vscode-radio-inactiveHoverBackground: rgba(184, 184, 184, 0.31);--vscode-checkbox-background: #ffffff;--vscode-checkbox-selectBackground: #f3f3f3;--vscode-checkbox-foreground: #31353a;--vscode-checkbox-border: #919191;--vscode-checkbox-selectBorder: #5b6066;--vscode-checkbox-disabled.background: #bbbcbd;--vscode-checkbox-disabled.foreground: #74777b;--vscode-keybindingLabel-background: rgba(221, 221, 221, 0.4);--vscode-keybindingLabel-foreground: #555555;--vscode-keybindingLabel-border: rgba(204, 204, 204, 0.4);--vscode-keybindingLabel-bottomBorder: rgba(187, 187, 187, 0.4);--vscode-list-focusOutline: rgba(0, 0, 0, 0);--vscode-list-focusAndSelectionOutline: #90c2f9;--vscode-list-activeSelectionBackground: rgba(86, 99, 119, 0.11);--vscode-list-activeSelectionForeground: #111214;--vscode-list-activeSelectionIconForeground: #5b6066;--vscode-list-inactiveSelectionBackground: rgba(86, 99, 119, 0.11);--vscode-list-inactiveSelectionForeground: #111214;--vscode-list-hoverBackground: rgba(86, 99, 119, 0.11);--vscode-list-dropBackground: rgba(86, 99, 119, 0.11);--vscode-list-dropBetweenBackground: #5b6066;--vscode-list-highlightForeground: #0066bf;--vscode-list-focusHighlightForeground: #0066bf;--vscode-list-invalidItemForeground: #b89500;--vscode-list-errorForeground: #e8463a;--vscode-list-warningForeground: #855f00;--vscode-listFilterWidget-background: #f3f3f3;--vscode-listFilterWidget-outline: rgba(0, 0, 0, 0);--vscode-listFilterWidget-noMatchesOutline: #be1100;--vscode-listFilterWidget-shadow: rgba(0, 0, 0, 0.08);--vscode-list-filterMatchBackground: rgba(234, 92, 0, 0.33);--vscode-list-deemphasizedForeground: #8e8e90;--vscode-tree-indentGuidesStroke: rgba(77, 107, 153, 0.09);--vscode-tree-inactiveIndentGuidesStroke: rgba(221, 226, 233, 0.08);--vscode-tree-tableColumnsBorder: rgba(97, 97, 97, 0.13);--vscode-tree-tableOddRowsBackground: rgba(49, 53, 58, 0.04);--vscode-editorActionList-background: #f3f3f3;--vscode-editorActionList-foreground: #31353a;--vscode-editorActionList-focusForeground: #111214;--vscode-editorActionList-focusBackground: rgba(86, 99, 119, 0.11);--vscode-menu-border: rgba(77, 107, 153, 0.09);--vscode-menu-foreground: #616161;--vscode-menu-background: #ffffff;--vscode-menu-selectionForeground: #111214;--vscode-menu-selectionBackground: rgba(86, 99, 119, 0.11);--vscode-menu-separatorBackground: rgba(77, 107, 153, 0.09);--vscode-quickInput-background: #f8f9fa;--vscode-quickInput-foreground: #31353a;--vscode-quickInputTitle-background: rgba(0, 0, 0, 0.04);--vscode-pickerGroup-foreground: #31353a;--vscode-pickerGroup-border: rgba(77, 107, 153, 0.09);--vscode-quickInputList-focusForeground: #111214;--vscode-quickInputList-focusIconForeground: #5b6066;--vscode-quickInputList-focusBackground: rgba(86, 99, 119, 0.11);--vscode-search-resultsInfoForeground: #31353a;--vscode-searchEditor-findMatchBackground: rgba(234, 92, 0, 0.22);--vscode-tab-activeBackground: rgba(86, 99, 119, 0.11);--vscode-tab-unfocusedActiveBackground: rgba(86, 99, 119, 0.11);--vscode-tab-inactiveBackground: #f8f8f9;--vscode-tab-unfocusedInactiveBackground: #f8f8f9;--vscode-tab-activeForeground: #333333;--vscode-tab-inactiveForeground: #5b6066;--vscode-tab-unfocusedActiveForeground: #31353a;--vscode-tab-unfocusedInactiveForeground: rgba(91, 96, 102, 0.5);--vscode-tab-border: rgba(77, 107, 153, 0.09);--vscode-tab-lastPinnedBorder: rgba(97, 97, 97, 0.19);--vscode-tab-activeBorder: #ffffff;--vscode-tab-unfocusedActiveBorder: rgba(255, 255, 255, 0.7);--vscode-tab-activeBorderTop: #000000;--vscode-tab-unfocusedActiveBorderTop: rgba(0, 0, 0, 0.7);--vscode-tab-selectedBorderTop: #000000;--vscode-tab-selectedBackground: rgba(86, 99, 119, 0.11);--vscode-tab-selectedForeground: #333333;--vscode-tab-dragAndDropBorder: #333333;--vscode-tab-activeModifiedBorder: #33aaee;--vscode-tab-inactiveModifiedBorder: rgba(51, 170, 238, 0.5);--vscode-tab-unfocusedActiveModifiedBorder: rgba(51, 170, 238, 0.7);--vscode-tab-unfocusedInactiveModifiedBorder: rgba(51, 170, 238, 0.25);--vscode-editorPane-background: #ffffff;--vscode-editorGroupHeader-tabsBackground: #f8f8f9;--vscode-editorGroupHeader-tabsBorder: rgba(77, 107, 153, 0.09);--vscode-editorGroupHeader-noTabsBackground: #ffffff;--vscode-editorGroup-border: #e7e7e7;--vscode-editorGroup-dropBackground: rgba(33, 97, 224, 0.16);--vscode-editorGroup-dropIntoPromptForeground: #31353a;--vscode-editorGroup-dropIntoPromptBackground: #f3f3f3;--vscode-sideBySideEditor-horizontalBorder: #e7e7e7;--vscode-sideBySideEditor-verticalBorder: #e7e7e7;--vscode-panel-background: #ffffff;--vscode-panel-border: rgba(128, 128, 128, 0.35);--vscode-panelTitle-activeForeground: #111214;--vscode-panelTitle-inactiveForeground: #5b6066;--vscode-panelTitle-activeBorder: #111214;--vscode-panelInput-border: #dddddd;--vscode-panel-dropBorder: #111214;--vscode-panelSection-dropBackground: rgba(33, 97, 224, 0.16);--vscode-panelSectionHeader-background: #ffffff;--vscode-panelSectionHeader-foreground: #111214;--vscode-panelSectionHeader-border: rgba(77, 107, 153, 0.18);--vscode-panelSection-border: rgba(128, 128, 128, 0.35);--vscode-panelStickyScroll-background: #ffffff;--vscode-panelStickyScroll-shadow: #dddddd;--vscode-banner-background: rgba(60, 69, 83, 0.11);--vscode-banner-foreground: #111214;--vscode-banner-iconForeground: #0063d3;--vscode-statusBar-foreground: #ffffff;--vscode-statusBar-noFolderForeground: #ffffff;--vscode-statusBar-background: rgba(0, 0, 0, 0);--vscode-statusBar-noFolderBackground: rgba(0, 0, 0, 0);--vscode-statusBar-focusBorder: #ffffff;--vscode-statusBarItem-activeBackground: rgba(255, 255, 255, 0.18);--vscode-statusBarItem-focusBorder: #ffffff;--vscode-statusBarItem-hoverBackground: rgba(0, 0, 0, 0.12);--vscode-statusBarItem-hoverForeground: #ffffff;--vscode-statusBarItem-compactHoverBackground: rgba(0, 0, 0, 0.12);--vscode-statusBarItem-prominentForeground: #ffffff;--vscode-statusBarItem-prominentBackground: rgba(0, 0, 0, 0.5);--vscode-statusBarItem-prominentHoverForeground: #ffffff;--vscode-statusBarItem-prominentHoverBackground: rgba(0, 0, 0, 0.12);--vscode-statusBarItem-errorBackground: #c72e0f;--vscode-statusBarItem-errorForeground: #ffffff;--vscode-statusBarItem-errorHoverForeground: #ffffff;--vscode-statusBarItem-errorHoverBackground: rgba(0, 0, 0, 0.12);--vscode-statusBarItem-warningBackground: #725102;--vscode-statusBarItem-warningForeground: #ffffff;--vscode-statusBarItem-warningHoverForeground: #ffffff;--vscode-statusBarItem-warningHoverBackground: rgba(0, 0, 0, 0.12);--vscode-activityBar-background: #edeff2;--vscode-activityBar-foreground: #111214;--vscode-activityBar-inactiveForeground: #5b6066;--vscode-activityBar-activeBorder: #111214;--vscode-activityBar-dropBorder: #111214;--vscode-activityBarBadge-background: #2f74ff;--vscode-activityBarBadge-foreground: #ffffff;--vscode-activityBarTop-foreground: #424242;--vscode-activityBarTop-activeBorder: #424242;--vscode-activityBarTop-inactiveForeground: rgba(66, 66, 66, 0.75);--vscode-activityBarTop-dropBorder: #424242;--vscode-profileBadge-background: #c4c4c4;--vscode-profileBadge-foreground: #333333;--vscode-statusBarItem-remoteBackground: #16825d;--vscode-statusBarItem-remoteForeground: #ffffff;--vscode-statusBarItem-remoteHoverForeground: #ffffff;--vscode-statusBarItem-remoteHoverBackground: rgba(0, 0, 0, 0.12);--vscode-statusBarItem-offlineBackground: #6c1717;--vscode-statusBarItem-offlineForeground: #ffffff;--vscode-statusBarItem-offlineHoverForeground: #ffffff;--vscode-statusBarItem-offlineHoverBackground: rgba(0, 0, 0, 0.12);--vscode-extensionBadge-remoteBackground: #2f74ff;--vscode-extensionBadge-remoteForeground: #ffffff;--vscode-sideBar-background: #ffffff;--vscode-sideBarTitle-background: #ffffff;--vscode-sideBarTitle-foreground: #6f6f6f;--vscode-sideBar-dropBackground: rgba(33, 97, 224, 0.16);--vscode-sideBarSectionHeader-background: #ffffff;--vscode-sideBarSectionHeader-foreground: #31353a;--vscode-sideBarSectionHeader-border: rgba(77, 107, 153, 0.18);--vscode-sideBarActivityBarTop-border: rgba(77, 107, 153, 0.18);--vscode-sideBarStickyScroll-background: #ffffff;--vscode-sideBarStickyScroll-shadow: #dddddd;--vscode-titleBar-activeForeground: #5b6066;--vscode-titleBar-inactiveForeground: rgba(91, 96, 102, 0.6);--vscode-titleBar-activeBackground: #edeff2;--vscode-titleBar-inactiveBackground: #edeff2;--vscode-menubar-selectionForeground: #5b6066;--vscode-menubar-selectionBackground: rgba(86, 99, 119, 0.11);--vscode-commandCenter-foreground: #5b6066;--vscode-commandCenter-activeForeground: #5b6066;--vscode-commandCenter-inactiveForeground: rgba(91, 96, 102, 0.6);--vscode-commandCenter-background: rgba(0, 0, 0, 0.05);--vscode-commandCenter-activeBackground: rgba(0, 0, 0, 0.08);--vscode-commandCenter-border: rgba(91, 96, 102, 0.2);--vscode-commandCenter-activeBorder: rgba(91, 96, 102, 0.3);--vscode-commandCenter-inactiveBorder: rgba(91, 96, 102, 0.15);--vscode-notificationCenter-border: rgba(77, 107, 153, 0.09);--vscode-notificationToast-border: rgba(77, 107, 153, 0.09);--vscode-notifications-foreground: #31353a;--vscode-notifications-background: #ffffff;--vscode-notificationLink-foreground: #006ab1;--vscode-notificationCenterHeader-background: #f2f2f2;--vscode-notifications-border: #f2f2f2;--vscode-notificationsErrorIcon-foreground: #e8463a;--vscode-notificationsWarningIcon-foreground: #e28a00;--vscode-notificationsInfoIcon-foreground: #2f74ff;--vscode-iCubeNotificationCenter-border: rgba(77, 107, 153, 0.09);--vscode-icube-colorSnow: #ffffff;--vscode-icube-colorBlack: #000000;--vscode-icube-colorSnowDisable: rgba(255, 255, 255, 0.3);--vscode-icube-modalOverlay: rgba(0, 0, 0, 0.4);--vscode-icube-colorBg1: #ffffff;--vscode-icube-colorBg2: #edeff2;--vscode-icube-colorBg3: #ffffff;--vscode-icube-colorBg4: #e1e1e1;--vscode-icube-diffColorBg3: rgba(225, 225, 225, 0.35);--vscode-icube-colorBgCode: #ffffff;--vscode-icube-colorBgTr0: rgba(86, 99, 119, 0.07);--vscode-icube-colorBtnHover: rgba(86, 99, 119, 0.11);--vscode-icube-colorBg5: rgba(77, 97, 128, 0.08);--vscode-icube-colorBtnHover2: rgba(86, 99, 119, 0.15);--vscode-icube-colorBtnTransparent3: rgba(86, 99, 119, 0.19);--vscode-icube-colorBlend: rgba(77, 97, 128, 0.12);--vscode-icube-colorTransparent: rgba(255, 255, 255, 0);--vscode-icube-colorWidgetShadow: rgba(0, 0, 0, 0.04);--vscode-icube-colorWidgetShadow2: rgba(0, 0, 0, 0.08);--vscode-icube-colorWidgetShadow3: rgba(0, 0, 0, 0.2);--vscode-icube-colorDefaultText: #31353a;--vscode-icube-colorHighlightText: #111214;--vscode-icube-colorGrayText: #5b6066;--vscode-icube-colorGrayText2: #617080;--vscode-icube-colorDisableText: #8a9096;--vscode-icube-colorBlackText: #111314;--vscode-icube-colorBlackText1: #ffffff;--vscode-icube-colorBlackText2: #000000;--vscode-icube-colorDefaultAvatar: #5b92ff;--vscode-icube-colorDefaultAvatarBackground: #1759dd;--vscode-icube-modalLayoutBg: rgba(0, 25, 49, 0.2);--vscode-icube-colorIcon: #939fb8;--vscode-icube-colorCodeCodeInstruction: #b15ef2;--vscode-icube-colorLine1: rgba(77, 107, 153, 0.09);--vscode-icube-colorLine2: rgba(77, 107, 153, 0.18);--vscode-icube-colorLine3: rgba(77, 107, 153, 0.36);--vscode-icube-colorBrand: #36393d;--vscode-icube-colorBrandHover: #72767b;--vscode-icube-colorBrandActive: #1a1b1d;--vscode-icube-colorBrandTransparent: rgba(86, 99, 119, 0.11);--vscode-icube-colorBrandTransparent2: rgba(86, 99, 119, 0.15);--vscode-icube-colorBrandTransparent3: rgba(86, 99, 119, 0.19);--vscode-icube-colorStatusRegular: #2f74ff;--vscode-icube-colorStatusRegularHover: #4c88ff;--vscode-icube-colorStatusRegularActive: #1759dd;--vscode-icube-colorStatusRegularTransparent: rgba(47, 116, 255, 0.12);--vscode-icube-colorStatusRegularTransparent2: rgba(47, 116, 255, 0.18);--vscode-icube-colorStatusRegularTransparent3: rgba(47, 116, 255, 0.36);--vscode-icube-colorSuccess: #26a57b;--vscode-icube-colorSuccessHover: #2ca77f;--vscode-icube-colorSuccessActive: #1e8b56;--vscode-icube-colorSuccessTransparent: rgba(64, 176, 139, 0.12);--vscode-icube-colorSuccessTransparent2: rgba(64, 176, 139, 0.18);--vscode-icube-colorSuccessTransparent3: rgba(64, 176, 139, 0.36);--vscode-icube-colorError: #e8463a;--vscode-icube-colorErrorHover: #ea574c;--vscode-icube-colorErrorActive: #c9382f;--vscode-icube-colorErrorTransparent: rgba(232, 70, 58, 0.12);--vscode-icube-colorErrorTransparent2: rgba(232, 70, 58, 0.16);--vscode-icube-colorErrorTransparent3: rgba(232, 70, 58, 0.36);--vscode-icube-colorWarning: #e28a00;--vscode-icube-colorWarningHover: #f18c13;--vscode-icube-colorWarningActive: #c46f11;--vscode-icube-colorWarningTransparent: rgba(226, 138, 0, 0.12);--vscode-icube-colorWarningTransparent2: rgba(226, 138, 0, 0.16);--vscode-icube-colorWarningTransparent3: rgba(226, 138, 0, 0.36);--vscode-icube-colorAlert: #c6a626;--vscode-icube-colorAlertHover: #dfb716;--vscode-icube-colorAlertActive: #af8d06;--vscode-icube-colorAlertTransparent: rgba(198, 166, 38, 0.14);--vscode-icube-colorAlertTransparent2: rgba(198, 166, 38, 0.2);--vscode-icube-colorAlertTransparent3: rgba(198, 166, 38, 0.36);--vscode-icube-colorErrorTm1: rgba(204, 75, 83, 0.2);--vscode-icube-colorErrorTr1: rgba(232, 70, 58, 0.12);--vscode-icube-colorSpinLoading: #2f74ff;--vscode-icube-colorC1: #00b983;--vscode-icube-colorC2: #ff6b45;--vscode-icube-colorC3: #f2a90c;--vscode-icube-colorC4: #5fbf00;--vscode-icube-colorC5: #00b8f8;--vscode-icube-colorC6: #3f85ff;--vscode-icube-colorC7: #f53cff;--vscode-icube-colorC8: #9570ff;--vscode-icube-colorC9: #747e94;--vscode-icube-colorDiffToggleBtnBg: #8d7aff;--vscode-icube-textPreformatBackground: #9d89eb;--vscode-icube-colorRed1: #dd3730;--vscode-icube-colorRed2: rgba(221, 55, 48, 0.1);--vscode-icube-colorRed3: #dd3730;--vscode-icube-colorGreen1: #00906e;--vscode-icube-colorDiffBtn1: #ffffff;--vscode-icube-diffInsertedTextBackground: rgba(38, 165, 123, 0.32);--vscode-icube-colorChatError: rgba(97, 97, 97, 0);--vscode-icube-chatIconBg1: #ff4a36;--vscode-icube-chatIconColor1: #ffffff;--vscode-icube-emptyExplorerButtonBgColor: rgba(77, 97, 128, 0.08);--vscode-icube-emptyExplorerButtonTextColor: #333940;--vscode-icube-emptyExplorerSplitTextColor: #333940;--vscode-icube-emptyExplorerSplitColor: rgba(77, 107, 153, 0.2);--vscode-icube-lite.colorBg1: #25252d;--vscode-icube-lite.colorBg2: #1d1c23;--vscode-icube-lite.colorLine1: #2e2e38;--vscode-widget-shadow1: rgba(0, 0, 0, 0.08);--vscode-widget-shadow2: rgba(0, 0, 0, 0.1);--vscode-widget-light.shadow1: rgba(0, 0, 0, 0.04);--vscode-widget-light.shadow2: rgba(0, 0, 0, 0.08);--vscode-icube-tooltipsTextColor: #ffffff;--vscode-icube-ai.disableInputBorderColor: rgba(77, 107, 153, 0.4);--vscode-icube-scrollbarBgColor: rgba(100, 100, 100, 0.4);--vscode-icube-scrollbarHoverBgColor: rgba(100, 100, 100, 0.4);--vscode-icube-desktopEmptyWorkspaceIconBg: rgba(77, 97, 128, 0.08);--vscode-icube-desktopEmptyWorkspaceHoverBg: rgba(77, 107, 153, 0.12);--vscode-icube--code-code-text: #17181a;--vscode-icube-primaryButtonBackground: #31353a;--vscode-icube-primaryButtonForeground: #ffffff;--vscode-icube-primaryButtonHoverBackground: #72767b;--vscode-icube-primaryButtonHoverForeground: #ffffff;--vscode-icube-primaryButtonActivateBackground: #1a1b1d;--vscode-icube-primaryButtonActivateForeground: #ffffff;--vscode-icube-primaryButtonDisableBackground: #8a9096;--vscode-icube-primaryButtonDisableForeground: #ffffff;--vscode-icube-defaultButtonBackground: rgba(86, 99, 119, 0.11);--vscode-icube-defaultButtonForeground: #31353a;--vscode-icube-defaultButtonHoverBackground: rgba(86, 99, 119, 0.15);--vscode-icube-defaultButtonHoverForeground: #31353a;--vscode-icube-defaultButtonActivateBackground: rgba(86, 99, 119, 0.19);--vscode-icube-defaultButtonActivateForeground: #31353a;--vscode-icube-defaultButtonDisableBackground: rgba(86, 99, 119, 0.15);--vscode-icube-defaultButtonDisableForeground: #8a9096;--vscode-icube-checkboxBorder: #31353a;--vscode-icube-checkboxBackground: #31353a;--vscode-icube-checkboxDisabledBackground: #8a9096;--vscode-icube-checkboxForeground: #ffffff;--vscode-icube-checkboxUncheckedBorder: rgba(77, 107, 153, 0.18);--vscode-icube-checkboxUncheckedBackground: #ffffff;--vscode-icube-badgeBackground: #2f74ff;--vscode-icube-badgeForeground: #ffffff;--vscode-icube-colorBgTr1: rgba(86, 99, 119, 0.11);--vscode-icube-colorBgTr2: rgba(86, 99, 119, 0.15);--vscode-icube-colorBgTr3: rgba(86, 99, 119, 0.19);--vscode-icube-colorTextDefault: #31353a;--vscode-icube-colorTextHighlight: #111214;--vscode-icube-colorTextGray: #5b6066;--vscode-icube-colorTextDisable: #8a9096;--vscode-icube-colorBrandTr1: rgba(86, 99, 119, 0.11);--vscode-icube-colorBrandTr2: rgba(86, 99, 119, 0.15);--vscode-icube-colorBrandTr3: rgba(86, 99, 119, 0.19);--vscode-icube-colorSuccessTr1: rgba(64, 176, 139, 0.12);--vscode-icube-colorSuccessTr2: rgba(64, 176, 139, 0.18);--vscode-icube-colorSuccessTr3: rgba(64, 176, 139, 0.36);--vscode-icube-colorErrorTr2: rgba(232, 70, 58, 0.16);--vscode-icube-colorErrorTr3: rgba(232, 70, 58, 0.36);--vscode-icube-colorWarningTr1: rgba(226, 138, 0, 0.12);--vscode-icube-colorWarningTr2: rgba(226, 138, 0, 0.16);--vscode-icube-colorWarningTr3: rgba(226, 138, 0, 0.36);--vscode-icube-colorAlertTr1: rgba(198, 166, 38, 0.14);--vscode-icube-colorAlertTr2: rgba(198, 166, 38, 0.2);--vscode-icube-colorAlertTr3: rgba(198, 166, 38, 0.36);--vscode-icube-colorTextButtonHighlight: #111214;--vscode-icube--special-white: #ffffff;--vscode-icube--special-black: #000000;--vscode-icube--bg-bg-base-default: #ffffff;--vscode-icube--bg-bg-tooltip: #ffffff;--vscode-icube--bg-bg-base-secondary: #edeff2;--vscode-icube--bg-bg-base-tertiary: #ffffff;--vscode-icube--bg-bg-overlay-l1: rgba(86, 99, 119, 0.07);--vscode-icube--bg-bg-overlay-l2: rgba(86, 99, 119, 0.11);--vscode-icube--bg-bg-overlay-l3: rgba(86, 99, 119, 0.15);--vscode-icube--bg-bg-overlay-l4: rgba(86, 99, 119, 0.19);--vscode-icube--border-border-neutral-l1: rgba(77, 107, 153, 0.09);--vscode-icube--border-border-neutral-l2: rgba(77, 107, 153, 0.18);--vscode-icube--border-border-neutral-l3: rgba(77, 107, 153, 0.36);--vscode-icube--text-text-default-hover: #111214;--vscode-icube--text-text-default-active: #111214;--vscode-icube--icon-icon-default-hover: #111214;--vscode-icube--icon-icon-default-active: #111214;--vscode-icube--text-text-default: #31353a;--vscode-icube--text-text-secondary-hover: #31353a;--vscode-icube--text-text-secondary-active: #31353a;--vscode-icube--icon-icon-default: #31353a;--vscode-icube--icon-icon-secondary-hover: #31353a;--vscode-icube--icon-icon-secondary-active: #31353a;--vscode-icube--text-text-secondary: #5b6066;--vscode-icube--icon-icon-secondary: #5b6066;--vscode-icube--text-text-tertiary: #8a9096;--vscode-icube--text-text-disabled: #8a9096;--vscode-icube--icon-icon-tertiary: #8a9096;--vscode-icube--icon-icon-disabled: #8a9096;--vscode-icube--status-primary-default: #2f74ff;--vscode-icube--status-primary-hover: #4c88ff;--vscode-icube--status-primary-active: #1759dd;--vscode-icube--status-primary-surface-l1: rgba(47, 116, 255, 0.12);--vscode-icube--status-primary-surface-l2: rgba(47, 116, 255, 0.18);--vscode-icube--status-primary-surface-l3: rgba(47, 116, 255, 0.36);--vscode-icube--status-success-default: #26a57b;--vscode-icube--status-success-hover: #2ca77f;--vscode-icube--status-success-active: #1e8b56;--vscode-icube--status-success-surface-l1: rgba(64, 176, 139, 0.12);--vscode-icube--status-success-surface-l2: rgba(64, 176, 139, 0.18);--vscode-icube--status-success-surface-l3: rgba(64, 176, 139, 0.36);--vscode-icube--status-alert-default: #c6a626;--vscode-icube--status-alert-hover: #dfb716;--vscode-icube--status-alert-active: #af8d06;--vscode-icube--status-alert-surface-l1: rgba(198, 166, 38, 0.14);--vscode-icube--status-alert-surface-l2: rgba(198, 166, 38, 0.2);--vscode-icube--status-alert-surface-l3: rgba(198, 166, 38, 0.36);--vscode-icube--status-warning-default: #e28a00;--vscode-icube--status-warning-hover: #f18c13;--vscode-icube--status-warning-active: #c46f11;--vscode-icube--status-warning-surface-l1: rgba(226, 138, 0, 0.12);--vscode-icube--status-warning-surface-l2: rgba(226, 138, 0, 0.16);--vscode-icube--status-warning-surface-l3: rgba(226, 138, 0, 0.36);--vscode-icube--status-error-default: #e8463a;--vscode-icube--status-error-hover: #ea574c;--vscode-icube--status-error-active: #c9382f;--vscode-icube--status-error-surface-l1: rgba(232, 70, 58, 0.12);--vscode-icube--status-error-surface-l2: rgba(232, 70, 58, 0.16);--vscode-icube--status-error-surface-l3: rgba(232, 70, 58, 0.36);--vscode-icube--bg-bg-invert: #36393d;--vscode-icube--bg-bg-invert-hover: #72767b;--vscode-icube--bg-bg-invert-active: #1a1b1d;--vscode-icube--bg-bg-invert-disabled: rgba(86, 99, 119, 0.19);--vscode-icube--accent-accent-teal: #00b983;--vscode-icube--accent-accent-coral: #ff6b45;--vscode-icube--accent-accent-amber: #f2a90c;--vscode-icube--accent-accent-lime: #5fbf00;--vscode-icube--accent-accent-cyan: #00b8f8;--vscode-icube--accent-accent-blue: #3f85ff;--vscode-icube--accent-accent-magenta: #f53cff;--vscode-icube--accent-accent-violet: #9570ff;--vscode-icube--accent-accent-slate: #747e94;--vscode-icube--bg-bg-menu: #f8f9fa;--vscode-icube--bg-bg-menu-tr0: rgba(255, 255, 255, 0);--vscode-icube--bg-bg-brand: #0fdc78;--vscode-icube--bg-bg-brand-hover: #0ab861;--vscode-icube--bg-bg-brand-disabled: rgba(10, 184, 97, 0.2);--vscode-icube--border-border-contrast: #000000;--vscode-icube--border-border-brand: #0fdc78;--vscode-icube--text-text-brand: #0ab861;--vscode-icube--icon-icon-brand: #0ab861;--vscode-icube--text-text-brand-hover: #0fdc78;--vscode-icube--icon-icon-brand-hover: #0fdc78;--vscode-icube--text-text-onbrand: #0c0c0d;--vscode-icube--icon-icon-onbrand: #0c0c0d;--vscode-icube--text-text-onaccent: #ffffff;--vscode-icube--icon-icon-onaccent: #ffffff;--vscode-icube--special-bgtabsoverlay: rgba(193, 195, 205, 0.12);--vscode-icube--code-code-tag: #e24864;--vscode-icube--code-code-instruction: #b15ef2;--vscode-icube--code-code-doc: #8393a3;--vscode-icube--code-code-parameter: #4da621;--vscode-icube--cue: #0ab861;--vscode-icube--cue-tr0: rgba(10, 184, 97, 0);--vscode-icube--cue-tr1: rgba(10, 184, 97, 0.16);--vscode-icube--cue-tr2: rgba(10, 184, 97, 0.32);--vscode-icube--cue-diff-add: #00a56e;--vscode-icube--cue-diff-add-inline: rgba(0, 165, 110, 0.12);--vscode-icube--cue-diff-add-popup: rgba(0, 165, 110, 0.18);--vscode-icube--cue-diff-remove: rgba(232, 70, 58, 0.14);--vscode-icube--cue-diff-line: rgba(0, 0, 0, 0.32);--vscode-solo-lite-root-background: #edeff2;--vscode-icube-memoryRiskBackground: #fef3e2;--vscode-icube-memoryRiskBorder: #e8a838;--vscode-icube-memoryRiskIcon: #c87a1c;--vscode-icube-blendColor.btnHover.bg2: #e0e3e9;--vscode-icube-blendColor.btnTransparent3.bg2: #d3d8df;--vscode-editor-lineHighlightBackground: rgba(114, 118, 123, 0.08);--vscode-editor-inactiveLineHighlightBackground: rgba(114, 118, 123, 0.08);--vscode-editor-lineHighlightBorder: #eeeeee;--vscode-editor-rangeHighlightBackground: rgba(253, 255, 0, 0.2);--vscode-editor-symbolHighlightBackground: rgba(234, 92, 0, 0.33);--vscode-editorCursor-foreground: #000000;--vscode-editorMultiCursor-primary.foreground: #000000;--vscode-editorMultiCursor-secondary.foreground: #000000;--vscode-editorWhitespace-foreground: rgba(51, 51, 51, 0.2);--vscode-editorLineNumber-foreground: #72767b;--vscode-editorIndentGuide-background: rgba(77, 107, 153, 0.09);--vscode-editorIndentGuide-activeBackground: rgba(77, 107, 153, 0.36);--vscode-editorIndentGuide-background1: rgba(77, 107, 153, 0.09);--vscode-editorIndentGuide-background2: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-background3: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-background4: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-background5: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-background6: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-activeBackground1: rgba(77, 107, 153, 0.36);--vscode-editorIndentGuide-activeBackground2: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-activeBackground3: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-activeBackground4: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-activeBackground5: rgba(0, 0, 0, 0);--vscode-editorIndentGuide-activeBackground6: rgba(0, 0, 0, 0);--vscode-editorActiveLineNumber-foreground: #0b216f;--vscode-editorLineNumber-activeForeground: #111214;--vscode-editorRuler-foreground: #d3d3d3;--vscode-editorCodeLens-foreground: #919191;--vscode-editorBracketMatch-background: rgba(114, 118, 123, 0.24);--vscode-editorBracketMatch-border: #b9b9b9;--vscode-editorOverviewRuler-border: rgba(127, 127, 127, 0.3);--vscode-editorGutter-background: #ffffff;--vscode-editorUnnecessaryCode-opacity: rgba(0, 0, 0, 0.5);--vscode-editorGhostText-foreground: rgba(0, 0, 0, 0.47);--vscode-editorOverviewRuler-rangeHighlightForeground: rgba(0, 122, 204, 0.6);--vscode-editorOverviewRuler-errorForeground: rgba(255, 18, 18, 0.7);--vscode-editorOverviewRuler-warningForeground: #bf8803;--vscode-editorOverviewRuler-infoForeground: #0063d3;--vscode-editorBracketHighlight-foreground1: #0431fa;--vscode-editorBracketHighlight-foreground2: #319331;--vscode-editorBracketHighlight-foreground3: #7b3814;--vscode-editorBracketHighlight-foreground4: rgba(0, 0, 0, 0);--vscode-editorBracketHighlight-foreground5: rgba(0, 0, 0, 0);--vscode-editorBracketHighlight-foreground6: rgba(0, 0, 0, 0);--vscode-editorBracketHighlight-unexpectedBracket.foreground: rgba(255, 18, 18, 0.8);--vscode-editorBracketPairGuide-background1: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-background2: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-background3: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-background4: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-background5: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-background6: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-activeBackground1: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-activeBackground2: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-activeBackground3: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-activeBackground4: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-activeBackground5: rgba(0, 0, 0, 0);--vscode-editorBracketPairGuide-activeBackground6: rgba(0, 0, 0, 0);--vscode-editorUnicodeHighlight-border: #bf8803;--vscode-diffEditor-move.border: rgba(139, 139, 139, 0.61);--vscode-diffEditor-moveActive.border: #ffa500;--vscode-diffEditor-unchangedRegionShadow: rgba(115, 115, 115, 0.75);--vscode-settings-headerForeground: #111214;--vscode-settings-settingsHeaderHoverForeground: rgba(17, 18, 20, 0.7);--vscode-settings-modifiedItemIndicator: #36393d;--vscode-settings-headerBorder: rgba(77, 107, 153, 0.18);--vscode-settings-sashBorder: rgba(128, 128, 128, 0.35);--vscode-settings-dropdownBackground: #ffffff;--vscode-settings-dropdownForeground: #31353a;--vscode-settings-dropdownBorder: rgba(77, 107, 153, 0.09);--vscode-settings-dropdownListBorder: #c8c8c8;--vscode-settings-checkboxBackground: #ffffff;--vscode-settings-checkboxForeground: #31353a;--vscode-settings-checkboxBorder: #919191;--vscode-settings-textInputBackground: rgba(86, 99, 119, 0.07);--vscode-settings-textInputForeground: #31353a;--vscode-settings-textInputBorder: #cecece;--vscode-settings-numberInputBackground: rgba(86, 99, 119, 0.07);--vscode-settings-numberInputForeground: #31353a;--vscode-settings-numberInputBorder: #cecece;--vscode-settings-focusedRowBackground: rgba(86, 99, 119, 0.07);--vscode-settings-rowHoverBackground: rgba(86, 99, 119, 0.03);--vscode-settings-focusedRowBorder: rgba(0, 0, 0, 0);--vscode-editorOverviewRuler-bracketMatchForeground: #a0a0a0;--vscode-actionBar-toggledBackground: #dddddd;--vscode-symbolIcon-arrayForeground: #31353a;--vscode-symbolIcon-booleanForeground: #31353a;--vscode-symbolIcon-classForeground: #d67e00;--vscode-symbolIcon-colorForeground: #31353a;--vscode-symbolIcon-constantForeground: #31353a;--vscode-symbolIcon-constructorForeground: #652d90;--vscode-symbolIcon-enumeratorForeground: #d67e00;--vscode-symbolIcon-enumeratorMemberForeground: #007acc;--vscode-symbolIcon-eventForeground: #d67e00;--vscode-symbolIcon-fieldForeground: #007acc;--vscode-symbolIcon-fileForeground: #31353a;--vscode-symbolIcon-folderForeground: #31353a;--vscode-symbolIcon-functionForeground: #652d90;--vscode-symbolIcon-interfaceForeground: #007acc;--vscode-symbolIcon-keyForeground: #31353a;--vscode-symbolIcon-keywordForeground: #31353a;--vscode-symbolIcon-methodForeground: #b180d7;--vscode-symbolIcon-moduleForeground: #31353a;--vscode-symbolIcon-namespaceForeground: #31353a;--vscode-symbolIcon-nullForeground: #31353a;--vscode-symbolIcon-numberForeground: #31353a;--vscode-symbolIcon-objectForeground: #31353a;--vscode-symbolIcon-operatorForeground: #31353a;--vscode-symbolIcon-packageForeground: #31353a;--vscode-symbolIcon-propertyForeground: #31353a;--vscode-symbolIcon-referenceForeground: #31353a;--vscode-symbolIcon-snippetForeground: #31353a;--vscode-symbolIcon-stringForeground: #31353a;--vscode-symbolIcon-structForeground: #31353a;--vscode-symbolIcon-textForeground: #31353a;--vscode-symbolIcon-typeParameterForeground: #31353a;--vscode-symbolIcon-unitForeground: #31353a;--vscode-symbolIcon-variableForeground: #007acc;--vscode-peekViewTitle-background: #f3f3f3;--vscode-peekViewTitleLabel-foreground: #000000;--vscode-peekViewTitleDescription-foreground: #616161;--vscode-peekView-border: #0063d3;--vscode-peekViewResult-background: #f3f3f3;--vscode-peekViewResult-lineForeground: #646465;--vscode-peekViewResult-fileForeground: #1e1e1e;--vscode-peekViewResult-selectionBackground: rgba(51, 153, 255, 0.2);--vscode-peekViewResult-selectionForeground: #6c6c6c;--vscode-peekViewEditor-background: #f2f8fc;--vscode-peekViewEditorGutter-background: #f2f8fc;--vscode-peekViewEditorStickyScroll-background: #f2f8fc;--vscode-peekViewEditorStickyScrollGutter-background: #f2f8fc;--vscode-peekViewResult-matchHighlightBackground: rgba(234, 92, 0, 0.3);--vscode-peekViewEditor-matchHighlightBackground: rgba(245, 216, 2, 0.87);--vscode-editorMarkerNavigationError-background: #e51400;--vscode-editorMarkerNavigationError-headerBackground: rgba(229, 20, 0, 0.1);--vscode-editorMarkerNavigationWarning-background: #bf8803;--vscode-editorMarkerNavigationWarning-headerBackground: rgba(191, 136, 3, 0.1);--vscode-editorMarkerNavigationInfo-background: #0063d3;--vscode-editorMarkerNavigationInfo-headerBackground: rgba(0, 99, 211, 0.1);--vscode-editorMarkerNavigation-background: #ffffff;--vscode-editor-foldBackground: rgba(47, 116, 255, 0.05);--vscode-editor-foldPlaceholderForeground: #808080;--vscode-editorGutter-foldingControlForeground: #5b6066;--vscode-editorSuggestWidget-background: #f3f3f3;--vscode-editorSuggestWidget-border: #c8c8c8;--vscode-editorSuggestWidget-foreground: #31353a;--vscode-editorSuggestWidget-selectedForeground: #111214;--vscode-editorSuggestWidget-selectedIconForeground: #5b6066;--vscode-editorSuggestWidget-selectedBackground: rgba(86, 99, 119, 0.11);--vscode-editorSuggestWidget-highlightForeground: #0066bf;--vscode-editorSuggestWidget-focusHighlightForeground: #0066bf;--vscode-editorSuggestWidgetStatus-foreground: rgba(49, 53, 58, 0.5);--vscode-inlineEdit-originalBackground: rgba(232, 70, 58, 0.03);--vscode-inlineEdit-modifiedBackground: rgba(64, 176, 139, 0.05);--vscode-inlineEdit-originalChangedLineBackground: rgba(232, 70, 58, 0.13);--vscode-inlineEdit-originalChangedTextBackground: rgba(232, 70, 58, 0.13);--vscode-inlineEdit-modifiedChangedLineBackground: rgba(64, 176, 139, 0.09);--vscode-inlineEdit-modifiedChangedTextBackground: rgba(64, 176, 139, 0.13);--vscode-inlineEdit-gutterIndicator.primaryForeground: #ffffff;--vscode-inlineEdit-gutterIndicator.primaryBorder: #31353a;--vscode-inlineEdit-gutterIndicator.primaryBackground: rgba(49, 53, 58, 0.5);--vscode-inlineEdit-gutterIndicator.secondaryForeground: #ffffff;--vscode-inlineEdit-gutterIndicator.secondaryBorder: #5f6a79;--vscode-inlineEdit-gutterIndicator.secondaryBackground: #5f6a79;--vscode-inlineEdit-gutterIndicator.successfulForeground: #ffffff;--vscode-inlineEdit-gutterIndicator.successfulBorder: #31353a;--vscode-inlineEdit-gutterIndicator.successfulBackground: #31353a;--vscode-inlineEdit-gutterIndicator.background: rgba(95, 95, 95, 0.09);--vscode-inlineEdit-originalBorder: rgba(232, 70, 58, 0.16);--vscode-inlineEdit-modifiedBorder: rgba(26, 70, 55, 0.18);--vscode-inlineEdit-tabWillAcceptModifiedBorder: rgba(26, 70, 55, 0.18);--vscode-inlineEdit-tabWillAcceptOriginalBorder: rgba(232, 70, 58, 0.16);--vscode-editor-linkedEditingBackground: rgba(255, 0, 0, 0.3);--vscode-editor-wordHighlightBackground: rgba(114, 118, 123, 0.24);--vscode-editor-wordHighlightStrongBackground: rgba(14, 99, 156, 0.25);--vscode-editor-wordHighlightTextBackground: rgba(114, 118, 123, 0.24);--vscode-editorOverviewRuler-wordHighlightForeground: rgba(160, 160, 160, 0.8);--vscode-editorOverviewRuler-wordHighlightStrongForeground: rgba(192, 160, 192, 0.8);--vscode-editorOverviewRuler-wordHighlightTextForeground: rgba(160, 160, 160, 0.8);--vscode-editorHoverWidget-highlightForeground: #0066bf;--vscode-editor-placeholder.foreground: rgba(0, 0, 0, 0.47);--vscode-editorGutter-modifiedBackground: #2090d3;--vscode-editorGutter-modifiedSecondaryBackground: #aad8f2;--vscode-editorGutter-addedBackground: #48985d;--vscode-editorGutter-addedSecondaryBackground: #a7d5b3;--vscode-editorGutter-deletedBackground: #e51400;--vscode-editorGutter-deletedSecondaryBackground: #ff3d2b;--vscode-minimapGutter-modifiedBackground: #2090d3;--vscode-minimapGutter-addedBackground: #48985d;--vscode-minimapGutter-deletedBackground: #e51400;--vscode-editorOverviewRuler-modifiedForeground: rgba(32, 144, 211, 0.6);--vscode-editorOverviewRuler-addedForeground: rgba(72, 152, 93, 0.6);--vscode-editorOverviewRuler-deletedForeground: rgba(229, 20, 0, 0.6);--vscode-editorGutter-itemGlyphForeground: #31353a;--vscode-editorGutter-itemBackground: #dee0e5;--vscode-scmGraph-historyItemRefColor: #0063d3;--vscode-scmGraph-historyItemRemoteRefColor: #652d90;--vscode-scmGraph-historyItemBaseRefColor: #ea5c00;--vscode-scmGraph-historyItemHoverDefaultLabelForeground: #31353a;--vscode-scmGraph-historyItemHoverDefaultLabelBackground: #c4c4c4;--vscode-scmGraph-historyItemHoverLabelForeground: #ffffff;--vscode-scmGraph-historyItemHoverAdditionsForeground: #587c0c;--vscode-scmGraph-historyItemHoverDeletionsForeground: #ad0707;--vscode-scmGraph-foreground1: #ffb000;--vscode-scmGraph-foreground2: #dc267f;--vscode-scmGraph-foreground3: #994f00;--vscode-scmGraph-foreground4: #40b0a6;--vscode-scmGraph-foreground5: #b66dff;--vscode-terminal-foreground: #333333;--vscode-terminal-selectionBackground: rgba(47, 116, 255, 0.18);--vscode-terminal-inactiveSelectionBackground: #e5ebf1;--vscode-terminalCommandDecoration-defaultBackground: rgba(0, 0, 0, 0.25);--vscode-terminalCommandDecoration-successBackground: #2090d3;--vscode-terminalCommandDecoration-errorBackground: #e51400;--vscode-terminalOverviewRuler-cursorForeground: rgba(160, 160, 160, 0.8);--vscode-terminal-border: rgba(128, 128, 128, 0.35);--vscode-terminalOverviewRuler-border: rgba(127, 127, 127, 0.3);--vscode-terminal-findMatchBackground: #a8ac94;--vscode-terminal-hoverHighlightBackground: rgba(173, 214, 255, 0.07);--vscode-terminal-findMatchHighlightBackground: rgba(234, 92, 0, 0.33);--vscode-terminalOverviewRuler-findMatchForeground: rgba(209, 134, 22, 0.49);--vscode-terminal-dropBackground: rgba(33, 97, 224, 0.16);--vscode-terminal-tab.activeBorder: #ffffff;--vscode-terminal-initialHintForeground: rgba(0, 0, 0, 0.47);--vscode-welcomePage-tileBackground: #f3f3f3;--vscode-welcomePage-tileHoverBackground: #dbdbdb;--vscode-welcomePage-tileBorder: rgba(0, 0, 0, 0.1);--vscode-welcomePage-progress.background: rgba(86, 99, 119, 0.07);--vscode-welcomePage-progress.foreground: #006ab1;--vscode-walkthrough-stepTitle.foreground: #000000;--vscode-extensionIcon-verifiedForeground: #006ab1;--vscode-agentSessionReadIndicator-foreground: rgba(49, 53, 58, 0.15);--vscode-extensionButton-background: #31353a;--vscode-extensionButton-foreground: #ffffff;--vscode-extensionButton-hoverBackground: #72767b;--vscode-extensionButton-separator: rgba(193, 195, 205, 0.12);--vscode-extensionButton-prominentBackground: #31353a;--vscode-extensionButton-prominentForeground: #ffffff;--vscode-extensionButton-prominentHoverBackground: #72767b;--vscode-debugToolBar-background: #edeff2;--vscode-debugIcon-startForeground: #388a34;--vscode-notebook-cellBorderColor: #e8e8e8;--vscode-notebook-focusedEditorBorder: rgba(0, 0, 0, 0);--vscode-notebookStatusSuccessIcon-foreground: #388a34;--vscode-notebookEditorOverviewRuler-runningCellForeground: #388a34;--vscode-notebookStatusErrorIcon-foreground: #cc4b53;--vscode-notebookStatusRunningIcon-foreground: #31353a;--vscode-notebook-cellToolbarSeparator: rgba(128, 128, 128, 0.35);--vscode-notebook-selectedCellBackground: rgba(200, 221, 241, 0.31);--vscode-notebook-selectedCellBorder: #e8e8e8;--vscode-notebook-focusedCellBorder: rgba(0, 0, 0, 0);--vscode-notebook-inactiveFocusedCellBorder: #e8e8e8;--vscode-notebook-cellStatusBarItemHoverBackground: rgba(0, 0, 0, 0.08);--vscode-notebook-cellInsertionIndicator: rgba(0, 0, 0, 0);--vscode-notebookScrollbarSlider-background: rgba(100, 100, 100, 0.4);--vscode-notebookScrollbarSlider-hoverBackground: rgba(100, 100, 100, 0.7);--vscode-notebookScrollbarSlider-activeBackground: rgba(0, 0, 0, 0.6);--vscode-notebook-symbolHighlightBackground: rgba(253, 255, 0, 0.2);--vscode-notebook-cellEditorBackground: #ffffff;--vscode-notebook-editorBackground: #ffffff;--vscode-terminal-ansiBlack: #000000;--vscode-terminal-ansiRed: #cd3131;--vscode-terminal-ansiGreen: #107c10;--vscode-terminal-ansiYellow: #949800;--vscode-terminal-ansiBlue: #0451a5;--vscode-terminal-ansiMagenta: #bc05bc;--vscode-terminal-ansiCyan: #0598bc;--vscode-terminal-ansiWhite: #555555;--vscode-terminal-ansiBrightBlack: #666666;--vscode-terminal-ansiBrightRed: #cd3131;--vscode-terminal-ansiBrightGreen: #14ce14;--vscode-terminal-ansiBrightYellow: #b5ba00;--vscode-terminal-ansiBrightBlue: #0451a5;--vscode-terminal-ansiBrightMagenta: #bc05bc;--vscode-terminal-ansiBrightCyan: #0598bc;--vscode-terminal-ansiBrightWhite: #a5a5a5;--vscode-simpleFindWidget-sashBorder: #c8c8c8;--vscode-inlineChat-foreground: #31353a;--vscode-inlineChat-background: #f3f3f3;--vscode-inlineChat-border: #c8c8c8;--vscode-inlineChat-shadow: rgba(0, 0, 0, 0.08);--vscode-inlineChatInput-border: #c8c8c8;--vscode-inlineChatInput-focusBorder: rgba(0, 0, 0, 0);--vscode-inlineChatInput-placeholderForeground: #5b6066;--vscode-inlineChatInput-background: rgba(86, 99, 119, 0.07);--vscode-inlineChatDiff-inserted: rgba(64, 176, 139, 0.09);--vscode-editorOverviewRuler-inlineChatInserted: rgba(64, 176, 139, 0.14);--vscode-editorMinimap-inlineChatInserted: rgba(64, 176, 139, 0.14);--vscode-inlineChatDiff-removed: rgba(232, 70, 58, 0.08);--vscode-editorOverviewRuler-inlineChatRemoved: rgba(232, 70, 58, 0.13);--vscode-chat-requestBorder: rgba(0, 0, 0, 0.1);--vscode-chat-requestBackground: rgba(255, 255, 255, 0.62);--vscode-chat-slashCommandBackground: rgba(173, 206, 255, 0.48);--vscode-chat-slashCommandForeground: #26569e;--vscode-chat-avatarBackground: #f2f2f2;--vscode-chat-avatarForeground: #31353a;--vscode-chat-editedFileForeground: #895503;--vscode-chat-requestCodeBorder: rgba(14, 99, 156, 0.25);--vscode-chat-requestBubbleBackground: rgba(47, 116, 255, 0.05);--vscode-chat-requestBubbleHoverBackground: rgba(47, 116, 255, 0.11);--vscode-chat-checkpointSeparator: #a9a9a9;--vscode-chat-linesAddedForeground: #107c10;--vscode-chat-linesRemovedForeground: #bc2f32;--vscode-extensionIcon-starForeground: #df6100;--vscode-extensionIcon-preReleaseForeground: #1d9271;--vscode-extensionIcon-sponsorForeground: #b51e78;--vscode-extensionIcon-privateForeground: rgba(0, 0, 0, 0.38);--vscode-terminalStickyScrollHover-background: #f0f0f0;--vscode-terminalCommandGuide-foreground: rgba(86, 99, 119, 0.11);--vscode-terminalSymbolIcon-flagForeground: #d67e00;--vscode-terminalSymbolIcon-aliasForeground: #b180d7;--vscode-terminalSymbolIcon-optionValueForeground: #007acc;--vscode-terminalSymbolIcon-methodForeground: #b180d7;--vscode-terminalSymbolIcon-argumentForeground: #007acc;--vscode-terminalSymbolIcon-optionForeground: #d67e00;--vscode-terminalSymbolIcon-fileForeground: #31353a;--vscode-terminalSymbolIcon-folderForeground: #31353a;--vscode-terminalSymbolIcon-commitForeground: #31353a;--vscode-terminalSymbolIcon-branchForeground: #31353a;--vscode-terminalSymbolIcon-tagForeground: #31353a;--vscode-terminalSymbolIcon-stashForeground: #31353a;--vscode-terminalSymbolIcon-remoteForeground: #31353a;--vscode-terminalSymbolIcon-pullRequestForeground: #31353a;--vscode-terminalSymbolIcon-pullRequestDoneForeground: #31353a;--vscode-terminalSymbolIcon-symbolicLinkFileForeground: #31353a;--vscode-terminalSymbolIcon-symbolicLinkFolderForeground: #31353a;--vscode-terminalSymbolIcon-symbolText: #31353a;--vscode-ports-iconRunningProcessForeground: #369432;--vscode-icube-inlineChat.regionHighlight: rgba(225, 225, 225, 0.2);--vscode-icube-inlineChatDiff.inserted: rgba(64, 176, 139, 0.09);--vscode-icube-inlineChatDiff.removed: rgba(232, 70, 58, 0.08);--vscode-icube-simpleInlineChat.regionHighlight: rgba(225, 225, 225, 0.2);--vscode-icube-simpleInlineChatDiff.inserted: rgba(64, 176, 139, 0.12);--vscode-icube-simpleInlineChatDiff.removed: rgba(232, 70, 58, 0.12);--vscode-multiDiffEditor-headerBackground: #f8f8f9;--vscode-multiDiffEditor-background: #ffffff;--vscode-multiDiffEditor-border: #cccccc;--vscode-mergeEditor-change.background: rgba(155, 185, 85, 0.2);--vscode-mergeEditor-change.word.background: rgba(156, 204, 44, 0.4);--vscode-mergeEditor-changeBase.background: #ffcccc;--vscode-mergeEditor-changeBase.word.background: #ffa3a3;--vscode-mergeEditor-conflict.unhandledUnfocused.border: #ffa600;--vscode-mergeEditor-conflict.unhandledFocused.border: #ffa600;--vscode-mergeEditor-conflict.handledUnfocused.border: rgba(134, 134, 134, 0.29);--vscode-mergeEditor-conflict.handledFocused.border: rgba(193, 193, 193, 0.8);--vscode-mergeEditor-conflict.handled.minimapOverViewRuler: rgba(173, 172, 168, 0.93);--vscode-mergeEditor-conflict.unhandled.minimapOverViewRuler: #fcba03;--vscode-mergeEditor-conflictingLines.background: rgba(255, 234, 0, 0.28);--vscode-mergeEditor-conflict.input1.background: rgba(64, 200, 174, 0.2);--vscode-mergeEditor-conflict.input2.background: rgba(64, 166, 255, 0.2);--vscode-gitDecoration-addedResourceForeground: #587c0c;--vscode-gitDecoration-modifiedResourceForeground: #f0a50f;--vscode-gitDecoration-deletedResourceForeground: #ad0707;--vscode-gitDecoration-renamedResourceForeground: #00aa62;--vscode-gitDecoration-untrackedResourceForeground: #00aa62;--vscode-gitDecoration-ignoredResourceForeground: #8e8e90;--vscode-gitDecoration-stageModifiedResourceForeground: #f0a50f;--vscode-gitDecoration-stageDeletedResourceForeground: #ad0707;--vscode-gitDecoration-conflictingResourceForeground: #ad0707;--vscode-gitDecoration-submoduleResourceForeground: #1258a7;--vscode-git-blame.editorDecorationForeground: #969696;}</style><style id="solo-lite-theme-variables">:root {
+  --workspace-gap-width: 4px;
+  --header-height: 48px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  --radius-2: 2px;
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-32: 32px;
+  --radius-radius-2xs-4: 4px;
+  --radius-radius-xs-6: 6px;
+  --radius-radius-sm-8: 8px;
+  --radius-radius-md-12: 12px;
+  --radius-radius-lg-16: 16px;
+  --radius-radius-xl-20: 20px;
+  --radius-radius-2xl-24: 24px;
+  --radius-radius-3xl-32: 32px;
+  --radius-radius-full: 9999px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+
+  --spacer-0: 0px;
+  --spacer-2: 2px;
+  --spacer-4: 4px;
+  --spacer-6: 6px;
+  --spacer-8: 8px;
+  --spacer-12: 12px;
+  --spacer-16: 16px;
+  --spacer-20: 20px;
+  --spacer-24: 24px;
+  --spacer-32: 32px;
+  --spacer-40: 40px;
+  --spacer-48: 48px;
+  --spacer-64: 64px;
+
+  --font-size-xs: 10px;
+  --font-size-sm: 11px;
+  --font-size-md: 12px;
+  --font-size-regular: 13px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 24px;
+
+  --font-family-default:
+    'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'PingFang SC', 'Microsoft YaHei',
+    'Hiragino Sans GB', Roboto, sans-serif;
+  --font-family-heading:
+    'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'PingFang SC', 'Microsoft YaHei',
+    'Hiragino Sans GB', Roboto, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, monospace;
+  --font-weight-default: 400;
+  --font-weight-code: 450;
+  --font-weight-medium: 500;
+  --font-weight-strong: 600;
+
+  --chat-body-md: 13px/20px var(--font-family-default);
+  --chat-body-md-strong: 500 13px/20px var(--font-family-default);
+  --chat-body-base: 14px/22px var(--font-family-default);
+  --chat-body-base-strong: 500 14px/22px var(--font-family-default);
+  --chat-spacer-2xs: 2px;
+  --chat-spacer-xs: 4px;
+  --chat-spacer-sm: 8px;
+  --chat-spacer-md: 12px;
+  --chat-spacer-lg: 16px;
+  --chat-spacer-xl: 20px;
+  --chat-radius-xs: 4px;
+  --chat-radius-sm: 8px;
+  --chat-radius-md: 12px;
+  --chat-radius-lg: 16px;
+  --chat-list-item-height: 28px;
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* ===== Z-Index Layer System ===== */
+  --z-base: 0;
+  --z-above: 1;
+  --z-above-2: 2;
+
+  --z-sticky: 10;
+  --z-local-overlay: 100;
+
+  --z-dropdown: 1000;
+  --z-popover: 1010;
+
+  --z-modal-backdrop: 1090;
+  --z-modal: 1100;
+  --z-drawer: 1120;
+  --z-confirm: 1150;
+
+  --z-notification: 1200;
+  --z-tooltip: 1300;
+
+  --z-fullscreen: 1400;
+
+  /* 仅限基础设施 / 调试工具，业务组件禁止直接使用 */
+  --z-max: 9999;
+  /* GTM 是全窗口阻塞式系统弹窗，必须覆盖 IDE / Solo Lite 内所有业务浮层 */
+  --z-gtm-modal: 2147483647;
+
+  /* ===== Permission Mode Select ===== */
+  --permission-trigger-height: 32px;
+  --permission-trigger-radius: 8px;
+  --permission-trigger-padding: 2px 8px;
+  --permission-trigger-font-size: 14px;
+  --permission-trigger-bg: transparent;
+  --permission-trigger-gap: 4px;
+  --permission-trigger-icon-size: 16px;
+  --permission-settings-card-radius: 8px;
+  --permission-settings-icon-radius: 6px;
+  --permission-settings-action-radius: 8px;
+  --permission-settings-mode-desc-font-size: 11px;
+  --permission-settings-mode-desc-line-height: 16px;
+  --permission-settings-card-title-font-weight: var(--font-weight-default);
+}
+
+[data-theme='light'], .vs.solo-lite {
+  --shadow-elevation-50: 0 1px 2px -1px rgba(24, 24, 24, 0.08);
+  --shadow-elevation-100: 0 3px 9px 0 rgba(24, 24, 24, 0.06);
+  --shadow-elevation-100-float: 0 -3px 9px 0 rgba(24, 24, 24, 0.06);
+  --shadow-elevation-200: 0 6px 24px -1px rgba(24, 24, 24, 0.06);
+  --shadow-elevation-200-reverse: 0 -6px 24px -1px rgba(24, 24, 24, 0.06);
+  --shadow-elevation-300: 0 2px 8px -1px rgba(24, 24, 24, 0.02), 0 10px 24px -1px rgba(24, 24, 24, 0.06);
+
+  --shadow-elevation-100-tooltip: var(--shadow-elevation-100);
+  --shadow-elevation-200-menu-panel: var(--shadow-elevation-200);
+  --shadow-elevation-300-modal-panel: var(--shadow-elevation-300);
+
+  /* 输入框阴影颜色 */
+  --shadow-chat-input: 0 3px 8px 0 rgba(24, 24, 24, 0.04), 0 6px 24px -1px rgba(24, 24, 24, 0.06);
+  --shadow-chat-input-focused: 0 4px 12px 0 rgba(24, 24, 24, 0.04), 0 6px 32px -1px rgba(24, 24, 24, 0.06);
+
+  --bg-bg-base-default: #ffffff;
+  --bg-bg-base-secondary: #f5f5f5;
+  --bg-bg-base-tertiary: #e5e5e5;
+  --bg-bg-menu: #ffffff;
+  --bg-bg-tooltip: #fafafa;
+  --bg-bg-input: #ffffff;
+  --bg-bg-overlay-l1: rgba(115, 115, 115, 0.08);
+  --bg-bg-overlay-l2: rgba(115, 115, 115, 0.12);
+  --bg-bg-overlay-l3: rgba(115, 115, 115, 0.16);
+  --bg-bg-overlay-l4: rgba(115, 115, 115, 0.20);
+  --bg-bg-white: #ffffff;
+  --bg-bg-brand: #4b3fe3;
+  --bg-bg-brand-hover: #6a6fff;
+  --bg-bg-brand-active: #3f31c6;
+  --bg-bg-brand-disabled: rgba(75, 63, 227, 0.22);
+  --bg-bg-brand-popup: rgba(170, 183, 255, 0.36);
+  /* brand-sub 兼容（品牌色已统一，sub 映射为主品牌色） */
+  --bg-bg-brand-sub: var(--bg-bg-brand);
+  --bg-bg-brand-hover-sub: var(--bg-bg-brand-hover);
+  --bg-bg-brand-disabled-sub: var(--bg-bg-brand-disabled);
+  --bg-bg-brand-popup-sub: var(--bg-bg-brand-popup);
+  --bg-bg-invert: #262626;
+  --bg-bg-invert-hover: #404040;
+  --bg-bg-invert-active: #171717;
+  --bg-bg-invert-disabled: rgba(115, 115, 115, 0.20);
+  --bg-bg-marketplace-banner-overlay-start: rgba(82, 130, 193, 0);
+  --bg-bg-marketplace-banner-overlay-end: rgba(82, 130, 193, 0.8);
+  --bg-bg-marketplace-banner-control: rgba(0, 0, 0, 0.25);
+  --bg-bg-card: #fafafa;
+  --bg-bg-card-hover: #ffffff;
+  --bg-bg-marketplace-banner-plugin-tag: #e5f3ff;
+  --bg-bg-marketplace-banner-preview-mask-start: rgba(255, 255, 255, 0.9);
+  --bg-bg-marketplace-banner-preview-mask-end: rgba(255, 255, 255, 0.54);
+  --shadow-marketplace-banner-preview-card: 0px 6px 12px -1px rgba(0, 0, 0, 0.18), 0px 10px 24px -1px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-card-small: 0px 2.8023247718811035px 5.604649543762207px -0.4670540988445282px rgba(0, 0, 0, 0.18), 0px 4.670541763305664px 11.209299087524414px -0.4670540988445282px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-card-large: 0px 4.55377721786499px 9.10755443572998px -0.758962869644165px rgba(0, 0, 0, 0.18), 0px 7.589629650115967px 18.21510887145996px -0.758962869644165px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-input: 0px 0px 24px -1px rgba(24, 24, 24, 0.06), 0px -12px 8px -1px rgba(24, 24, 24, 0.02);
+  --chat-bg-card: var(--bg-bg-card);
+  --chat-bg-card-hover: var(--bg-bg-base-default);
+  --special-bgtabsoverlay: rgba(255, 255, 255, 0.12);
+  --special-tabsoverlay: rgba(193, 195, 205, 0.12);
+  --text-text-default: #171717;
+  --text-text-default-hover: #262626;
+  --text-text-default-active: #262626;
+  --text-text-secondary: #404040;
+  --text-text-secondary-hover: #171717;
+  --text-text-secondary-active: #171717;
+  --text-text-tertiary: #737373;
+  --text-text-disabled: #a1a1a1;
+  --text-text-brand: #4b3fe3;
+  --text-text-brand-hover: #6a6fff;
+  --text-text-brand-sub: var(--text-text-brand);
+  --text-text-brand-hover-sub: var(--text-text-brand-hover);
+  --text-text-onbrand: #171717;
+  --text-text-onaccent: #ffffff;
+  --text-text-marketplace-banner-on-light: #0a0a0a;
+  --text-text-marketplace-banner-plugin-tag: #054c8f;
+  --icon-icon-default: #262626;
+  --icon-icon-default-hover: #171717;
+  --icon-icon-default-active: #171717;
+  --icon-icon-secondary: #404040;
+  --icon-icon-secondary-hover: #262626;
+  --icon-icon-secondary-active: #262626;
+  --icon-icon-tertiary: #737373;
+  --icon-icon-disabled: #a1a1a1;
+  --icon-icon-brand: #4b3fe3;
+  --icon-icon-brand-hover: #6a6fff;
+  --icon-icon-brand-sub: var(--icon-icon-brand);
+  --icon-icon-brand-hover-sub: var(--icon-icon-brand-hover);
+  --icon-icon-onbrand: #0a0a0a;
+  --icon-icon-onaccent: #ffffff;
+  --icon-icon-white: #ffffff;
+  --border-border-neutral-l1: rgba(115, 115, 115, 0.12);
+  --border-border-neutral-l2: rgba(115, 115, 115, 0.18);
+  --border-border-neutral-l3: rgba(115, 115, 115, 0.36);
+  --border-border-brand: #4b3fe3;
+  --border-border-brand-sub: var(--border-border-brand);
+  --border-border-contrast: #000000;
+  --status-primary-default: #2f74ff;
+  --status-primary-hover: #4c88ff;
+  --status-primary-active: #1759dd;
+  --status-primary-surface-l1: rgba(47, 116, 255, 0.12);
+  --status-primary-surface-l2: rgba(47, 116, 255, 0.18);
+  --status-primary-surface-l3: rgba(47, 116, 255, 0.36);
+  --status-success-default: #15a877;
+  --status-success-hover: #2fb287;
+  --status-success-active: #1e8b56;
+  --status-success-surface-l1: rgba(64, 176, 139, 0.12);
+  --status-success-surface-l2: rgba(64, 176, 139, 0.18);
+  --status-success-surface-l3: rgba(64, 176, 139, 0.36);
+  --status-alert-default: #fea900;
+  --status-alert-hover: #ffb700;
+  --status-alert-active: #e59100;
+  --status-alert-surface-l1: rgba(254, 169, 0, 0.14);
+  --status-alert-surface-l2: rgba(254, 169, 0, 0.20);
+  --status-alert-surface-l3: rgba(254, 169, 0, 0.36);
+  --status-warning-default: #e27900;
+  --status-warning-hover: #f39a35;
+  --status-warning-active: #c46f11;
+  --status-warning-surface-l1: rgba(226, 121, 0, 0.12);
+  --status-warning-surface-l2: rgba(226, 121, 0, 0.16);
+  --status-warning-surface-l3: rgba(226, 121, 0, 0.36);
+  --status-error-default: #e8463a;
+  --status-error-hover: #ea574c;
+  --status-error-active: #c9382f;
+  --status-error-surface-l1: rgba(232, 70, 58, 0.12);
+  --status-error-surface-l2: rgba(232, 70, 58, 0.16);
+  --status-error-surface-l3: rgba(232, 70, 58, 0.36);
+  --accent-accent-teal: #00b983;
+  --accent-accent-coral: #ff6b45;
+  --accent-accent-amber: #f2a90c;
+  --accent-accent-lime: #5fc000;
+  --accent-accent-cyan: #00b6f5;
+  --accent-accent-blue: #3f85ff;
+  --accent-accent-magenta: #f53cff;
+  --accent-accent-violet: #9570ff;
+  --accent-accent-slate: #747e94;
+  --code-code-text: #17181a;
+  --code-code-doc: #8393a3;
+  --code-code-link: #2f74ff;
+  --code-code-number: #e54595;
+  --code-code-action: #5f36b2;
+  --code-code-instruction: #b15ef2;
+  --code-code-function: #ff5d4d;
+  --code-code-constant: #175ce6;
+  --code-code-parameter: #4da621;
+  --code-code-attribute: #c99100;
+  --code-code-tag: #e24864;
+  --code-code-terminal: #17181a;
+  --code-code-contrast: #17181a;
+  --code-code-editor: #17181a;
+  --special-white: #ffffff;
+  --special-black: #000000;
+  --viz-viz-series-amber: #edaa45;
+  --viz-viz-series-coral: #f87454;
+  --viz-viz-series-indigo: #b6a3ff;
+  --viz-viz-series-lime: #a6ea39;
+  --viz-viz-series-magenta: #fb9dd7;
+  --viz-viz-series-mint: #1dc981;
+  --viz-viz-series-sky: #22a5f7;
+  --viz-viz-series-slate: #859ead;
+  --viz-viz-series-teal: #59e8e8;
+  --viz-viz-series-violet: #b655fc;
+  --viz-viz-ui-bg-chart: #ffffff;
+  --viz-viz-ui-bg-tooltip: #fafafa;
+  --viz-viz-ui-chart-axis: rgba(115, 115, 115, 0.18);
+  --viz-viz-ui-chart-subtitle: #404040;
+  --viz-viz-ui-chart-tick: #404040;
+  --viz-viz-ui-chart-title: #171717;
+  --viz-viz-ui-legend-label: #404040;
+  --viz-viz-ui-legend-value: #171717;
+  --brand-blue-100: #e5f3ff;
+  --brand-blue-200: #cce6ff;
+  --brand-blue-300: #b2daff;
+  --brand-blue-400: #99ceff;
+  --brand-blue-500: #80c1ff;
+  --brand-blue-600: #64b4ff;
+  --brand-blue-700: #3792e6;
+  --brand-blue-800: #1071cb;
+  --brand-blue-900: #054c8f;
+  --brand-blue-1000: #00284d;
+  --brand-blue-grey-100: #f1eff4;
+  --brand-blue-grey-200: #e0e1e6;
+  --brand-blue-grey-300: #cfd3d8;
+  --brand-blue-grey-400: #bfc5ca;
+  --brand-blue-grey-500: #b0b5ba;
+  --brand-blue-grey-600: #a0a6ab;
+  --brand-blue-grey-700: #80898e;
+  --brand-blue-grey-800: #5e696e;
+  --brand-blue-grey-900: #404a4f;
+  --brand-blue-grey-1000: #21262b;
+  --brand-green-grey-100: #f1f4f4;
+  --brand-green-grey-200: #e0e6e6;
+  --brand-green-grey-300: #cfd8d8;
+  --brand-green-grey-400: #bfcaca;
+  --brand-green-grey-500: #b0baba;
+  --brand-green-grey-600: #a0abab;
+  --brand-green-grey-700: #808e8e;
+  --brand-green-grey-800: #5e6e6e;
+  --brand-green-grey-900: #404f4f;
+  --brand-green-grey-1000: #212b2b;
+  --brand-purple-100: #e8e5ff;
+  --brand-purple-200: #d2ccff;
+  --brand-purple-300: #bbb2ff;
+  --brand-purple-400: #a599ff;
+  --brand-purple-500: #8e80ff;
+  --brand-purple-600: #7864ff;
+  --brand-purple-700: #4c37e6;
+  --brand-purple-800: #2610cb;
+  --brand-purple-900: #15058f;
+  --brand-purple-1000: #09004d;
+  --brand-red-100: #ffe5e5;
+  --brand-red-200: #ffcccc;
+  --brand-red-300: #ffb2b2;
+  --brand-red-400: #ff9999;
+  --brand-red-500: #ff8080;
+  --brand-red-600: #ff6464;
+  --brand-red-700: #e63737;
+  --brand-red-800: #cb1010;
+  --brand-red-900: #8f0505;
+  --brand-red-1000: #4d0000;
+  --brand-yellow-100: #fff6e5;
+  --brand-yellow-200: #ffeccc;
+  --brand-yellow-300: #ffe3b2;
+  --brand-yellow-400: #ffda99;
+  --brand-yellow-500: #ffd080;
+  --brand-yellow-600: #ffc864;
+  --brand-yellow-700: #e6a637;
+  --brand-yellow-800: #cb8710;
+  --brand-yellow-900: #8f5c05;
+  --brand-yellow-1000: #4d3000;
+  --brand-blue-grey-100: #f1eff4;
+  --brand-blue-grey-200: #e0e1e6;
+  --brand-blue-grey-300: #cfd3d8;
+  --brand-blue-grey-400: #bfc5ca;
+  --brand-blue-grey-500: #b0b5ba;
+  --brand-blue-grey-600: #a0a6ab;
+  --brand-blue-grey-700: #80898e;
+  --brand-blue-grey-800: #5e696e;
+  --brand-blue-grey-900: #404a4f;
+  --brand-blue-grey-1000: #21262b;
+  --brand-green-grey-100: #f1f4f4;
+  --brand-green-grey-200: #e0e6e6;
+  --brand-green-grey-300: #cfd8d8;
+  --brand-green-grey-400: #bfcaca;
+  --brand-green-grey-500: #b0baba;
+  --brand-green-grey-600: #a0abab;
+  --brand-green-grey-700: #808e8e;
+  --brand-green-grey-800: #5e6e6e;
+  --brand-green-grey-900: #404f4f;
+  --brand-green-grey-1000: #212b2b;
+  --brand-neutral-grey-100: #f2f2f2;
+  --brand-neutral-grey-200: #e3e3e3;
+  --brand-neutral-grey-300: #d6d6d6;
+  --brand-neutral-grey-400: #c7c7c7;
+  --brand-neutral-grey-500: #bababa;
+  --brand-neutral-grey-600: #ababab;
+  --brand-neutral-grey-700: #8a8a8a;
+  --brand-neutral-grey-800: #686868;
+  --brand-neutral-grey-900: #474747;
+  --brand-neutral-grey-1000: #262626;
+  --brand-brand-50: #f2f7ff;
+  --brand-brand-100: #e5eaff;
+  --brand-brand-200: #cfd8ff;
+  --brand-brand-300: #aab7ff;
+  --brand-brand-400: #8894ff;
+  --brand-brand-500: #6a6fff;
+  --brand-brand-600: #4b3fe3;
+  --brand-brand-700: #3f31c6;
+  --brand-brand-800: #2c2290;
+  --brand-brand-900: #1a1759;
+  --brand-brand-950: #010109;
+  --brand-brand-grey-50: #fafafa;
+  --brand-brand-grey-100: #f5f5f5;
+  --brand-brand-grey-200: #e5e5e5;
+  --brand-brand-grey-300: #d4d4d4;
+  --brand-brand-grey-400: #a1a1a1;
+  --brand-brand-grey-500: #737373;
+  --brand-brand-grey-600: #525252;
+  --brand-brand-grey-700: #404040;
+  --brand-brand-grey-800: #262626;
+  --brand-brand-grey-900: #171717;
+  --brand-brand-grey-950: #0a0a0a;
+  --brand-brand-grey-50: #fafafa;
+  --brand-brand-grey-100: #f5f5f5;
+  --brand-brand-grey-200: #e5e5e5;
+  --brand-brand-grey-300: #d4d4d4;
+  --brand-brand-grey-400: #a1a1a1;
+  --brand-brand-grey-500: #737373;
+  --brand-brand-grey-600: #525252;
+  --brand-brand-grey-700: #404040;
+  --brand-brand-grey-800: #262626;
+  --brand-brand-grey-900: #171717;
+  --brand-brand-grey-950: #0a0a0a;
+
+  --body-body-xs: 10px/1.5 var(--font-family-default);
+  --body-body-sm: 11px/1.5 var(--font-family-default);
+  --body-body-sm-strong: 600 11px/1.5 var(--font-family-default);
+  --body-body-md: 12px/1.5 var(--font-family-default);
+  --body-body-md-strong: 600 12px/1.5 var(--font-family-default);
+  --body-body-base: 14px/1.5 var(--font-family-default);
+  --body-body-base-strong: 600 14px/1.5 var(--font-family-default);
+  --heading-heading-3xs: 600 10px/1.4 var(--font-family-heading);
+  --heading-heading-2xs: 600 11px/1.4 var(--font-family-heading);
+  --heading-heading-xs: 600 12px/1.4 var(--font-family-heading);
+  --heading-heading-sm: 600 13px/1.4 var(--font-family-heading);
+  --heading-heading-md: 600 14px/1.4 var(--font-family-heading);
+  --heading-heading-lg: 600 16px/1.4 var(--font-family-heading);
+  --heading-heading-xl: 600 20px/1.4 var(--font-family-heading);
+  --heading-heading-2xl: 600 24px/1.4 var(--font-family-heading);
+  --heading-heading-3xl: 600 32px/1.4 var(--font-family-heading);
+
+  --bg-bg-overlay-l0: rgba(86, 99, 119, 0.03);
+  --bg-primary-item: rgba(86, 99, 119, 0.15);
+  --bg-primary-item-hover: rgba(86, 99, 119, 0.22);
+  --border-primary-item: rgba(77, 107, 153, 0.09);
+  --border-primary-item-hover: rgba(77, 107, 153, 0.15);
+  --bg-bg-menu-old: #f8f9fa;
+  /* 首页输入框边框颜色（纯色，用于内凹圆弧等需要精确边框的场景） */
+  --homepage-input-border-color: #dfe3eb;
+
+  --welcome-logo-bg: var(--bg-bg-brand, #0fdc78);
+  --welcome-logo-color: #000000;
+
+  --user-message-bg-solid: #E3F8ED;
+  --user-message-bg-solid-transparent: rgba(227, 248, 237, 0);
+  --user-message-bg-solid-sub: #E9E6FF;
+  --user-message-bg-solid-sub-transparent: rgba(233, 230, 255, 0);
+  --sheet-text-color: #000000;
+  --slash-mention-bg: rgba(63, 133, 255, 0.15);
+  --builtin-slash-mention-bg: rgba(149, 112, 255, 0.15);
+
+  --gradient-golden: linear-gradient(180deg, #c0a115 0%, #dfbd27 100%);
+  --special-bggoldoverlay: rgba(210, 181, 19, 0.12);
+  --query-tag-bg-grey: var(--bg-bg-overlay-l2);
+  --query-tag-text-grey: var(--text-text-default);
+  --query-tag-height: 20px;
+  --query-tag-padding: 0px 4px;
+  --query-tag-gap: 2px;
+  --query-tag-radius: 0px;
+  --query-tag-icon-slot-size: 20px;
+  --query-tag-icon-size: 16px;
+  --query-tag-font-size: 14px;
+  --query-tag-font-weight: 500;
+  --query-tag-letter-spacing: -0.02em;
+  --query-tag-bg-neutral: transparent;
+  --query-tag-text-neutral: var(--text-text-secondary);
+  --query-tag-bg-brand: transparent;
+  --query-tag-text-brand: var(--status-primary-default);
+  --query-tag-text-command: var(--text-text-brand);
+  --query-tag-text-design: var(--brand-brand-800);
+  --query-tag-text-lark-sheet: #26c914;
+  --query-tag-text-lark-bitable: var(--accent-accent-violet);
+  --query-tag-icon-pdf: #cb1010;
+  --query-tag-icon-zip: var(--icon-icon-default);
+  --query-tag-icon-json: #cb8710;
+  --query-tag-icon-html: #c63b18;
+  --query-tag-icon-video: #3f85ff;
+  --query-tag-bg-blue: rgba(128, 193, 255, 0.18);
+
+  --bg-bg-brand-old: #0fdc78;
+  --gradient-brand: linear-gradient(90deg, #0ac27b 0%, #0ecd70 36%, #06c179 72%, #63c5b1 100%);
+  --text-text-preformat-foreground: #a31515;
+}
+
+[data-theme='dark'], .vs-dark.solo-lite {
+  --shadow-elevation-50: 0 1px 2px -1px rgba(0, 0, 0, 0.45);
+  --shadow-elevation-100: 0 3px 9px 0 rgba(0, 0, 0, 0.25);
+  --shadow-elevation-100-float: 0 -3px 9px 0 rgba(0, 0, 0, 0.25);
+  --shadow-elevation-200: 0 6px 24px -1px rgba(0, 0, 0, 0.25);
+  --shadow-elevation-200-reverse: 0 -6px 24px -1px rgba(0, 0, 0, 0.25);
+  --shadow-elevation-300: 0 2px 8px -1px rgba(0, 0, 0, 0.18), 0 10px 24px -1px rgba(0, 0, 0, 0.30);
+  --shadow-elevation-100-tooltip: var(--shadow-elevation-100);
+  --shadow-elevation-200-menu-panel: var(--shadow-elevation-200);
+  --shadow-elevation-300-modal-panel: var(--shadow-elevation-300);
+
+  /* 输入框阴影颜色 */
+  --shadow-chat-input: 0 3px 8px 0 rgba(24, 24, 24, 0.08), 0 6px 24px -1px rgba(24, 24, 24, 0.12);
+  --shadow-chat-input-focused: 0 4px 12px 0 rgba(24, 24, 24, 0.08), 0 6px 32px -1px rgba(24, 24, 24, 0.12);
+
+  --bg-bg-base-default: #171717;
+  --bg-bg-base-secondary: #262626;
+  --bg-bg-base-tertiary: #404040;
+  --bg-bg-menu: #171717;
+  --bg-bg-tooltip: #171717;
+  --bg-bg-input: #171717;
+  --bg-bg-overlay-l1: rgba(212, 212, 212, 0.04);
+  --bg-bg-overlay-l2: rgba(212, 212, 212, 0.06);
+  --bg-bg-overlay-l3: rgba(212, 212, 212, 0.08);
+  --bg-bg-overlay-l4: rgba(212, 212, 212, 0.12);
+  --bg-bg-white: #ffffff;
+  --bg-bg-brand: #4b3fe3;
+  --bg-bg-brand-hover: #6a6fff;
+  --bg-bg-brand-active: #3f31c6;
+  --bg-bg-brand-disabled: rgba(75, 63, 227, 0.35);
+  --bg-bg-brand-popup: rgba(106, 111, 255, 0.15);
+  --bg-bg-brand-sub: var(--bg-bg-brand);
+  --bg-bg-brand-hover-sub: var(--bg-bg-brand-hover);
+  --bg-bg-brand-disabled-sub: var(--bg-bg-brand-disabled);
+  --bg-bg-brand-popup-sub: var(--bg-bg-brand-popup);
+  --bg-bg-invert: #e5e5e5;
+  --bg-bg-invert-hover: #f5f5f5;
+  --bg-bg-invert-active: #e5e5e5;
+  --bg-bg-invert-disabled: rgba(212, 212, 212, 0.06);
+  --bg-bg-marketplace-banner-overlay-start: rgba(82, 130, 193, 0);
+  --bg-bg-marketplace-banner-overlay-end: rgba(82, 130, 193, 0.8);
+  --bg-bg-marketplace-banner-control: rgba(0, 0, 0, 0.25);
+  --bg-bg-card: #202020;
+  --bg-bg-card-hover: #171717;
+  --bg-bg-marketplace-banner-plugin-tag: #e5f3ff;
+  --bg-bg-marketplace-banner-preview-mask-start: rgba(255, 255, 255, 0.9);
+  --bg-bg-marketplace-banner-preview-mask-end: rgba(255, 255, 255, 0.54);
+  --shadow-marketplace-banner-preview-card: 0px 6px 12px -1px rgba(0, 0, 0, 0.18), 0px 10px 24px -1px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-card-small: 0px 2.8023247718811035px 5.604649543762207px -0.4670540988445282px rgba(0, 0, 0, 0.18), 0px 4.670541763305664px 11.209299087524414px -0.4670540988445282px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-card-large: 0px 4.55377721786499px 9.10755443572998px -0.758962869644165px rgba(0, 0, 0, 0.18), 0px 7.589629650115967px 18.21510887145996px -0.758962869644165px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-input: 0px 0px 24px -1px rgba(24, 24, 24, 0.06), 0px -12px 8px -1px rgba(24, 24, 24, 0.02);
+  --chat-bg-card: #202020;
+  --chat-bg-card-hover: var(--bg-bg-base-default);
+  --special-bgtabsoverlay: rgba(0, 0, 0, 0.20);
+  --special-tabsoverlay: rgba(13, 14, 15, 0.18);
+  --text-text-default: #e5e5e5;
+  --text-text-default-hover: #fafafa;
+  --text-text-default-active: #fafafa;
+  --text-text-secondary: #a1a1a1;
+  --text-text-secondary-hover: #e5e5e5;
+  --text-text-secondary-active: #e5e5e5;
+  --text-text-tertiary: #737373;
+  --text-text-disabled: #525252;
+  --text-text-brand: #6a6fff;
+  --text-text-brand-hover: #4b3fe3;
+  --text-text-brand-sub: var(--text-text-brand);
+  --text-text-brand-hover-sub: var(--text-text-brand-hover);
+  --text-text-onbrand: #171717;
+  --text-text-onaccent: #171717;
+  --text-text-marketplace-banner-on-light: #0a0a0a;
+  --text-text-marketplace-banner-plugin-tag: #054c8f;
+  --icon-icon-default: #e5e5e5;
+  --icon-icon-default-hover: #fafafa;
+  --icon-icon-default-active: #fafafa;
+  --icon-icon-secondary: #a1a1a1;
+  --icon-icon-secondary-hover: #e5e5e5;
+  --icon-icon-secondary-active: #e5e5e5;
+  --icon-icon-tertiary: #737373;
+  --icon-icon-disabled: #525252;
+  --icon-icon-brand: #6a6fff;
+  --icon-icon-brand-hover: #4b3fe3;
+  --icon-icon-brand-sub: var(--icon-icon-brand);
+  --icon-icon-brand-hover-sub: var(--icon-icon-brand-hover);
+  --icon-icon-onbrand: #0a0a0a;
+  --icon-icon-onaccent: #0A0A0A;
+  --icon-icon-white: #ffffff;
+  --border-border-neutral-l1: rgba(229, 229, 229, 0.10);
+  --border-border-neutral-l2: rgba(229, 229, 229, 0.16);
+  --border-border-neutral-l3: rgba(229, 229, 229, 0.20);
+  --border-border-brand: #6a6fff;
+  --border-border-brand-sub: var(--border-border-brand);
+  --border-border-contrast: #ffffff;
+  --status-primary-default: #387bff;
+  --status-primary-hover: #4c88ff;
+  --status-primary-active: #1759dd;
+  --status-primary-surface-l1: rgba(53, 121, 255, 0.18);
+  --status-primary-surface-l2: rgba(53, 121, 255, 0.28);
+  --status-primary-surface-l3: rgba(53, 121, 255, 0.36);
+  --status-success-default: #33c192;
+  --status-success-hover: #5ed4ad;
+  --status-success-active: #27b082;
+  --status-success-surface-l1: rgba(0, 165, 110, 0.18);
+  --status-success-surface-l2: rgba(0, 165, 110, 0.28);
+  --status-success-surface-l3: rgba(0, 165, 110, 0.36);
+  --status-alert-default: #d29d00;
+  --status-alert-hover: #dfb949;
+  --status-alert-active: #ab8820;
+  --status-alert-surface-l1: rgba(210, 157, 0, 0.16);
+  --status-alert-surface-l2: rgba(210, 157, 0, 0.28);
+  --status-alert-surface-l3: rgba(210, 157, 0, 0.36);
+  --status-warning-default: #d27e24;
+  --status-warning-hover: #d78b28;
+  --status-warning-active: #b46510;
+  --status-warning-surface-l1: rgba(210, 126, 36, 0.16);
+  --status-warning-surface-l2: rgba(210, 126, 36, 0.28);
+  --status-warning-surface-l3: rgba(210, 126, 36, 0.36);
+  --status-error-default: #f65a5a;
+  --status-error-hover: #f86262;
+  --status-error-active: #b33636;
+  --status-error-surface-l1: rgba(246, 70, 70, 0.18);
+  --status-error-surface-l2: rgba(246, 70, 70, 0.28);
+  --status-error-surface-l3: rgba(246, 70, 70, 0.36);
+  --accent-accent-teal: #2dd288;
+  --accent-accent-coral: #ff9392;
+  --accent-accent-amber: #dcb364;
+  --accent-accent-lime: #8acb3a;
+  --accent-accent-cyan: #04cbe5;
+  --accent-accent-blue: #7bb8ff;
+  --accent-accent-magenta: #ec93ff;
+  --accent-accent-violet: #bfa5ff;
+  --accent-accent-slate: #afb9cf;
+  --code-code-text: #e0e3ee;
+  --code-code-doc: #7f838c;
+  --code-code-link: #3c7eff;
+  --code-code-number: #f48cca;
+  --code-code-action: #b38cff;
+  --code-code-instruction: #f0d8ff;
+  --code-code-function: #f29d79;
+  --code-code-constant: #80bbff;
+  --code-code-parameter: #82d99f;
+  --code-code-attribute: #ded47e;
+  --code-code-tag: #f2858c;
+  --code-code-terminal: #e0e3ee;
+  --code-code-contrast: #e0e3ee;
+  --code-code-editor: #e0e3ee;
+  --special-white: #ffffff;
+  --special-black: #000000;
+  --viz-viz-series-amber: #edaa45;
+  --viz-viz-series-coral: #f87454;
+  --viz-viz-series-indigo: #b6a3ff;
+  --viz-viz-series-lime: #a6ea39;
+  --viz-viz-series-magenta: #fb9dd7;
+  --viz-viz-series-mint: #1dc981;
+  --viz-viz-series-sky: #22a5f7;
+  --viz-viz-series-slate: #859ead;
+  --viz-viz-series-teal: #78f2f2;
+  --viz-viz-series-violet: #b655fc;
+  --viz-viz-ui-bg-chart: #171717;
+  --viz-viz-ui-bg-tooltip: #0a0a0a;
+  --viz-viz-ui-chart-axis: rgba(229, 229, 229, 0.16);
+  --viz-viz-ui-chart-subtitle: #737373;
+  --viz-viz-ui-chart-tick: #737373;
+  --viz-viz-ui-chart-title: #e5e5e5;
+  --viz-viz-ui-legend-label: #737373;
+  --viz-viz-ui-legend-value: #e5e5e5;
+  --brand-blue-100: #e5f3ff;
+  --brand-blue-200: #cce6ff;
+  --brand-blue-300: #b2daff;
+  --brand-blue-400: #99ceff;
+  --brand-blue-500: #80c1ff;
+  --brand-blue-600: #64b4ff;
+  --brand-blue-700: #3792e6;
+  --brand-blue-800: #1071cb;
+  --brand-blue-900: #054c8f;
+  --brand-blue-1000: #00284d;
+  --brand-blue-grey-100: #f1eff4;
+  --brand-blue-grey-200: #e0e1e6;
+  --brand-blue-grey-300: #cfd3d8;
+  --brand-blue-grey-400: #bfc5ca;
+  --brand-blue-grey-500: #b0b5ba;
+  --brand-blue-grey-600: #a0a6ab;
+  --brand-blue-grey-700: #80898e;
+  --brand-blue-grey-800: #5e696e;
+  --brand-blue-grey-900: #404a4f;
+  --brand-blue-grey-1000: #21262b;
+  --brand-green-grey-100: #f1f4f4;
+  --brand-green-grey-200: #e0e6e6;
+  --brand-green-grey-300: #cfd8d8;
+  --brand-green-grey-400: #bfcaca;
+  --brand-green-grey-500: #b0baba;
+  --brand-green-grey-600: #a0abab;
+  --brand-green-grey-700: #808e8e;
+  --brand-green-grey-800: #5e6e6e;
+  --brand-green-grey-900: #404f4f;
+  --brand-green-grey-1000: #212b2b;
+  --brand-purple-100: #e8e5ff;
+  --brand-purple-200: #d2ccff;
+  --brand-purple-300: #bbb2ff;
+  --brand-purple-400: #a599ff;
+  --brand-purple-500: #8e80ff;
+  --brand-purple-600: #7864ff;
+  --brand-purple-700: #4c37e6;
+  --brand-purple-800: #2610cb;
+  --brand-purple-900: #15058f;
+  --brand-purple-1000: #09004d;
+  --brand-red-100: #ffe5e5;
+  --brand-red-200: #ffcccc;
+  --brand-red-300: #ffb2b2;
+  --brand-red-400: #ff9999;
+  --brand-red-500: #ff8080;
+  --brand-red-600: #ff6464;
+  --brand-red-700: #e63737;
+  --brand-red-800: #cb1010;
+  --brand-red-900: #8f0505;
+  --brand-red-1000: #4d0000;
+  --brand-yellow-100: #fff6e5;
+  --brand-yellow-200: #ffeccc;
+  --brand-yellow-300: #ffe3b2;
+  --brand-yellow-400: #ffda99;
+  --brand-yellow-500: #ffd080;
+  --brand-yellow-600: #ffc864;
+  --brand-yellow-700: #e6a637;
+  --brand-yellow-800: #cb8710;
+  --brand-yellow-900: #8f5c05;
+  --brand-yellow-1000: #4d3000;
+  --brand-blue-grey-100: #f1eff4;
+  --brand-blue-grey-200: #e0e1e6;
+  --brand-blue-grey-300: #cfd3d8;
+  --brand-blue-grey-400: #bfc5ca;
+  --brand-blue-grey-500: #b0b5ba;
+  --brand-blue-grey-600: #a0a6ab;
+  --brand-blue-grey-700: #80898e;
+  --brand-blue-grey-800: #5e696e;
+  --brand-blue-grey-900: #404a4f;
+  --brand-blue-grey-1000: #21262b;
+  --brand-green-grey-100: #f1f4f4;
+  --brand-green-grey-200: #e0e6e6;
+  --brand-green-grey-300: #cfd8d8;
+  --brand-green-grey-400: #bfcaca;
+  --brand-green-grey-500: #b0baba;
+  --brand-green-grey-600: #a0abab;
+  --brand-green-grey-700: #808e8e;
+  --brand-green-grey-800: #5e6e6e;
+  --brand-green-grey-900: #404f4f;
+  --brand-green-grey-1000: #212b2b;
+  --brand-neutral-grey-100: #f2f2f2;
+  --brand-neutral-grey-200: #e3e3e3;
+  --brand-neutral-grey-300: #d6d6d6;
+  --brand-neutral-grey-400: #c7c7c7;
+  --brand-neutral-grey-500: #bababa;
+  --brand-neutral-grey-600: #ababab;
+  --brand-neutral-grey-700: #8a8a8a;
+  --brand-neutral-grey-800: #686868;
+  --brand-neutral-grey-900: #474747;
+  --brand-neutral-grey-1000: #262626;
+  --brand-brand-50: #f2f7ff;
+  --brand-brand-100: #e5eaff;
+  --brand-brand-200: #cfd8ff;
+  --brand-brand-300: #aab7ff;
+  --brand-brand-400: #8894ff;
+  --brand-brand-500: #6a6fff;
+  --brand-brand-600: #4b3fe3;
+  --brand-brand-700: #3f31c6;
+  --brand-brand-800: #2c2290;
+  --brand-brand-900: #1a1759;
+  --brand-brand-950: #010109;
+  --brand-brand-grey-50: #fafafa;
+  --brand-brand-grey-100: #f5f5f5;
+  --brand-brand-grey-200: #e5e5e5;
+  --brand-brand-grey-300: #d4d4d4;
+  --brand-brand-grey-400: #a1a1a1;
+  --brand-brand-grey-500: #737373;
+  --brand-brand-grey-600: #525252;
+  --brand-brand-grey-700: #404040;
+  --brand-brand-grey-800: #262626;
+  --brand-brand-grey-900: #171717;
+  --brand-brand-grey-950: #0a0a0a;
+  --brand-brand-grey-50: #fafafa;
+  --brand-brand-grey-100: #f5f5f5;
+  --brand-brand-grey-200: #e5e5e5;
+  --brand-brand-grey-300: #d4d4d4;
+  --brand-brand-grey-400: #a1a1a1;
+  --brand-brand-grey-500: #737373;
+  --brand-brand-grey-600: #525252;
+  --brand-brand-grey-700: #404040;
+  --brand-brand-grey-800: #262626;
+  --brand-brand-grey-900: #171717;
+  --brand-brand-grey-950: #0a0a0a;
+
+  --body-body-xs: 10px/1.5 var(--font-family-default);
+  --body-body-sm: 11px/1.5 var(--font-family-default);
+  --body-body-sm-strong: 600 11px/1.5 var(--font-family-default);
+  --body-body-md: 12px/1.5 var(--font-family-default);
+  --body-body-md-strong: 600 12px/1.5 var(--font-family-default);
+  --body-body-base: 14px/1.5 var(--font-family-default);
+  --body-body-base-strong: 600 14px/1.5 var(--font-family-default);
+  --heading-heading-3xs: 600 10px/1.4 var(--font-family-heading);
+  --heading-heading-2xs: 600 11px/1.4 var(--font-family-heading);
+  --heading-heading-xs: 600 12px/1.4 var(--font-family-heading);
+  --heading-heading-sm: 600 13px/1.4 var(--font-family-heading);
+  --heading-heading-md: 600 14px/1.4 var(--font-family-heading);
+  --heading-heading-lg: 600 16px/1.4 var(--font-family-heading);
+  --heading-heading-xl: 600 20px/1.4 var(--font-family-heading);
+  --heading-heading-2xl: 600 24px/1.4 var(--font-family-heading);
+  --heading-heading-3xl: 600 32px/1.4 var(--font-family-heading);
+
+  --bg-bg-overlay-l0: rgba(224, 226, 242, 0.03);
+  --bg-primary-item: rgba(224, 226, 242, 0.08);
+  --bg-primary-item-hover: rgba(224, 226, 242, 0.12);
+  --border-primary-item: rgba(224, 226, 242, 0.06);
+  --border-primary-item-hover: rgba(224, 226, 242, 0.1);
+  /* 首页输入框边框颜色（纯色，用于内凹圆弧等需要精确边框的场景） */
+  --homepage-input-border-color: #343538;
+
+  --welcome-logo-bg: #000000;
+  --welcome-logo-color: var(--bg-bg-brand, #0fdc78);
+
+  --user-message-bg-solid: #1D352A;
+  --user-message-bg-solid-transparent: rgba(29, 53, 42, 0);
+  --user-message-bg-solid-sub: #2B2A38;
+  --user-message-bg-solid-sub-transparent: rgba(43, 42, 56, 0);
+  --sheet-text-color: #ffffff;
+  --slash-mention-bg: rgba(63, 133, 255, 0.15);
+  --builtin-slash-mention-bg: rgba(149, 112, 255, 0.15);
+
+  --gradient-golden: linear-gradient(180deg, #DAB444 0%, #FFEA8E 100%);
+  --special-bggoldoverlay: rgba(139, 128, 65, 0.12);
+  --query-tag-bg-grey: var(--bg-bg-overlay-l2);
+  --query-tag-text-grey: var(--text-text-default);
+  --query-tag-height: 20px;
+  --query-tag-padding: 0px 4px;
+  --query-tag-gap: 2px;
+  --query-tag-radius: 0px;
+  --query-tag-icon-slot-size: 20px;
+  --query-tag-icon-size: 16px;
+  --query-tag-font-size: 14px;
+  --query-tag-font-weight: 500;
+  --query-tag-letter-spacing: -0.02em;
+  --query-tag-bg-neutral: transparent;
+  --query-tag-text-neutral: var(--text-text-secondary);
+  --query-tag-bg-brand: transparent;
+  --query-tag-text-brand: var(--status-primary-default);
+  --query-tag-text-command: var(--text-text-brand);
+  --query-tag-text-design: var(--text-text-brand);
+  --query-tag-text-lark-sheet: #26c914;
+  --query-tag-text-lark-bitable: var(--accent-accent-violet);
+  --query-tag-icon-pdf: #cb1010;
+  --query-tag-icon-zip: var(--icon-icon-default);
+  --query-tag-icon-json: #cb8710;
+  --query-tag-icon-html: #c63b18;
+  --query-tag-icon-video: #3f85ff;
+  --query-tag-bg-blue: rgba(128, 193, 255, 0.14);
+
+  --bg-bg-brand-old: #32f08c;
+  --gradient-brand: linear-gradient(90deg, #3ee1a3 0%, #32f08c 36%, #60f2bd 71.63%, #a0fde7 100%);
+  --text-text-preformat-foreground: #d7ba7d;
+}
+
+[data-theme='dark-blue'], .vs-dark.solo-lite {
+  --shadow-elevation-50: 0 1px 2px -1px rgba(0, 0, 0, 0.45);
+  --shadow-elevation-100: 0 3px 9px 0 rgba(0, 0, 0, 0.25);
+  --shadow-elevation-100-float: 0 -3px 9px 0 rgba(0, 0, 0, 0.25);
+  --shadow-elevation-200: 0 6px 24px -1px rgba(0, 0, 0, 0.25);
+  --shadow-elevation-200-reverse: 0 -6px 24px -1px rgba(0, 0, 0, 0.25);
+  --shadow-elevation-300: 0 2px 8px -1px rgba(0, 0, 0, 0.18), 0 10px 24px -1px rgba(0, 0, 0, 0.30);
+  --shadow-elevation-100-tooltip: var(--shadow-elevation-100);
+  --shadow-elevation-200-menu-panel: var(--shadow-elevation-200);
+  --shadow-elevation-300-modal-panel: var(--shadow-elevation-300);
+
+  /* 输入框阴影颜色 */
+  --shadow-chat-input: 0 3px 8px 0 rgba(24, 24, 24, 0.08), 0 6px 24px -1px rgba(24, 24, 24, 0.12);
+  --shadow-chat-input-focused: 0 4px 12px 0 rgba(24, 24, 24, 0.08), 0 6px 32px -1px rgba(24, 24, 24, 0.12);
+
+  --bg-bg-base-default: #171717;
+  --bg-bg-base-secondary: #262626;
+  --bg-bg-base-tertiary: #404040;
+  --bg-bg-menu: #171717;
+  --bg-bg-tooltip: #171717;
+  --bg-bg-input: #171717;
+  --bg-bg-overlay-l1: rgba(212, 212, 212, 0.04);
+  --bg-bg-overlay-l2: rgba(212, 212, 212, 0.06);
+  --bg-bg-overlay-l3: rgba(212, 212, 212, 0.08);
+  --bg-bg-overlay-l4: rgba(212, 212, 212, 0.12);
+  --bg-bg-white: #ffffff;
+  --bg-bg-brand: #4b3fe3;
+  --bg-bg-brand-hover: #6a6fff;
+  --bg-bg-brand-active: #3f31c6;
+  --bg-bg-brand-disabled: rgba(75, 63, 227, 0.35);
+  --bg-bg-brand-popup: rgba(106, 111, 255, 0.15);
+  --bg-bg-brand-sub: var(--bg-bg-brand);
+  --bg-bg-brand-hover-sub: var(--bg-bg-brand-hover);
+  --bg-bg-brand-disabled-sub: var(--bg-bg-brand-disabled);
+  --bg-bg-brand-popup-sub: var(--bg-bg-brand-popup);
+  --bg-bg-invert: #e5e5e5;
+  --bg-bg-invert-hover: #f5f5f5;
+  --bg-bg-invert-active: #e5e5e5;
+  --bg-bg-invert-disabled: rgba(212, 212, 212, 0.06);
+  --bg-bg-marketplace-banner-overlay-start: rgba(82, 130, 193, 0);
+  --bg-bg-marketplace-banner-overlay-end: rgba(82, 130, 193, 0.8);
+  --bg-bg-marketplace-banner-control: rgba(0, 0, 0, 0.25);
+  --bg-bg-card: #202020;
+  --bg-bg-card-hover: #171717;
+  --bg-bg-marketplace-banner-plugin-tag: #e5f3ff;
+  --bg-bg-marketplace-banner-preview-mask-start: rgba(255, 255, 255, 0.9);
+  --bg-bg-marketplace-banner-preview-mask-end: rgba(255, 255, 255, 0.54);
+  --shadow-marketplace-banner-preview-card: 0px 6px 12px -1px rgba(0, 0, 0, 0.18), 0px 10px 24px -1px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-card-small: 0px 2.8023247718811035px 5.604649543762207px -0.4670540988445282px rgba(0, 0, 0, 0.18), 0px 4.670541763305664px 11.209299087524414px -0.4670540988445282px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-card-large: 0px 4.55377721786499px 9.10755443572998px -0.758962869644165px rgba(0, 0, 0, 0.18), 0px 7.589629650115967px 18.21510887145996px -0.758962869644165px rgba(0, 0, 0, 0.2);
+  --shadow-marketplace-banner-preview-input: 0px 0px 24px -1px rgba(24, 24, 24, 0.06), 0px -12px 8px -1px rgba(24, 24, 24, 0.02);
+  --chat-bg-card: var(--bg-bg-card);
+  --chat-bg-card-hover: var(--bg-bg-base-default);
+  --special-bgtabsoverlay: rgba(0, 0, 0, 0.20);
+  --special-tabsoverlay: rgba(13, 14, 15, 0.18);
+  --text-text-default: #e5e5e5;
+  --text-text-default-hover: #fafafa;
+  --text-text-default-active: #fafafa;
+  --text-text-secondary: #a1a1a1;
+  --text-text-secondary-hover: #e5e5e5;
+  --text-text-secondary-active: #e5e5e5;
+  --text-text-tertiary: #737373;
+  --text-text-disabled: #525252;
+  --text-text-brand: #6a6fff;
+  --text-text-brand-hover: #4b3fe3;
+  --text-text-brand-sub: var(--text-text-brand);
+  --text-text-brand-hover-sub: var(--text-text-brand-hover);
+  --text-text-onbrand: #171717;
+  --text-text-onaccent: #171717;
+  --text-text-marketplace-banner-on-light: #0a0a0a;
+  --text-text-marketplace-banner-plugin-tag: #054c8f;
+  --icon-icon-default: #e5e5e5;
+  --icon-icon-default-hover: #fafafa;
+  --icon-icon-default-active: #fafafa;
+  --icon-icon-secondary: #a1a1a1;
+  --icon-icon-secondary-hover: #e5e5e5;
+  --icon-icon-secondary-active: #e5e5e5;
+  --icon-icon-tertiary: #737373;
+  --icon-icon-disabled: #525252;
+  --icon-icon-brand: #6a6fff;
+  --icon-icon-brand-hover: #4b3fe3;
+  --icon-icon-brand-sub: var(--icon-icon-brand);
+  --icon-icon-brand-hover-sub: var(--icon-icon-brand-hover);
+  --icon-icon-onbrand: #0a0a0a;
+  --icon-icon-onaccent: #0A0A0A;
+  --icon-icon-white: #ffffff;
+  --border-border-neutral-l1: rgba(229, 229, 229, 0.10);
+  --border-border-neutral-l2: rgba(229, 229, 229, 0.16);
+  --border-border-neutral-l3: rgba(229, 229, 229, 0.20);
+  --border-border-brand: #6a6fff;
+  --border-border-brand-sub: var(--border-border-brand);
+  --border-border-contrast: #ffffff;
+  --status-primary-default: #387bff;
+  --status-primary-hover: #4c88ff;
+  --status-primary-active: #1759dd;
+  --status-primary-surface-l1: rgba(53, 121, 255, 0.18);
+  --status-primary-surface-l2: rgba(53, 121, 255, 0.28);
+  --status-primary-surface-l3: rgba(53, 121, 255, 0.36);
+  --status-success-default: #33c192;
+  --status-success-hover: #5ed4ad;
+  --status-success-active: #27b082;
+  --status-success-surface-l1: rgba(0, 165, 110, 0.18);
+  --status-success-surface-l2: rgba(0, 165, 110, 0.28);
+  --status-success-surface-l3: rgba(0, 165, 110, 0.36);
+  --status-alert-default: #d29d00;
+  --status-alert-hover: #dfb949;
+  --status-alert-active: #ab8820;
+  --status-alert-surface-l1: rgba(210, 157, 0, 0.16);
+  --status-alert-surface-l2: rgba(210, 157, 0, 0.28);
+  --status-alert-surface-l3: rgba(210, 157, 0, 0.36);
+  --status-warning-default: #d27e24;
+  --status-warning-hover: #d78b28;
+  --status-warning-active: #b46510;
+  --status-warning-surface-l1: rgba(210, 126, 36, 0.16);
+  --status-warning-surface-l2: rgba(210, 126, 36, 0.28);
+  --status-warning-surface-l3: rgba(210, 126, 36, 0.36);
+  --status-error-default: #f65a5a;
+  --status-error-hover: #f86262;
+  --status-error-active: #b33636;
+  --status-error-surface-l1: rgba(246, 70, 70, 0.18);
+  --status-error-surface-l2: rgba(246, 70, 70, 0.28);
+  --status-error-surface-l3: rgba(246, 70, 70, 0.36);
+  --accent-accent-teal: #2dd288;
+  --accent-accent-coral: #ff9392;
+  --accent-accent-amber: #dcb364;
+  --accent-accent-lime: #8acb3a;
+  --accent-accent-cyan: #04cbe5;
+  --accent-accent-blue: #7bb8ff;
+  --accent-accent-magenta: #ec93ff;
+  --accent-accent-violet: #bfa5ff;
+  --accent-accent-slate: #afb9cf;
+  --code-code-text: #e0e3ee;
+  --code-code-doc: #7f838c;
+  --code-code-link: #3c7eff;
+  --code-code-number: #f48cca;
+  --code-code-action: #b38cff;
+  --code-code-instruction: #f0d8ff;
+  --code-code-function: #f29d79;
+  --code-code-constant: #80bbff;
+  --code-code-parameter: #82d99f;
+  --code-code-attribute: #ded47e;
+  --code-code-tag: #f2858c;
+  --code-code-terminal: #e0e3ee;
+  --code-code-contrast: #e0e3ee;
+  --code-code-editor: #e0e3ee;
+  --special-white: #ffffff;
+  --special-black: #000000;
+  --viz-viz-series-amber: #edaa45;
+  --viz-viz-series-coral: #f87454;
+  --viz-viz-series-indigo: #b6a3ff;
+  --viz-viz-series-lime: #a6ea39;
+  --viz-viz-series-magenta: #fb9dd7;
+  --viz-viz-series-mint: #1dc981;
+  --viz-viz-series-sky: #22a5f7;
+  --viz-viz-series-slate: #859ead;
+  --viz-viz-series-teal: #78f2f2;
+  --viz-viz-series-violet: #b655fc;
+  --viz-viz-ui-bg-chart: #171717;
+  --viz-viz-ui-bg-tooltip: #0a0a0a;
+  --viz-viz-ui-chart-axis: rgba(229, 229, 229, 0.16);
+  --viz-viz-ui-chart-subtitle: #737373;
+  --viz-viz-ui-chart-tick: #737373;
+  --viz-viz-ui-chart-title: #e5e5e5;
+  --viz-viz-ui-legend-label: #737373;
+  --viz-viz-ui-legend-value: #e5e5e5;
+  --brand-blue-100: #e5f3ff;
+  --brand-blue-200: #cce6ff;
+  --brand-blue-300: #b2daff;
+  --brand-blue-400: #99ceff;
+  --brand-blue-500: #80c1ff;
+  --brand-blue-600: #64b4ff;
+  --brand-blue-700: #3792e6;
+  --brand-blue-800: #1071cb;
+  --brand-blue-900: #054c8f;
+  --brand-blue-1000: #00284d;
+  --brand-blue-grey-100: #f1eff4;
+  --brand-blue-grey-200: #e0e1e6;
+  --brand-blue-grey-300: #cfd3d8;
+  --brand-blue-grey-400: #bfc5ca;
+  --brand-blue-grey-500: #b0b5ba;
+  --brand-blue-grey-600: #a0a6ab;
+  --brand-blue-grey-700: #80898e;
+  --brand-blue-grey-800: #5e696e;
+  --brand-blue-grey-900: #404a4f;
+  --brand-blue-grey-1000: #21262b;
+  --brand-green-grey-100: #f1f4f4;
+  --brand-green-grey-200: #e0e6e6;
+  --brand-green-grey-300: #cfd8d8;
+  --brand-green-grey-400: #bfcaca;
+  --brand-green-grey-500: #b0baba;
+  --brand-green-grey-600: #a0abab;
+  --brand-green-grey-700: #808e8e;
+  --brand-green-grey-800: #5e6e6e;
+  --brand-green-grey-900: #404f4f;
+  --brand-green-grey-1000: #212b2b;
+  --brand-purple-100: #e8e5ff;
+  --brand-purple-200: #d2ccff;
+  --brand-purple-300: #bbb2ff;
+  --brand-purple-400: #a599ff;
+  --brand-purple-500: #8e80ff;
+  --brand-purple-600: #7864ff;
+  --brand-purple-700: #4c37e6;
+  --brand-purple-800: #2610cb;
+  --brand-purple-900: #15058f;
+  --brand-purple-1000: #09004d;
+  --brand-red-100: #ffe5e5;
+  --brand-red-200: #ffcccc;
+  --brand-red-300: #ffb2b2;
+  --brand-red-400: #ff9999;
+  --brand-red-500: #ff8080;
+  --brand-red-600: #ff6464;
+  --brand-red-700: #e63737;
+  --brand-red-800: #cb1010;
+  --brand-red-900: #8f0505;
+  --brand-red-1000: #4d0000;
+  --brand-yellow-100: #fff6e5;
+  --brand-yellow-200: #ffeccc;
+  --brand-yellow-300: #ffe3b2;
+  --brand-yellow-400: #ffda99;
+  --brand-yellow-500: #ffd080;
+  --brand-yellow-600: #ffc864;
+  --brand-yellow-700: #e6a637;
+  --brand-yellow-800: #cb8710;
+  --brand-yellow-900: #8f5c05;
+  --brand-yellow-1000: #4d3000;
+  --brand-blue-grey-100: #f1eff4;
+  --brand-blue-grey-200: #e0e1e6;
+  --brand-blue-grey-300: #cfd3d8;
+  --brand-blue-grey-400: #bfc5ca;
+  --brand-blue-grey-500: #b0b5ba;
+  --brand-blue-grey-600: #a0a6ab;
+  --brand-blue-grey-700: #80898e;
+  --brand-blue-grey-800: #5e696e;
+  --brand-blue-grey-900: #404a4f;
+  --brand-blue-grey-1000: #21262b;
+  --brand-green-grey-100: #f1f4f4;
+  --brand-green-grey-200: #e0e6e6;
+  --brand-green-grey-300: #cfd8d8;
+  --brand-green-grey-400: #bfcaca;
+  --brand-green-grey-500: #b0baba;
+  --brand-green-grey-600: #a0abab;
+  --brand-green-grey-700: #808e8e;
+  --brand-green-grey-800: #5e6e6e;
+  --brand-green-grey-900: #404f4f;
+  --brand-green-grey-1000: #212b2b;
+  --brand-neutral-grey-100: #f2f2f2;
+  --brand-neutral-grey-200: #e3e3e3;
+  --brand-neutral-grey-300: #d6d6d6;
+  --brand-neutral-grey-400: #c7c7c7;
+  --brand-neutral-grey-500: #bababa;
+  --brand-neutral-grey-600: #ababab;
+  --brand-neutral-grey-700: #8a8a8a;
+  --brand-neutral-grey-800: #686868;
+  --brand-neutral-grey-900: #474747;
+  --brand-neutral-grey-1000: #262626;
+  --brand-brand-50: #f2f7ff;
+  --brand-brand-100: #e5eaff;
+  --brand-brand-200: #cfd8ff;
+  --brand-brand-300: #aab7ff;
+  --brand-brand-400: #8894ff;
+  --brand-brand-500: #6a6fff;
+  --brand-brand-600: #4b3fe3;
+  --brand-brand-700: #3f31c6;
+  --brand-brand-800: #2c2290;
+  --brand-brand-900: #1a1759;
+  --brand-brand-950: #010109;
+  --brand-brand-grey-50: #fafafa;
+  --brand-brand-grey-100: #f5f5f5;
+  --brand-brand-grey-200: #e5e5e5;
+  --brand-brand-grey-300: #d4d4d4;
+  --brand-brand-grey-400: #a1a1a1;
+  --brand-brand-grey-500: #737373;
+  --brand-brand-grey-600: #525252;
+  --brand-brand-grey-700: #404040;
+  --brand-brand-grey-800: #262626;
+  --brand-brand-grey-900: #171717;
+  --brand-brand-grey-950: #0a0a0a;
+  --brand-brand-grey-50: #fafafa;
+  --brand-brand-grey-100: #f5f5f5;
+  --brand-brand-grey-200: #e5e5e5;
+  --brand-brand-grey-300: #d4d4d4;
+  --brand-brand-grey-400: #a1a1a1;
+  --brand-brand-grey-500: #737373;
+  --brand-brand-grey-600: #525252;
+  --brand-brand-grey-700: #404040;
+  --brand-brand-grey-800: #262626;
+  --brand-brand-grey-900: #171717;
+  --brand-brand-grey-950: #0a0a0a;
+
+  --body-body-xs: 10px/1.5 var(--font-family-default);
+  --body-body-sm: 11px/1.5 var(--font-family-default);
+  --body-body-sm-strong: 600 11px/1.5 var(--font-family-default);
+  --body-body-md: 12px/1.5 var(--font-family-default);
+  --body-body-md-strong: 600 12px/1.5 var(--font-family-default);
+  --body-body-base: 14px/1.5 var(--font-family-default);
+  --body-body-base-strong: 600 14px/1.5 var(--font-family-default);
+  --heading-heading-3xs: 600 10px/1.4 var(--font-family-heading);
+  --heading-heading-2xs: 600 11px/1.4 var(--font-family-heading);
+  --heading-heading-xs: 600 12px/1.4 var(--font-family-heading);
+  --heading-heading-sm: 600 13px/1.4 var(--font-family-heading);
+  --heading-heading-md: 600 14px/1.4 var(--font-family-heading);
+  --heading-heading-lg: 600 16px/1.4 var(--font-family-heading);
+  --heading-heading-xl: 600 20px/1.4 var(--font-family-heading);
+  --heading-heading-2xl: 600 24px/1.4 var(--font-family-heading);
+  --heading-heading-3xl: 600 32px/1.4 var(--font-family-heading);
+
+  --bg-bg-overlay-l0: rgba(176, 192, 244, 0.03);
+  --bg-primary-item: rgba(176, 192, 244, 0.09);
+  --bg-primary-item-hover: rgba(176, 192, 244, 0.13);
+  --border-primary-item: rgba(176, 192, 244, 0.06);
+  --border-primary-item-hover: rgba(176, 192, 244, 0.1);
+  /* 首页输入框边框颜色（纯色，用于内凹圆弧等需要精确边框的场景） */
+  --homepage-input-border-color: #343538;
+
+  --user-message-bg-solid: #1D352A;
+  --user-message-bg-solid-transparent: rgba(29, 53, 42, 0);
+  --user-message-bg-solid-sub: #2B2A38;
+  --user-message-bg-solid-sub-transparent: rgba(43, 42, 56, 0);
+  --sheet-text-color: #ffffff;
+  --slash-mention-bg: rgba(63, 133, 255, 0.15);
+  --builtin-slash-mention-bg: rgba(149, 112, 255, 0.15);
+
+  --gradient-golden: linear-gradient(180deg, #DAB444 0%, #FFEA8E 100%);
+  --special-bggoldoverlay: rgba(139, 128, 65, 0.12);
+  --query-tag-bg-grey: var(--bg-bg-overlay-l2);
+  --query-tag-text-grey: var(--text-text-default);
+  --query-tag-height: 20px;
+  --query-tag-padding: 0px 4px;
+  --query-tag-gap: 2px;
+  --query-tag-radius: 0px;
+  --query-tag-icon-slot-size: 20px;
+  --query-tag-icon-size: 16px;
+  --query-tag-font-size: 14px;
+  --query-tag-font-weight: 500;
+  --query-tag-letter-spacing: -0.02em;
+  --query-tag-bg-neutral: transparent;
+  --query-tag-text-neutral: var(--text-text-secondary);
+  --query-tag-bg-brand: transparent;
+  --query-tag-text-brand: var(--status-primary-default);
+  --query-tag-text-command: var(--text-text-brand);
+  --query-tag-text-design: var(--text-text-brand);
+  --query-tag-text-lark-sheet: #26c914;
+  --query-tag-text-lark-bitable: var(--accent-accent-violet);
+  --query-tag-icon-pdf: #cb1010;
+  --query-tag-icon-zip: var(--icon-icon-default);
+  --query-tag-icon-json: #cb8710;
+  --query-tag-icon-html: #c63b18;
+  --query-tag-icon-video: #3f85ff;
+  --query-tag-bg-blue: rgba(128, 193, 255, 0.14);
+
+  --bg-bg-brand-old: #32f08c;
+  --gradient-brand: linear-gradient(90deg, #3ee1a3 0%, #32f08c 36%, #60f2bd 71.63%, #a0fde7 100%);
+}
+</style><style id="trae-panel-enter-style">
+        @keyframes trae-panel-enter {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+      </style></head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h1>智数后台需求文档</h1>
+    <p>合作分成对账功能 V2.0</p>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-group-title">文档信息</div>
+    <a href="#doc-info">文档概要</a>
+    <a href="#bg">项目背景</a>
+    <a href="#pain-points">痛点与目标</a>
+    <a href="#arch">系统架构</a>
+    <a href="#roles">用户角色</a>
+    <a href="#feature-list">功能清单总览</a>
+
+    <div class="nav-group-title">对账单管理</div>
+    <a href="#recon-yws">亿玩赏对账单</a>
+    <a href="#yws-store-ship" class="sub">门店发货对账单</a>
+    <a href="#yws-store-consume" class="sub">门店消耗对账单</a>
+    <a href="#yws-cust-ship" class="sub">客户发货对账单</a>
+    <a href="#yws-cust-consume" class="sub">客户消耗对账单</a>
+    <a href="#yws-store-inbound" class="sub">门店入库对账单（待补充）</a>
+    <a href="#yws-all-ship" class="sub">有消耗全发货对账（待补充）</a>
+    <a href="#recon-bw" class="sub">爆玩宇宙对账单</a>
+    <a href="#bw-store" class="sub2">门店对账单</a>
+    <a href="#bw-cust" class="sub2">客户对账单</a>
+    <a href="#bw-dispute" class="sub2">客户不认可流程（待补充）</a>
+    <a href="#recon-other" class="sub">盲盒/其他对账单（待新建）</a>
+
+    <div class="nav-group-title">分成与回款</div>
+    <a href="#period">分成账期管理</a>
+    <a href="#payment">合作机台回款管理</a>
+
+    <div class="nav-group-title">认款管理</div>
+    <a href="#recon-list">认款列表</a>
+    <a href="#recon-form">认款弹窗</a>
+    <a href="#recon-optimize">认款优化点</a>
+
+    <div class="nav-group-title">其他功能</div>
+    <a href="#chat-bind">群聊关联管理</a>
+    <a href="#settings">基础设置</a>
+
+    <div class="nav-group-title">数智全开小程序</div>
+    <a href="#mini-overview">小程序概览</a>
+    <a href="#mini-home">合作机台首页</a>
+    <a href="#mini-bw-cust">客户对账单</a>
+    <a href="#mini-bw-detail">对账单明细</a>
+    <a href="#mini-pay-remind">打款提醒</a>
+
+    <div class="nav-group-title">数智全开PC端</div>
+    <a href="#pc-overview">PC端概览</a>
+    <a href="#pc-list">对账单列表</a>
+    <a href="#pc-detail">对账单详情</a>
+    <a href="#pc-dispute">确认/异议</a>
+
+    <div class="nav-group-title">三期功能</div>
+    <a href="#auto-recon">自动认款</a>
+    <a href="#wecom-push">企微数据推送</a>
+    <a href="#auto-urge">自动催款推送</a>
+    <a href="#alert-push">预警推送</a>
+
+    <div class="nav-group-title">附录</div>
+    <a href="#pending">待确认事项</a>
+    <a href="#changelog">修订记录</a>
+  </div>
+</nav>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div class="main">
+
+<!-- ========== 文档概要 ========== -->
+<section id="doc-info">
+<h1 class="doc-title">智数后台 - 合作分成对账功能需求文档</h1>
+
+<div class="card card-blue">
+<h3 style="margin-top:0;">文档信息</h3>
+<table>
+<tbody><tr><th style="width:140px;">项目名称</th><td>智数后台 - 合作分成对账功能</td></tr>
+<tr><th>文档版本</th><td>V2.0（统一版）</td></tr>
+<tr><th>编写日期</th><td>2026-08-20</td></tr>
+<tr><th>文档状态</th><td><span class="badge badge-confirm">草案-持续更新中</span></td></tr>
+<tr><th>覆盖范围</th><td>二期已上线功能 + 二期优化 + 三期新增功能</td></tr>
+<tr><th>涉及系统</th><td>智数后台（PC管理端）、数智全开小程序、数智全开PC端</td></tr>
+</tbody></table>
+</div>
+
+<div class="info-block">
+<strong>阅读说明：</strong>本文档为统一需求文档，覆盖合作分成对账功能的全量需求。各功能标注所属阶段：
+<span class="badge badge-done">二期已上线</span> 已开发完成并投入使用；
+<span class="badge badge-optimize">二期优化</span> 基于现有功能的调整补充；
+<span class="badge badge-new">三期新增</span> 尚未开发的新功能；
+<span class="badge badge-confirm">待确认</span> 需要进一步讨论确认的内容。
+</div>
+</section>
+
+<!-- ========== 项目背景 ========== -->
+<section id="bg">
+<h2>1. 项目背景</h2>
+
+<h3>1.1 业务背景</h3>
+<p>世宇科技（广东世宇科技股份有限公司）与合作客户在游戏机台运营中存在分成关系。不同业务线（亿玩赏、爆玩宇宙、盲盒宇宙等）的分成对账方式各不相同，涉及发货数据、消耗数据、收币数据、码表数据等多种对账维度。</p>
+<p>智数后台"合作分成对账功能"旨在实现从<strong>对账单生成 → 业务员核对 → 推送客户 → 客户确认/异议 → 认款 → 账期管理 → 催款/锁机</strong>的全链路数字化管理。</p>
+
+<h3>1.2 项目现状</h3>
+<div class="stat-grid">
+  <div class="stat-card"><div class="num">3</div><div class="label">业务线</div></div>
+  <div class="stat-card"><div class="num">7+</div><div class="label">对账类型</div></div>
+  <div class="stat-card"><div class="num">3</div><div class="label">终端</div></div>
+  <div class="stat-card"><div class="num">2</div><div class="label">开发期次</div></div>
+</div>
+
+<table>
+<tbody><tr><th style="width:120px;">阶段</th><th>状态</th><th>核心内容</th></tr>
+<tr><td><span class="badge badge-done">二期</span></td><td>已上线</td><td>亿玩赏消耗/发货对账单、爆玩宇宙门店/客户对账单、分成账期管理、回款管理、认款管理、群聊关联、基础设置</td></tr>
+<tr><td><span class="badge badge-optimize">二期优化</span></td><td>进行中</td><td>亿玩赏入库对账+有消耗全发货对账、爆玩宇宙客户不认可流程、盲盒对账单、认款礼品选项优化、界面交互优化</td></tr>
+<tr><td><span class="badge badge-new">三期</span></td><td>规划中</td><td>自动认款、企微数据推送、自动催款推送、数智全开PC端对账单、预警推送</td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 痛点与需求目标 ========== -->
+<section id="pain-points">
+<h2>2. 痛点分析与需求目标</h2>
+
+<h3>2.1 业务痛点</h3>
+<table>
+<tbody><tr><th style="width:60px;">#</th><th style="width:160px;">痛点</th><th>现状描述</th><th style="width:160px;">影响</th></tr>
+<tr><td>1</td><td>对账方式多样、流程分散</td><td>亿玩赏有4种对账类型（消耗/发货/入库/全发货），爆玩宇宙有2类客户（认可/不认可），盲盒按码表对账，各类型流程不同，缺乏统一管理</td><td>业务员操作复杂，培训成本高</td></tr>
+<tr><td>2</td><td>认款依赖人工</td><td>银行流水导入后，业务员需逐条核对并手动认款，识别码匹配全靠人工，效率低且易出错</td><td>认款耗时长、错误率高</td></tr>
+<tr><td>3</td><td>对账数据推送不及时</td><td>对账单生成后需手动推送客户群，客户无法第一时间获取对账信息，逾期催款也依赖人工触发</td><td>回款周期长、逾期率高</td></tr>
+<tr><td>4</td><td>客户对账确认渠道有限</td><td>客户仅能通过小程序查看对账单，无法在PC端操作确认或异议，对账确认效率低</td><td>对账确认周期长</td></tr>
+<tr><td>5</td><td>数据准确性问题</td><td>6月前数据不准确，历史数据需修正；不同数据源（游艺宝/世宇后台）数据可能存在差异</td><td>对账争议多、信任度低</td></tr>
+<tr><td>6</td><td>缺少预警机制</td><td>开票状态异常、设备异常、未对账等情况无主动预警，问题发现滞后</td><td>风险发现晚、处理被动</td></tr>
+</tbody></table>
+
+<h3>2.2 需求目标</h3>
+<table>
+<tbody><tr><th style="width:60px;">#</th><th style="width:160px;">目标</th><th>具体内容</th><th style="width:140px;">对应阶段</th></tr>
+<tr><td>1</td><td>完善对账类型覆盖</td><td>补充亿玩赏入库对账、有消耗全发货对账；新增爆玩宇宙客户不认可流程；新建盲盒/其他码表对账</td><td><span class="badge badge-optimize">二期优化</span></td></tr>
+<tr><td>2</td><td>实现自动认款</td><td>客户转账备注识别码 → 系统自动匹配对账单 → 自动认款，减少人工干预</td><td><span class="badge badge-new">三期新增</span></td></tr>
+<tr><td>3</td><td>自动化数据推送</td><td>对账单生成自动推送企微群、账期前2天自动催款、可认款数据推送业务员</td><td><span class="badge badge-new">三期新增</span></td></tr>
+<tr><td>4</td><td>客户PC端对账</td><td>建设数智全开PC端对账单，客户可在线查看、确认、提出异议</td><td><span class="badge badge-new">三期新增</span></td></tr>
+<tr><td>5</td><td>建立预警体系</td><td>开票监控、设备异常监控、未对账催办清单，主动发现并处理问题</td><td><span class="badge badge-new">三期新增</span></td></tr>
+<tr><td>6</td><td>数据准确性提升</td><td>历史数据批量修正，优先今年数据；双数据源差异校验</td><td><span class="badge badge-confirm">持续</span></td></tr>
+</tbody></table>
+
+<div class="info-block">
+<strong>目标量化：</strong>
+<ul>
+<li>自动认款覆盖率目标：识别码匹配成功率达90%以上</li>
+<li>对账确认周期缩短：从平均7天缩短至3天以内（PC端确认+自动推送）</li>
+<li>催款自动化率：逾期催款100%自动触发推送</li>
+<li>对账类型覆盖率：从当前2种（亿玩赏消耗/发货）扩展至7种以上</li>
+</ul>
+</div>
+</section>
+
+<!-- ========== 系统架构 ========== -->
+<section id="arch">
+<h2>3. 系统架构</h2>
+
+<h3>3.1 三端架构</h3>
+<table>
+<tbody><tr><th style="width:160px;">终端</th><th style="width:120px;">用户</th><th>核心功能</th><th>技术形态</th></tr>
+<tr>
+  <td><strong>智数后台</strong></td>
+  <td>业务员</td>
+  <td>对账单生成与管理、分成账期管理、回款管理、认款管理、基础设置、群聊关联</td>
+  <td>PC Web端（Vue + Element UI / Ant Design 风格）</td>
+</tr>
+<tr>
+  <td><strong>数智全开小程序</strong></td>
+  <td>合作客户</td>
+  <td>查看对账单、查看分成明细、打款提醒</td>
+  <td>微信小程序</td>
+</tr>
+<tr>
+  <td><strong>数智全开PC端</strong> <span class="badge badge-new">三期</span></td>
+  <td>合作客户</td>
+  <td>查看对账单详情、确认对账单、提出异议</td>
+  <td>独立网站（Web）</td>
+</tr>
+</tbody></table>
+
+<h3>3.2 数据流向</h3>
+<div class="flow">
+  <span class="flow-step">外部数据源<br>（游艺宝/世宇后台）</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step">智数后台<br>（对账/认款/账期/回款）</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step">数据推送<br>（企微群/小程序/PC端）</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step">客户确认<br>（核对/异议/打款）</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step">认款核销<br>（自动/手动）</span>
+</div>
+</section>
+
+<!-- ========== 用户角色 ========== -->
+<section id="roles">
+<h2>4. 用户角色</h2>
+<table>
+<tbody><tr><th style="width:120px;">角色</th><th>所属系统</th><th>权限范围</th></tr>
+<tr><td>业务员</td><td>智数后台</td><td>生成对账单、核对数据、认款操作、催款、锁机、查看分成账期/回款管理、基础设置（客户/门店/机台管理）、群聊关联管理</td></tr>
+<tr><td>合作客户</td><td>小程序/PC端</td><td>查看对账单、确认/异议、查看打款提醒</td></tr>
+</tbody></table>
+<div class="info-block">
+<strong>角色说明：</strong>综合组、管理员均为业务员角色，业务员自行管理各自板块的客户和门店。分成账期管理、合作机台回款管理主要由业务员查看。财务暂无导出财务数据功能。
+</div>
+</section>
+
+<!-- ========== 功能清单总览 ========== -->
+<section id="feature-list">
+<h2>5. 功能清单总览</h2>
+
+<h3>5.1 二期已上线功能 <span class="badge badge-done">已上线</span></h3>
+<table>
+<tbody><tr><th style="width:60px;">序号</th><th>功能模块</th><th>子功能</th><th>说明</th></tr>
+<tr><td>1</td><td rowspan="4">亿玩赏对账单</td><td>门店发货对账单</td><td>按台账发货数据生成对账单</td></tr>
+<tr><td>2</td><td>门店消耗对账单</td><td>按台账消耗数据生成对账单</td></tr>
+<tr><td>3</td><td>客户发货对账单</td><td>客户维度发货对账</td></tr>
+<tr><td>4</td><td>客户消耗对账单</td><td>客户维度消耗对账</td></tr>
+<tr><td>5</td><td rowspan="2">爆玩宇宙对账单</td><td>门店对账单</td><td>游艺宝/世宇后台双数据源，按游戏分组</td></tr>
+<tr><td>6</td><td>客户对账单</td><td>客户维度分成对账，含游戏分成明细</td></tr>
+<tr><td>7</td><td>分成账期管理</td><td>门店维度账期报表</td><td>催款、锁机、催款日志</td></tr>
+<tr><td>8</td><td>合作机台回款管理</td><td>门店总分成汇总</td><td>累计应收/实收/未收</td></tr>
+<tr><td>9</td><td>认款管理</td><td>认款列表+认款弹窗</td><td>银行流水导入、手动认款</td></tr>
+<tr><td>10</td><td>群聊关联管理</td><td>企微群绑定客户</td><td>推送对账单到群</td></tr>
+<tr><td>11</td><td>基础设置</td><td>客户/门店/机台管理</td><td>账期/自动锁机/自动催款设置、多业务员、SN管理</td></tr>
+<tr><td>12</td><td>财务手机版首页</td><td>合作机台分成分析</td><td>移动端看板</td></tr>
+<tr><td>13</td><td>数智全开小程序</td><td>客户对账单+打款提醒</td><td>爆玩宇宙客户对账单、门店明细、打款提醒</td></tr>
+</tbody></table>
+
+<h3>5.2 二期优化功能 <span class="badge badge-optimize">二期优化</span></h3>
+<table>
+<tbody><tr><th style="width:60px;">序号</th><th>功能模块</th><th>优化内容</th><th>说明</th></tr>
+<tr><td>1</td><td>爆玩宇宙对账单</td><td>门店对账单列表优化</td><td>统一机台分成明细字段、增加是否对账开关、发票下载、去除删除功能</td></tr>
+<tr><td>2</td><td>认款管理</td><td>新增礼品-亿玩赏选项</td><td>分成所属机台增加"礼品-亿玩赏"，款项类型联动为"礼品"</td></tr>
+<tr><td>3</td><td>界面交互优化</td><td>系统名称统一、菜单层级调整等</td><td>统一为"世宇智数管理系统"</td></tr>
+</tbody></table>
+
+<h3>5.3 三期新增功能 <span class="badge badge-new">三期</span></h3>
+<table>
+<tbody><tr><th style="width:60px;">序号</th><th>功能模块</th><th>核心内容</th><th>状态</th></tr>
+<tr><td>1</td><td>亿玩赏对账单</td><td>新增入库对账类型</td><td><span class="badge badge-confirm">待确认</span></td></tr>
+<tr><td>2</td><td>亿玩赏对账单</td><td>新增有消耗全发货对账类型</td><td><span class="badge badge-confirm">待确认</span></td></tr>
+<tr><td>3</td><td>爆玩宇宙对账单</td><td>客户不认可流程</td><td><span class="badge badge-confirm">待确认</span></td></tr>
+<tr><td>4</td><td>盲盒/其他对账单</td><td>新建期末码表对账</td><td><span class="badge badge-confirm">待确认</span></td></tr>
+<tr><td>5</td><td>自动认款</td><td>识别码匹配+自动认款+异常处理推送</td><td><span class="badge badge-confirm">方案修订中</span></td></tr>
+<tr><td>6</td><td>企微数据推送</td><td>对账单生成推送、逾期推送、可认款推送</td><td><span class="badge badge-todo">待开发</span></td></tr>
+<tr><td>7</td><td>自动催款推送</td><td>账期前2天自动推送催款信息到企微群</td><td><span class="badge badge-todo">待开发</span></td></tr>
+<tr><td>8</td><td>数智全开PC端对账单</td><td>客户PC端查看、确认、提出异议</td><td><span class="badge badge-todo">待开发</span></td></tr>
+<tr><td>9</td><td>预警推送</td><td>开票监控、设备异常监控、未对账催办</td><td><span class="badge badge-todo">待开发</span></td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 亿玩赏对账单 ========== -->
+<section id="recon-yws">
+<h2>6. 亿玩赏对账单</h2>
+<p>亿玩赏业务线共支持<strong>四种对账类型</strong>，由业务员在智数后台生成对账单后发送客户核对，数据不符时协商修改。</p>
+
+<div class="card card-blue">
+<h4 style="margin-top:0;">亿玩赏对账类型总览</h4>
+<table>
+<tbody><tr><th style="width:40px;">#</th><th>对账类型</th><th>对账依据</th><th style="width:100px;">状态</th></tr>
+<tr><td>1</td><td>消耗对账</td><td>按台账消耗数据对账</td><td><span class="badge badge-done">已上线</span></td></tr>
+<tr><td>2</td><td>发货对账</td><td>按台账发货数据对账</td><td><span class="badge badge-done">已上线</span></td></tr>
+<tr><td>3</td><td>入库对账</td><td>按客户发的入库单对账，需与发货单做对比，存在跨月入库</td><td><span class="badge badge-new">三期新增</span></td></tr>
+<tr><td>4</td><td>有消耗全发货对账</td><td>只要套餐有消耗，该套餐发货全对账</td><td><span class="badge badge-new">三期新增</span></td></tr>
+</tbody></table>
+</div>
+
+<h3>6.1 门店发货对账单 <span class="badge badge-done">已上线</span></h3>
+<section id="yws-store-ship"></section>
+
+<h4>6.1.1 功能描述</h4>
+<p>业务员按月度生成亿玩赏门店发货对账单，以台账发货数据为对账依据。对账单按"门店+客户"维度展示各套餐的发货金额和发货数量，业务员核对后生成图片推送客户群。</p>
+
+<h4>6.1.2 页面布局</h4>
+<table>
+<tbody><tr><th style="width:100px;">区域</th><th>内容</th></tr>
+<tr><td>筛选条件</td><td>对账月份、门店名称（多选）、客户名称（多选）、是否已核对、是否已认款、是否已开票</td></tr>
+<tr><td>表格列</td><td>复选框、对账月份、门店名称、客户名称、合作类型、识别码、分成对账金额、发货数量、是否已认款、认款金额、认款详情、是否已开票、已开票金额、发票、业务员已核对（开关）、操作</td></tr>
+<tr><td>操作下拉</td><td>生成图片、查看打印、查看明细、删除</td></tr>
+</tbody></table>
+
+<h4>6.1.3 生成对账单弹窗</h4>
+<table>
+<tbody><tr><th style="width:120px;">字段</th><th>类型</th><th>说明</th></tr>
+<tr><td>合作类型</td><td>下拉（固定）</td><td>亿玩赏</td></tr>
+<tr><td>对账类型</td><td>下拉</td><td>发货对账 / 消耗对账</td></tr>
+<tr><td>选择方式</td><td>单选</td><td>按业务员 / 按门店 / 按客户 / 按全部</td></tr>
+<tr><td>对账月份</td><td>月份选择</td><td>如：2026-08</td></tr>
+<tr><td>开始日期</td><td>日期选择</td><td>对账数据起始日期</td></tr>
+<tr><td>结束日期</td><td>日期选择</td><td>对账数据截止日期</td></tr>
+</tbody></table>
+<p><strong>选择方式说明：</strong></p>
+<ul>
+<li><strong>按业务员</strong>：选择业务员后，自动带出该业务员关联的所有门店和客户</li>
+<li><strong>按门店</strong>：选择门店后，自动带出该门店关联的客户</li>
+<li><strong>按客户</strong>：选择客户后，自动带出该客户关联的门店</li>
+<li><strong>按全部</strong>：生成所有门店/客户的对账单</li>
+</ul>
+
+<h4>6.1.4 业务流程</h4>
+<div class="flow">
+<span class="flow-step">选择参数生成对账单</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">系统拉取台账发货数据</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">业务员核对</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">数据不符则查看明细修改</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">金额同步至分成数据</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">生成图片/推送客户群</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">客户核对确认</span>
+</div>
+
+<h3>6.2 门店消耗对账单 <span class="badge badge-done">已上线</span></h3>
+<section id="yws-store-consume"></section>
+<h4>6.2.1 功能描述</h4>
+<p>以台账消耗数据为对账依据，展示总发货金额/数量、总消耗金额/数量、剩余库存。其余筛选条件、操作、生成弹窗与发货对账单一致。</p>
+
+<h4>6.2.2 与发货对账单的差异</h4>
+<table>
+<tbody><tr><th style="width:160px;">差异点</th><th>发货对账单</th><th>消耗对账单</th></tr>
+<tr><td>对账依据</td><td>台账发货数据</td><td>台账消耗数据</td></tr>
+<tr><td>特有字段</td><td>分成对账金额、发货数量</td><td>总发货金额/数量、总消耗金额/数量、剩余库存</td></tr>
+<tr><td>生成弹窗-对账类型</td><td>发货对账</td><td>消耗对账</td></tr>
+</tbody></table>
+
+<h3>6.3 客户发货对账单 <span class="badge badge-done">已上线</span></h3>
+<section id="yws-cust-ship"></section>
+<h4>6.3.1 功能描述</h4>
+<p>客户维度的发货对账单，按客户汇总发货数据。筛选条件：对账月份、客户名称（多选）、是否已核对、是否已推送。</p>
+<h4>6.3.2 表格字段</h4>
+<table>
+<tbody><tr><th>字段</th><th>说明</th></tr>
+<tr><td>客户</td><td>客户名称</td></tr>
+<tr><td>识别码</td><td>客户唯一识别码</td></tr>
+<tr><td>门店</td><td>关联门店</td></tr>
+<tr><td>是否已推送</td><td>是否已推送到客户群</td></tr>
+<tr><td>业务员已核对</td><td>业务员核对开关</td></tr>
+<tr><td>图片</td><td>对账单图片</td></tr>
+<tr><td>IP礼品套餐</td><td>涉及的IP礼品套餐</td></tr>
+<tr><td>发货金额</td><td>发货总金额</td></tr>
+<tr><td>发货数量</td><td>发货总数量</td></tr>
+</tbody></table>
+<h4>6.3.3 操作</h4>
+<p>推送到客户群、查看打印、生成图片</p>
+
+<h3>6.4 客户消耗对账单 <span class="badge badge-done">已上线</span></h3>
+<section id="yws-cust-consume"></section>
+<h4>6.4.1 功能描述</h4>
+<p>客户维度的消耗对账单，展示总发货金额/数量、总消耗金额/数量、IP礼品套餐。筛选条件和操作与客户发货对账单一致。</p>
+
+<h3>6.5 门店入库对账单 <span class="badge badge-new">三期新增</span></h3>
+<section id="yws-store-inbound"></section>
+<div class="warn-block">
+<strong>待确认事项：</strong>入库对账的以下细节需要进一步确认后补充：
+<ul>
+<li>客户入库单的录入方式（Excel导入/手动录入/系统对接）</li>
+<li>入库对账与发货对账是否重复计算金额（是否需要抵扣或标记）</li>
+<li>入库对账的具体对比维度（数量差异/金额差异/仅看入库数）</li>
+</ul>
+</div>
+<h4>6.5.1 功能描述（初步）</h4>
+<p>按客户发送的入库单进行对账，需与系统内的发货单做数据对比。支持跨月入库场景——本月发货的货物可能在下月才入库对账。</p>
+<h4>6.5.2 生成弹窗-对账类型</h4>
+<p>在现有生成弹窗的"对账类型"下拉中新增"入库对账"选项。</p>
+
+<h3>6.6 有消耗全发货对账 <span class="badge badge-new">三期新增</span></h3>
+<section id="yws-all-ship"></section>
+<div class="warn-block">
+<strong>待确认事项：</strong>该对账类型的以下细节需要确认：
+<ul>
+<li>适用场景（是否由特定客户的合同条款决定）</li>
+</ul>
+</div>
+<h4>6.6.1 功能描述</h4>
+<p>亿玩赏目前卖的是套餐系列，一个套餐包含很多不同礼品。若客户发货未对账的套餐中，有任何礼品产生了消耗，则该套餐全部发起对账（按整个套餐的发货金额对账）。与消耗对账的区别：消耗对账是按套餐里有消耗的礼品对账，只算消耗部分；全发货对账是整个套餐全部对账，不管消耗了多少。</p>
+
+<h4>6.6.2 消耗对账 vs 有消耗全发货对账对比</h4>
+<table>
+<tbody><tr><th style="width:120px;">对比维度</th><th>消耗对账</th><th>有消耗全发货对账</th></tr>
+<tr><td>对账依据</td><td>按台账消耗数据对账</td><td>按套餐发货数据对账（消耗作为触发条件）</td></tr>
+<tr><td>对账范围</td><td>仅套餐中已消耗的礼品</td><td>整个套餐的全部礼品（只要有任意礼品消耗）</td></tr>
+<tr><td>触发条件</td><td>有消耗数据即对账消耗部分</td><td>套餐内任意礼品产生消耗即触发全套餐对账</td></tr>
+<tr><td>金额计算</td><td>消耗礼品的消耗金额 × 分成比例</td><td>整个套餐的发货金额 × 分成比例</td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 爆玩宇宙对账单 ========== -->
+<section id="recon-bw">
+<h2>7. 爆玩宇宙对账单</h2>
+<p>爆玩宇宙业务线支持<strong>游艺宝和世宇后台双数据源</strong>，按游戏分组展示收币数据。客户分为两类：认可对账单的客户（看是否有微调）和不认可的客户（需综合组沟通确认）。</p>
+
+<h3>7.1 门店对账单 <span class="badge badge-done">已上线</span></h3>
+<section id="bw-store"></section>
+
+<h4>7.1.1 功能描述</h4>
+<p>业务员按月度生成爆玩宇宙门店对账单，支持游艺宝/世宇后台双数据源切换。对账单按游戏分组展示收币数/测试币，可编辑币值、收币数，生成图片推送客户。</p>
+
+<h4>7.1.2 页面布局</h4>
+<table>
+<tbody><tr><th style="width:100px;">区域</th><th>内容</th></tr>
+<tr><td>数据源切换</td><td>游艺宝 / 世宇后台（Tab切换）</td></tr>
+<tr><td>筛选条件</td><td>对账月份、门店名称、客户名称、是否已认款、是否已开票、业务员已核对</td></tr>
+<tr><td>游艺宝视图</td><td>按游戏分组（如：乖巧宝宝之摸鱼达人、乖巧派对、勇者大陆、向阳而生乖巧版），每组含分成数/收币数/测试币</td></tr>
+<tr><td>世宇后台视图</td><td>合计行（测试币、分成对账金额、合计收币数、合计测试币）、约定币值、分成比例、机台数量、机台信息、图片</td></tr>
+<tr><td>操作下拉</td><td>修改币值、修改测试币、重新生成对账单、编辑备注、查看打印页、明细列表、生成图片</td></tr>
+</tbody></table>
+
+<h4>7.1.3 生成对账单弹窗</h4>
+<table>
+<tbody><tr><th style="width:120px;">字段</th><th>类型</th><th>说明</th></tr>
+<tr><td>数据来源</td><td>单选</td><td>游艺宝 / 世宇后台</td></tr>
+<tr><td>选择方式</td><td>单选</td><td>全部 / 按门店 / 按客户</td></tr>
+<tr><td>对账月份</td><td>月份选择</td><td>如：2026-08</td></tr>
+<tr><td>开始日期</td><td>日期选择</td><td>对账数据起始日期</td></tr>
+<tr><td>结束日期</td><td>日期选择</td><td>对账数据截止日期</td></tr>
+</tbody></table>
+
+<h4>7.1.4 明细列表</h4>
+<p>点击"明细列表"可查看每日收币数据，按游戏分组展示每日投币数，底部含合计行、约定币值行、世宇分成行、己方分成行。</p>
+
+<h4>7.1.5 门店对账单列表优化 <span class="badge badge-optimize">二期优化</span></h4>
+<div class="card card-amber">
+<h5 style="margin-top:0;">优化原因</h5>
+<p>原列表展示单个机台收币分成情况，信息过于分散，不利于业务员快速查看和操作。</p>
+</div>
+
+<h5>优化内容</h5>
+<table>
+<tbody><tr><th style="width:40px;">#</th><th style="width:160px;">优化项</th><th>说明</th></tr>
+<tr><td>1</td><td>统一"机台分成明细"字段</td><td>列表中不再展示单个机台的收币分成，统一为一个"机台分成明细"字段，点击后弹窗查看详情</td></tr>
+<tr><td>2</td><td>增加"是否对账"开关</td><td>列表增加"是否对账"开关列，业务员可快速标记对账状态</td></tr>
+<tr><td>3</td><td>发票支持下载</td><td>发票列增加下载功能，可直接下载对应发票文件</td></tr>
+<tr><td>4</td><td>去除删除功能</td><td>操作下拉中移除"删除"选项，避免误操作</td></tr>
+</tbody></table>
+
+<h5>明细列表弹窗样式</h5>
+<div class="card card-blue">
+<p><strong>顶部蓝色信息栏：</strong>门店名称、客户名称、对账月份、约定币值、分成比例</p>
+<p><strong>6个统计卡片：</strong>摸鱼达人、乖巧派对、勇者大陆、向阳而生、世宇分成、合计金额</p>
+<p><strong>工具栏：</strong>刷新、搜索、视图切换、导出</p>
+<p><strong>表格列：</strong>日期、各游戏币数、合计币数、合计金额、世宇分成金额、乐园分成金额、操作（绿色编辑按钮）</p>
+</div>
+
+<h5>编辑功能说明</h5>
+<ul>
+<li><strong>当前：</strong>只能修改当天的收币币值</li>
+<li><strong>优化后：</strong>可直接修改整个机台/整款游戏的总投币数</li>
+<li><strong>建议方案：</strong>修改总投币数后，按原有每日投币数比例自动均分到每一天</li>
+</ul>
+<div class="info-block">
+<strong>举例说明：</strong>某游戏原每日投币数为：第1天100币、第2天200币、第3天300币，合计600币。若将总投币数修改为1200币（翻倍），则系统自动按比例均分：第1天200币、第2天400币、第3天600币。
+</div>
+
+<h3>7.2 客户对账单 <span class="badge badge-done">已上线</span></h3>
+<section id="bw-cust"></section>
+<h4>7.2.1 功能描述</h4>
+<p>客户维度的爆玩宇宙对账单，汇总该客户下所有门店的分成数据，含各游戏分成明细。</p>
+<h4>7.2.2 表格字段</h4>
+<table>
+<tbody><tr><th>字段</th><th>说明</th></tr>
+<tr><td>对账月份</td><td>如：2026-08</td></tr>
+<tr><td>客户名称</td><td>客户名称</td></tr>
+<tr><td>识别码</td><td>客户唯一识别码</td></tr>
+<tr><td>合作机台数量</td><td>该客户下的合作机台总数</td></tr>
+<tr><td>各游戏分成数据</td><td>按游戏展示分成数据</td></tr>
+<tr><td>我司合计分成</td><td>世宇科技合计分成金额</td></tr>
+<tr><td>他司合计分成</td><td>客户方合计分成金额</td></tr>
+<tr><td>约定币值</td><td>双方约定的币值</td></tr>
+<tr><td>分成比例</td><td>分成比例（如：世宇15%/客户60%/其他25%）</td></tr>
+<tr><td>开始/结束时间</td><td>对账周期</td></tr>
+<tr><td>图片</td><td>对账单图片</td></tr>
+<tr><td>是否已推送</td><td>是否已推送到客户群</td></tr>
+<tr><td>核对员审核</td><td>核对状态</td></tr>
+</tbody></table>
+<h4>7.2.3 操作</h4>
+<p>查看打印页、推送到客户群、生成图片</p>
+<h4>7.2.4 批量操作</h4>
+<p>批量下载、批量推送给客户、一键生成图片</p>
+
+<h3>7.3 客户不认可流程 <span class="badge badge-new">三期新增</span></h3>
+<section id="bw-dispute"></section>
+<div class="warn-block">
+<strong>待确认事项：</strong>客户不认可流程的以下细节需要确认：
+<ul>
+<li>编辑方式确认：方式A按天修改 / 方式B修改总投币数后系统自动按比例均分到每天（推荐方式B）</li>
+<li>异常提醒的实现方式和推送对象</li>
+</ul>
+</div>
+<h4>7.3.1 功能描述</h4>
+<p>部分客户不认可系统生成的对账单数据，需要线下沟通确认最终收币数。整体流程：还是和之前一样生成对账单 → 在对账单基础上支持修改单个机台的投币数 → 根据投币数 × 币值 × 分成比例 自动算出分成。</p>
+<p><strong>修改入口：</strong>通过"机台分成明细"弹窗进入，点击单条数据的"编辑"按钮修改。</p>
+<p><strong>编辑方式（可讨论）：</strong></p>
+<ul>
+<li><strong>方式A：</strong>按天修改——直接修改每天的投币数</li>
+<li><strong>方式B（推荐）：</strong>修改总投币数后系统自动按比例均分到每天</li>
+</ul>
+</section>
+
+<!-- ========== 盲盒/其他对账单 ========== -->
+<section id="recon-other">
+<h2>8. 盲盒/其他对账单 <span class="badge badge-new">三期新增-待新建</span></h2>
+<div class="warn-block">
+<strong>待确认事项：</strong>盲盒对账的以下细节需要确认：
+<ul>
+<li>码表录入方式（拍照上传/手动录入数字）</li>
+<li>期初码表数来源（上月末自动带入/手动录入）</li>
+<li>对账金额计算方式（期末-期初差值 × 单价？）</li>
+</ul>
+</div>
+<h3>8.1 功能描述（初步）</h3>
+<p>客户拍摄码表发送，系统生成期末码表数，按<strong>期末码表数 - 期初码表数</strong>的差值进行对账。此模块需从零设计页面和流程。</p>
+</section>
+
+<!-- ========== 分成账期管理 ========== -->
+<section id="period">
+<h2>9. 分成账期管理 <span class="badge badge-done">已上线</span></h2>
+
+<h3>9.1 功能描述</h3>
+<p>门店维度的账期报表，展示每个门店客户每月的对账收入、已收款、差异金额、账期期限、逾期天数等。支持催款、锁机操作，记录催款日志。</p>
+
+<div class="info-block">
+<strong>数据说明：</strong>分成账期管理数据从2026年1月开始计算，去年欠款归零（期初欠款为0）。后续综合组可整理历史数据，由数智中心批量调整，优先调整今年数据。
+</div>
+
+<h3>9.2 计算规则</h3>
+<table>
+<tbody><tr><th style="width:160px;">规则项</th><th>说明</th></tr>
+<tr><td>账期期限</td><td>根据客户设置中的账期天数计算（如30天/60天）</td></tr>
+<tr><td>逾期天数</td><td>当前日期 - （账单月份 + 账期期限）的天数差，逾期为正数</td></tr>
+<tr><td>对账收入</td><td>该门店客户该月的分成对账金额合计</td></tr>
+<tr><td>已收款</td><td>该门店客户该月已认款金额合计</td></tr>
+<tr><td>差异金额</td><td>对账收入 - 已收款</td></tr>
+</tbody></table>
+
+<h3>9.3 页面布局</h3>
+<table>
+<tbody><tr><th style="width:100px;">区域</th><th>内容</th></tr>
+<tr><td>Tips提示</td><td>账期期限计算规则、逾期天数计算规则</td></tr>
+<tr><td>统计行</td><td>对账收入、已收款、未收款、逾期门店数</td></tr>
+<tr><td>筛选条件</td><td>门店名称、客户名称、账单月份、是否逾期、业务员</td></tr>
+<tr><td>表格列</td><td>复选框、序号、门店名称、客户名称、账单月份、已开票金额、对账收入、已收款、差异金额、账期期限、逾期天数、是否逾期、是否锁机、催款次数、业务员、操作</td></tr>
+<tr><td>操作</td><td>催款、锁机、催款日志</td></tr>
+<tr><td>批量操作</td><td>一键催款</td></tr>
+</tbody></table>
+
+<h3>9.4 催款与锁机</h3>
+<table>
+<tbody><tr><th style="width:120px;">功能</th><th>说明</th></tr>
+<tr><td>催款</td><td>手动触发催款，记录催款次数和催款日志</td></tr>
+<tr><td>锁机</td><td>对逾期客户执行远程锁机操作（仅支持爆玩宇宙和亿玩赏，盲盒不支持）</td></tr>
+<tr><td>催款日志</td><td>查看历次催款记录</td></tr>
+<tr><td>自动催款 <span class="badge badge-new">三期</span></td><td>账期前2天早上10:00自动推送催款信息到企微群</td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 合作机台回款管理 ========== -->
+<section id="payment">
+<h2>10. 合作机台回款管理 <span class="badge badge-done">已上线</span></h2>
+
+<h3>10.1 功能描述</h3>
+<p>门店维度的总分成汇总报表，展示累计应收、累计实收、累计未收，以及分月度的收款情况。</p>
+
+<h3>10.2 页面布局</h3>
+<table>
+<tbody><tr><th style="width:100px;">区域</th><th>内容</th></tr>
+<tr><td>提示</td><td>数据统计从2026年1月开始</td></tr>
+<tr><td>统计卡片</td><td>累计应收、累计实收、累计未收</td></tr>
+<tr><td>筛选条件</td><td>门店、客户、是否有欠款、实收大于应收、业务员</td></tr>
+<tr><td>表格列</td><td>门店、客户、累计应收、累计实收、累计未收、已开票金额、对账收入、已收款、3个月未收款、6个月未收款、业务员、操作</td></tr>
+<tr><td>操作</td><td>查看详情（跳转分成账期管理）</td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 认款管理 ========== -->
+<section id="recon-list">
+<h2>11. 认款管理 <span class="badge badge-done">已上线</span></h2>
+
+<h3>11.1 认款列表</h3>
+<h4>11.1.1 功能描述</h4>
+<p>展示导入的银行流水数据，业务员对未认款的流水执行"去认款"操作，将其与对账单进行匹配核销。支持多银行模板导入。</p>
+
+<h4>11.1.2 银行导入规则</h4>
+<table>
+<tbody><tr><th>银行/渠道</th><th>文件名规则</th><th>格式</th></tr>
+<tr><td>建设银行</td><td>文件名需包含"建行"二字</td><td>xlsx</td></tr>
+<tr><td>建设银行二维码</td><td>文件名需包含"建行二维码"五字</td><td>csv</td></tr>
+<tr><td>微信支付</td><td>文件名需包含"微信支付"四字</td><td>csv</td></tr>
+<tr><td>中国银行</td><td>文件名需包含"中行"二字</td><td>xlsx</td></tr>
+<tr><td>星展银行</td><td>按银行导出原名</td><td>xlsx</td></tr>
+</tbody></table>
+<div class="warn-block">
+<strong>注意：</strong>使用系统"模板下载"的模板导入时，文件名<strong>不能含有</strong>以上关键字，否则导入会失败。
+</div>
+
+<h4>11.1.3 筛选条件</h4>
+<table>
+<tbody><tr><th style="width:120px;">字段</th><th>类型</th><th>说明</th></tr>
+<tr><td>数据来源</td><td>下拉</td><td>建行/建行二维码/微信支付/中行/星展银行</td></tr>
+<tr><td>交易时间</td><td>日期范围</td><td>交易发生时间</td></tr>
+<tr><td>付款方户名</td><td>文本</td><td>模糊匹配</td></tr>
+<tr><td>付款金额</td><td>数值</td><td>精确/范围匹配</td></tr>
+<tr><td>订单号</td><td>文本</td><td>精确/模糊匹配</td></tr>
+<tr><td>备注</td><td>文本</td><td>模糊匹配</td></tr>
+<tr><td>币种</td><td>下拉</td><td>人民币元/美元等</td></tr>
+<tr><td>认款状态</td><td>下拉</td><td>已认款/未认款</td></tr>
+<tr><td>交易流水号</td><td>文本</td><td>精确匹配</td></tr>
+<tr><td>认领时间</td><td>日期范围</td><td>认款操作时间</td></tr>
+</tbody></table>
+
+<h4>11.1.4 表格字段</h4>
+<table>
+<tbody><tr><th style="width:120px;">列名</th><th>说明</th></tr>
+<tr><td>数据来源</td><td>银行/支付渠道标识</td></tr>
+<tr><td>交易时间</td><td>精确到秒</td></tr>
+<tr><td>付款方户名</td><td>付款方账户名称</td></tr>
+<tr><td>付款金额</td><td>付款金额</td></tr>
+<tr><td>付款方账号</td><td>付款方银行账号</td></tr>
+<tr><td>订单号</td><td>订单号（可为空）</td></tr>
+<tr><td>备注</td><td>交易类型说明（如"转账""电子汇入"）</td></tr>
+<tr><td>币种</td><td>如"人民币元"</td></tr>
+<tr><td>认款状态</td><td>已认款（蓝色标签）/ 未认款（灰色标签）</td></tr>
+<tr><td>认领中的金额</td><td>正在认款流程中的金额</td></tr>
+<tr><td>已认领金额</td><td>已完成认款的金额</td></tr>
+<tr><td>交易流水号</td><td>银行流水号</td></tr>
+<tr><td>认领时间</td><td>认款操作时间</td></tr>
+<tr><td>操作</td><td>未认款：显示"去认款"按钮+删除；已认款：仅显示删除</td></tr>
+</tbody></table>
+
+<h4>11.1.5 功能按钮</h4>
+<table>
+<tbody><tr><th style="width:140px;">按钮</th><th>说明</th></tr>
+<tr><td>模板下载</td><td>下载标准导入模板</td></tr>
+<tr><td>上传数据</td><td>导入银行流水文件</td></tr>
+<tr><td>导出财务数据</td><td>导出财务格式数据</td></tr>
+<tr><td>导出数据</td><td>通用数据导出</td></tr>
+</tbody></table>
+
+<h4>11.1.6 公告提示</h4>
+<div class="info-block">
+<strong>使用说明（页面公告）：</strong>
+<ul>
+<li>此功能仅适用于<strong>非销售合同</strong>认款，如合作合同分成款、商城订单款、售后单款等</li>
+<li>销售合同相关的款，请在CRM发起合同收/退款流程</li>
+<li>未找到对应收款？联系财务部确认对应日期的收款数据是否已导入系统</li>
+<li>认错/认多/认少款？星展银行款项反馈财务部处理，其他反馈财务部处理</li>
+</ul>
+</div>
+</section>
+
+<section id="recon-form">
+<h3>11.2 认款弹窗</h3>
+<h4>11.2.1 弹窗结构</h4>
+<table>
+<tbody><tr><th style="width:120px;">区域</th><th>字段</th><th>说明</th></tr>
+<tr><td rowspan="3">基础信息</td><td>付款方户名</td><td>只读，自动带出</td></tr>
+<tr><td>所属k3客户 <span class="req">*</span></td><td>必填，下拉选择</td></tr>
+<tr><td>OA合同编号/内号</td><td>下拉选择，如：SYAA-20241125-2847</td></tr>
+<tr><td rowspan="8">认款明细<br>（可多行）</td><td>款项类型 <span class="req">*</span></td><td>必填，下拉选择</td></tr>
+<tr><td>认领金额 <span class="req">*</span></td><td>必填，数值输入</td></tr>
+<tr><td>门店</td><td>下拉选择</td></tr>
+<tr><td>款项月份</td><td>下拉选择</td></tr>
+<tr><td>开票客户名称</td><td>下拉选择</td></tr>
+<tr><td>分成所属机台</td><td>下拉选择（见下方选项列表）</td></tr>
+<tr><td>关联订单号</td><td>下拉选择</td></tr>
+<tr><td>款项备注</td><td>文本输入，默认"转账"</td></tr>
+<tr><td rowspan="4">金额汇总</td><td>总金额</td><td>该笔流水总金额</td></tr>
+<tr><td>已认领金额</td><td>已认领的金额</td></tr>
+<tr><td>可认领金额</td><td>剩余可认领金额</td></tr>
+<tr><td>输入金额合计</td><td>当前认款明细输入的金额合计</td></tr>
+<tr><td>认款人</td><td>认款人/业务员 <span class="req">*</span></td><td>必填，下拉选择</td></tr>
+</tbody></table>
+<h4>11.2.2 分成所属机台选项（当前）</h4>
+<table>
+<tbody><tr><th>选项</th><th>说明</th></tr>
+<tr><td>分成-盲盒</td><td>盲盒业务分成认款</td></tr>
+<tr><td>分成-亿玩堂</td><td>亿玩堂业务分成认款</td></tr>
+<tr><td>分成-爆玩宇宙</td><td>爆玩宇宙业务分成认款</td></tr>
+<tr><td>分成-其他</td><td>其他业务分成认款</td></tr>
+</tbody></table>
+</section>
+
+<section id="recon-optimize">
+<h3>11.3 认款优化点 <span class="badge badge-optimize">二期优化</span></h3>
+<div class="card card-amber">
+<h4 style="margin-top:0;">优化需求</h4>
+<p>亿玩赏存在需要开<strong>礼品发票</strong>的情况。要开礼品发票，款项类型必须为"礼品"，而非"分成"。</p>
+<h4>改动点</h4>
+<table>
+<tbody><tr><th style="width:200px;">改动项</th><th>当前</th><th>优化后</th></tr>
+<tr><td>分成所属机台选项</td><td>分成-盲盒、分成-亿玩堂、分成-爆玩宇宙、分成-其他</td><td>新增选项：<strong>礼品-亿玩赏</strong></td></tr>
+<tr><td>款项类型联动</td><td>选择"分成-xxx"时款项类型为"分成"</td><td>选择"礼品-亿玩赏"时，款项类型<strong>自动带出为"礼品"</strong></td></tr>
+</tbody></table>
+<h4>业务规则</h4>
+<ul>
+<li>选择"礼品-亿玩赏"时，款项类型自动设置为"礼品"，且不可修改</li>
+<li>选择"分成-xxx"时，款项类型默认为"分成"</li>
+<li>礼品发票走独立的发票流程</li>
+</ul>
+</div>
+</section>
+
+<!-- ========== 群聊关联管理 ========== -->
+<section id="chat-bind">
+<h2>12. 合作客户群聊关联管理 <span class="badge badge-done">已上线</span></h2>
+<h3>12.1 功能描述</h3>
+<p>将企业微信群与系统客户进行绑定，绑定后可将对账单、催款信息等推送到对应的企微群。</p>
+<h3>12.2 核心功能</h3>
+<table>
+<tbody><tr><th style="width:140px;">功能</th><th>说明</th></tr>
+<tr><td>群聊绑定</td><td>将企微群与客户关联</td></tr>
+<tr><td>对账单推送</td><td>将对账单图片/链接推送到客户群</td></tr>
+<tr><td>催款推送 <span class="badge badge-new">三期</span></td><td>账期前2天自动推送催款信息到群</td></tr>
+<tr><td>数据推送 <span class="badge badge-new">三期</span></td><td>逾期数据、可认款数据推送到群</td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 基础设置 ========== -->
+<section id="settings">
+<h2>13. 基础设置 <span class="badge badge-done">已上线</span></h2>
+<h3>13.1 客户管理</h3>
+<table>
+<tbody><tr><th style="width:160px;">字段</th><th>说明</th></tr>
+<tr><td>客户名称</td><td>客户名称</td></tr>
+<tr><td>识别码</td><td>客户唯一识别码（用于自动认款匹配）</td></tr>
+<tr><td>账期天数</td><td>如30天/60天，用于账期计算</td></tr>
+<tr><td>自动锁机</td><td>是否开启逾期自动锁机</td></tr>
+<tr><td>自动催款</td><td>是否开启自动催款</td></tr>
+</tbody></table>
+<h3>13.2 门店管理</h3>
+<table>
+<tbody><tr><th style="width:160px;">字段</th><th>说明</th></tr>
+<tr><td>门店名称</td><td>门店名称</td></tr>
+<tr><td>关联客户</td><td>所属客户</td></tr>
+<tr><td>业务员</td><td>支持多业务员</td></tr>
+</tbody></table>
+<h3>13.3 机台SN管理</h3>
+<table>
+<tbody><tr><th style="width:160px;">字段</th><th>说明</th></tr>
+<tr><td>机台SN</td><td>机台序列号</td></tr>
+<tr><td>关联门店</td><td>所属门店</td></tr>
+<tr><td>锁机状态</td><td>是否已锁机</td></tr>
+<tr><td>支持锁机</td><td>爆玩宇宙/亿玩赏支持，盲盒不支持</td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 数智全开小程序 ========== -->
+<section id="mini-overview">
+<h2>14. 数智全开小程序 <span class="badge badge-done">已上线</span></h2>
+<p>面向合作客户的微信小程序，客户可查看对账单和分成明细，接收打款提醒。</p>
+
+<h3>14.1 合作机台首页 <span class="badge badge-done">已上线</span></h3>
+<section id="mini-home"></section>
+<table>
+<tbody><tr><th style="width:120px;">入口卡片</th><th>功能</th></tr>
+<tr><td>亿玩赏</td><td>进入亿玩赏对账单</td></tr>
+<tr><td>爆玩宇宙</td><td>进入爆玩宇宙客户对账单</td></tr>
+<tr><td>款项记录</td><td>即打款提醒列表</td></tr>
+</tbody></table>
+
+<h3>14.2 爆玩宇宙客户对账单 <span class="badge badge-done">已上线</span></h3>
+<section id="mini-bw-cust"></section>
+<h4>14.2.1 列表页</h4>
+<p>按月份卡片展示，每张卡片含：客户名称、月份标签、总机台数、总收币数、世宇总分成、已方总分成。点击卡片进入明细页。</p>
+<h4>14.2.2 明细页</h4>
+<table>
+<tbody><tr><th style="width:120px;">区域</th><th>内容</th></tr>
+<tr><td>日期筛选</td><td>月份选择器（如2026-03）</td></tr>
+<tr><td>统计卡片（2×2）</td><td>总机台数、总收币数、世宇总分成、己方总分成</td></tr>
+<tr><td>门店列表</td><td>每行：门店名称、机台数、总收币数、世宇分成、己方分成</td></tr>
+<tr><td>底部</td><td>最后更新时间</td></tr>
+</tbody></table>
+
+<h3>14.3 爆玩宇宙门店对账单明细 <span class="badge badge-done">已上线</span></h3>
+<section id="mini-bw-detail"></section>
+<table>
+<tbody><tr><th style="width:120px;">区域</th><th>内容</th></tr>
+<tr><td>统计卡片（2×2）</td><td>总机台数、总投币数、世宇总分成、己方总分成</td></tr>
+<tr><td>每日数据表</td><td>按游戏分组（摸鱼达人/乖巧派对/勇者大陆/向阳而生），展示每日投币数</td></tr>
+<tr><td>合计行</td><td>各游戏月度合计收币数</td></tr>
+<tr><td>约定币值行</td><td>各游戏约定币值（如0.40）</td></tr>
+<tr><td>世宇分成行</td><td>各游戏世宇分成金额</td></tr>
+<tr><td>己方分成行</td><td>各游戏己方分成金额</td></tr>
+</tbody></table>
+<p><strong>分成计算：</strong>合计收币数 × 约定币值 × 分成比例 = 分成金额。世宇分成约15%，己方分成约60%。</p>
+
+<h3>14.4 打款提醒 <span class="badge badge-done">已上线</span></h3>
+<section id="mini-pay-remind"></section>
+<h4>14.4.1 列表页</h4>
+<p>卡片列表，每张含：门店名称、状态标签（待付款）、应付金额合计、截止日期。提示文案："点击列表可查看详情"。</p>
+<h4>14.4.2 详情页</h4>
+<table>
+<tbody><tr><th style="width:120px;">区域</th><th>内容</th></tr>
+<tr><td>标题区</td><td>"打款提醒"+ 截止日期</td></tr>
+<tr><td>金额汇总</td><td>应付金额合计（红色突出）</td></tr>
+<tr><td>分项明细</td><td>按业务线列出（爆玩宇宙/亿玩赏/盲盒宇宙）</td></tr>
+<tr><td>付款方式</td><td>账户名称、银行账号、开户行</td></tr>
+<tr><td>重要提醒</td><td>提供付款凭证、联系业务员核对、逾期影响机台使用、严重逾期启动远程锁机</td></tr>
+</tbody></table>
+<h4>14.4.3 空状态</h4>
+<p>机器人插画 + "暂无待付款"文案。</p>
+<h4>14.4.4 微信推送</h4>
+<p>推送对账单时使用蓝色封面卡片（"世宇科技 对账单"），推送打款提醒时使用红色封面卡片（"世宇科技 打款提醒"）。卡片标题示例："2026年05月爆玩宇宙对账单数据已生成，请查看"。</p>
+</section>
+
+<!-- ========== 数智全开PC端 ========== -->
+<section id="pc-overview">
+<h2>15. 数智全开PC端对账单 <span class="badge badge-new">三期新增</span></h2>
+<div class="info-block">
+<strong>定位：</strong>面向合作客户的独立网站，客户可在PC端查看对账单详情、确认对账单或提出异议。数据来源于智数后台，字段会精简（如认款显示为"打款"等），部分管理类字段去除。
+</div>
+
+<h3>15.1 对账单列表 <span class="badge badge-new">三期</span></h3>
+<section id="pc-list"></section>
+<table>
+<tbody><tr><th style="width:120px;">区域</th><th>说明</th></tr>
+<tr><td>系统框架</td><td>数智全开管理后台，Ant Design风格，蓝灰色调</td></tr>
+<tr><td>筛选条件</td><td>对账月份、合作类型、是否已确认</td></tr>
+<tr><td>表格列</td><td>对账月份、合作类型、门店/客户名称、对账金额、打款金额、是否已确认、操作（查看详情）</td></tr>
+</tbody></table>
+
+<h3>15.2 对账单详情 <span class="badge badge-new">三期</span></h3>
+<section id="pc-detail"></section>
+<table>
+<tbody><tr><th style="width:120px;">区域</th><th>说明</th></tr>
+<tr><td>基本信息</td><td>对账月份、合作类型、门店/客户名称、对账周期</td></tr>
+<tr><td>对账数据</td><td>按业务线展示分成数据明细（精简版，不显示内部管理字段）</td></tr>
+<tr><td>金额汇总</td><td>应付金额合计</td></tr>
+<tr><td>操作</td><td>确认对账单 / 提出异议</td></tr>
+</tbody></table>
+
+<h3>15.3 确认/提出异议 <span class="badge badge-new">三期</span></h3>
+<section id="pc-dispute"></section>
+<table>
+<tbody><tr><th style="width:120px;">功能</th><th>说明</th></tr>
+<tr><td>确认对账单</td><td>客户确认对账单数据无误，确认后状态变更为"已确认"</td></tr>
+<tr><td>提出异议</td><td>弹窗填写异议原因，支持上传附件（付款凭证等）后提交</td></tr>
+</tbody></table>
+<h4>提出异议弹窗字段</h4>
+<table>
+<tbody><tr><th style="width:120px;">字段</th><th>类型</th><th>说明</th></tr>
+<tr><td>异议原因 <span class="req">*</span></td><td>文本域</td><td>必填，描述异议内容</td></tr>
+<tr><td>附件上传</td><td>文件上传</td><td>支持上传图片/PDF等附件</td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 三期功能 ========== -->
+<section id="auto-recon">
+<h2>16. 三期功能详述</h2>
+
+<h3>16.1 自动认款 <span class="badge badge-confirm">方案修订中</span></h3>
+<div class="warn-block">
+<strong>方案状态：</strong>自动认款方案文档尚在修订中，以下为已确认的核心规则，待修订完成后补充完整方案。
+</div>
+
+<h4>16.1.1 核心流程</h4>
+<div class="flow">
+<span class="flow-step">客户银行转账<br>（备注填写识别码）</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">银行流水导入<br>智数后台</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">系统提取备注中<br>的识别码</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">匹配对账单</span>
+<span class="flow-arrow">→</span>
+<span class="flow-step">自动认款</span>
+</div>
+
+<h4>16.1.2 已确认规则</h4>
+<table>
+<tbody><tr><th style="width:200px;">规则项</th><th>说明</th></tr>
+<tr><td>识别码</td><td>已开发完成，规则由开发团队制定</td></tr>
+<tr><td>识别码填写位置</td><td>客户在银行转账备注/附言中填写</td></tr>
+<tr><td>二维码收款</td><td>仅支持微信扫码，有效期最长半个月</td></tr>
+<tr><td>容差值</td><td>不设定容差值</td></tr>
+<tr><td>金额不一致处理</td><td>也自动认款，后续再打款的叠加补充，根据剩余待打款金额查看补充情况</td></tr>
+<tr><td>多个识别码处理</td><td>若对账金额一致则对应分配；不一致需均分或优先最早一期（方案待讨论）</td></tr>
+<tr><td>异常处理</td><td>不走OA审批，每天早上9:15推送给业务员人工处理</td></tr>
+<tr><td>认款操作</td><td>自动认款无需客户操作；业务员也可在智数后台手动认款</td></tr>
+</tbody></table>
+
+<h4>16.1.3 待确认事项</h4>
+<div class="confirm-block">
+<ul>
+<li>多个识别码金额不一致时的分配方案（均分 vs 优先最早一期）</li>
+<li>自动认款方案的完整修订文档</li>
+<li>影响功能范围中各关联模块的具体改动点</li>
+</ul>
+</div>
+</section>
+
+<section id="wecom-push">
+<h3>16.2 企微数据推送 <span class="badge badge-todo">待开发</span></h3>
+<table>
+<tbody><tr><th style="width:160px;">推送场景</th><th>推送内容</th><th>推送对象</th></tr>
+<tr><td>对账单生成</td><td>对账单数据已生成通知</td><td>客户企微群</td></tr>
+<tr><td>逾期推送</td><td>逾期账款提醒</td><td>业务员/客户群</td></tr>
+<tr><td>可认款推送</td><td>可认款流水提醒</td><td>业务员</td></tr>
+</tbody></table>
+</section>
+
+<section id="auto-urge">
+<h3>16.3 自动催款推送 <span class="badge badge-todo">待开发</span></h3>
+<table>
+<tbody><tr><th style="width:160px;">规则项</th><th>说明</th></tr>
+<tr><td>触发时机</td><td>账期到期前2天</td></tr>
+<tr><td>推送时间</td><td>早上10:00</td></tr>
+<tr><td>推送渠道</td><td>企业微信群</td></tr>
+<tr><td>推送内容</td><td>催款信息（含应付金额、截止日期）</td></tr>
+</tbody></table>
+</section>
+
+<section id="alert-push">
+<h3>16.4 预警推送 <span class="badge badge-todo">待开发</span></h3>
+<table>
+<tbody><tr><th style="width:160px;">预警类型</th><th>说明</th></tr>
+<tr><td>开票监控</td><td>监控开票状态异常</td></tr>
+<tr><td>设备异常监控</td><td>机台设备异常告警</td></tr>
+<tr><td>未对账催办</td><td>未生成对账单的催办清单</td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 待确认事项 ========== -->
+<section id="pending">
+<h2>17. 待确认事项汇总</h2>
+<table>
+<tbody><tr><th style="width:60px;">#</th><th style="width:160px;">模块</th><th>待确认内容</th><th style="width:100px;">优先级</th></tr>
+<tr><td>1</td><td>亿玩赏入库对账</td><td>入库单录入方式、与发货对账是否重复计算、对比维度</td><td><span class="badge badge-new">高</span></td></tr>
+<tr><td>2</td><td>亿玩赏全发货对账</td><td>与消耗对账的具体区别、适用场景</td><td><span class="badge badge-new">高</span></td></tr>
+<tr><td>3</td><td>爆玩宇宙客户不认可</td><td>数据发送方式、最终收币数回写方式、异常提醒实现</td><td><span class="badge badge-new">中</span></td></tr>
+<tr><td>4</td><td>盲盒对账单</td><td>码表录入方式、期初数来源、金额计算方式</td><td><span class="badge badge-new">中</span></td></tr>
+<tr><td>5</td><td>自动认款</td><td>多识别码分配方案、方案修订文档</td><td><span class="badge badge-confirm">三期</span></td></tr>
+<tr><td>6</td><td>PC端对账单</td><td>具体精简字段清单</td><td><span class="badge badge-new">三期</span></td></tr>
+<tr><td>7</td><td>历史数据</td><td>综合组整理后的批量调整范围和时间</td><td><span class="badge badge-confirm">后续</span></td></tr>
+</tbody></table>
+</section>
+
+<!-- ========== 修订记录 ========== -->
+<section id="changelog">
+<h2>18. 修订记录</h2>
+<table>
+<tbody><tr><th style="width:100px;">版本</th><th style="width:120px;">日期</th><th>修订内容</th></tr>
+<tr><td>V2.0</td><td>2026-08-20</td><td>统一文档创建，覆盖二期已上线+二期优化+三期新增全部功能</td></tr>
+</tbody></table>
+</section>
+
+</div>
+
+
+<div class="light"><div class="trae-browser-inspect-highlight-tag"></div><div class="trae-browser-inspect-highlight-tag"></div><div class="trae-browser-inspect-highlight-box"></div><div class="trae-browser-inspect-highlight-box trae-browser-inspect-select-highlight-box" style="cursor: grab; pointer-events: auto;"></div><div class="trae-browser-inspect-overlay" style="display: none;"></div><div class="trae-browser-inspect-comment-card-container"></div><div class="trae-browser-inspect-drop-indicator" style="position: fixed; pointer-events: none; z-index: 999999; display: none; background: linear-gradient(90deg, rgb(0, 102, 255), rgb(0, 170, 255)); box-shadow: rgba(0, 102, 255, 0.4) 0px 0px 4px 1px, rgba(0, 102, 255, 0.3) 0px 0px 8px 2px, rgba(0, 102, 255, 0.2) 0px 0px 12px 3px; transition: transform 0.15s, width 0.15s, height 0.15s;"></div></div><div class="trae-browser-inspect-text-selection-container light"><div class="trae-browser-inspect-comment-card-container"></div></div><div class="trae-browser-inspect-operation light"></div></body></html>

@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智数后台 - 合作分成对账功能 二期需求文档 V2.0</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Noto Sans CJK SC", "WenQuanYi Micro Hei", "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: #f0f2f5;
+    color: #303030;
+    font-size: 14px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== 布局 ========== */
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ========== 侧边栏 ========== */
+  .sidebar {
+    width: 260px;
+    background: #1a1f36;
+    color: #a0aec0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 40px 0;
+    transition: transform 0.3s;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 2px; }
+
+  .sidebar-header {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid #2d3748;
+  }
+  .sidebar-header .logo {
+    font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px;
+  }
+  .sidebar-header .version {
+    font-size: 12px; color: #718096;
+  }
+
+  .sidebar-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    color: #4a5568; padding: 18px 20px 8px; font-weight: 600;
+  }
+
+  .sidebar a {
+    display: block;
+    color: #a0aec0;
+    text-decoration: none;
+    padding: 7px 20px 7px 36px;
+    font-size: 13px;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+  .sidebar a:hover {
+    color: #fff;
+    background: #2d3748;
+    border-left-color: #2b6cb0;
+  }
+  .sidebar a.lvl1 {
+    padding-left: 20px;
+    font-weight: 600;
+    color: #e2e8f0;
+    padding-top: 10px;
+    padding-bottom: 6px;
+  }
+  .sidebar a.lvl2 {
+    padding-left: 40px;
+    font-size: 12.5px;
+  }
+  .sidebar a.active {
+    color: #fff;
+    background: #2d3748;
+    border-left-color: #38b2ac;
+  }
+
+  /* ========== 内容区 ========== */
+  .content {
+    flex: 1;
+    margin-left: 260px;
+    padding: 40px 48px 80px;
+    max-width: calc(100% - 260px);
+  }
+
+  /* ========== 通用组件 ========== */
+  .section { margin-bottom: 56px; scroll-margin-top: 20px; }
+  .section h2 {
+    font-size: 26px; font-weight: 700; color: #1a1f36;
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 3px solid #2b6cb0;
+    display: flex; align-items: center; gap: 12px;
+    flex-wrap: wrap;
+  }
+  .section h3 {
+    font-size: 19px; font-weight: 600; color: #2b6cb0;
+    margin: 32px 0 16px; padding-left: 14px;
+    border-left: 4px solid #2b6cb0;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .section h4 {
+    font-size: 16px; font-weight: 600; color: #2d3748;
+    margin: 24px 0 10px;
+  }
+  .section h5 {
+    font-size: 15px; font-weight: 600; color: #4a5568;
+    margin: 20px 0 8px;
+  }
+  .section p { margin-bottom: 12px; color: #4a5568; }
+  .section ul, .section ol { margin: 8px 0 16px 22px; color: #4a5568; }
+  .section li { margin-bottom: 6px; }
+
+  /* ========== 徽章 ========== */
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 2px 12px; border-radius: 12px;
+    font-size: 12px; font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-done {
+    background: #d1fae5; color: #065f46;
+    border: 1px solid #a7f3d0;
+  }
+  .badge-pending {
+    background: #fef3c7; color: #92400e;
+    border: 1px solid #fde68a;
+  }
+  .badge-info {
+    background: #dbeafe; color: #1e40af;
+    border: 1px solid #93c5fd;
+  }
+  .badge-blue {
+    background: #e6f0ff; color: #2b6cb0;
+    border: 1px solid #93b8e8;
+  }
+  .badge-teal {
+    background: #e0fffa; color: #065f65;
+    border: 1px solid #99e6e0;
+  }
+  .badge-optimize {
+    background: #fef3c7; color: #92400e;
+    border: 1px solid #fde68a;
+  }
+
+  /* ========== 表格 ========== */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  table {
+    width: 100%; border-collapse: collapse;
+    background: #fff; font-size: 13.5px;
+  }
+  thead { background: #fafafa; }
+  thead th {
+    padding: 12px 14px; text-align: left;
+    font-weight: 600; color: #1a1f36;
+    border-bottom: 2px solid #e8e8e8;
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #4a5568;
+  }
+  tbody tr:hover { background: #f7fafc; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ========== 卡片 ========== */
+  .card {
+    background: #fff; border-radius: 8px;
+    padding: 20px 24px; margin: 16px 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid #e8e8e8;
+  }
+  .card-blue {
+    border-left: 4px solid #2b6cb0;
+  }
+  .card-teal {
+    border-left: 4px solid #38b2ac;
+  }
+  .card-amber {
+    border-left: 4px solid #f59e0b;
+  }
+  .card-title {
+    font-weight: 600; color: #1a1f36; margin-bottom: 8px; font-size: 15px;
+  }
+
+  /* ========== 统计卡片 ========== */
+  .stat-row {
+    display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap;
+  }
+  .stat-card {
+    flex: 1; min-width: 160px;
+    background: #fff; border-radius: 8px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid #e8e8e8;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-size: 28px; font-weight: 700; color: #2b6cb0;
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-label {
+    font-size: 12px; color: #718096;
+  }
+  .stat-card.teal .stat-value { color: #319795; }
+  .stat-card.amber .stat-value { color: #d69e2e; }
+  .stat-card.red .stat-value { color: #e53e3e; }
+
+  /* ========== 提示框 ========== */
+  .tips {
+    background: #ebf8ff; border: 1px solid #bee3f8;
+    border-radius: 6px; padding: 12px 16px;
+    margin: 16px 0; display: flex; gap: 10px;
+    align-items: flex-start;
+  }
+  .tips-icon {
+    width: 18px; height: 18px; flex-shrink: 0;
+    background: #2b6cb0; border-radius: 50%;
+    color: #fff; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+  .tips-content { font-size: 13px; color: #2c5282; }
+  .tips-warn {
+    background: #fffbeb; border-color: #fbd38d;
+  }
+  .tips-warn .tips-icon { background: #d69e2e; }
+  .tips-warn .tips-content { color: #92400e; }
+
+  /* ========== 流程图 ========== */
+  .flow {
+    display: flex; align-items: center; gap: 0;
+    margin: 20px 0; flex-wrap: wrap;
+  }
+  .flow-node {
+    background: #fff; border: 2px solid #2b6cb0;
+    border-radius: 8px; padding: 10px 18px;
+    font-size: 13px; font-weight: 600; color: #2b6cb0;
+    text-align: center; min-width: 100px;
+    box-shadow: 0 2px 6px rgba(43,108,176,0.1);
+  }
+  .flow-arrow {
+    color: #a0aec0; font-size: 20px; padding: 0 8px; font-weight: 700;
+  }
+  .flow-node.active {
+    background: #2b6cb0; color: #fff;
+  }
+
+  /* ========== 字段列表 ========== */
+  .field-list {
+    margin: 12px 0; padding: 0; list-style: none;
+  }
+  .field-list li {
+    padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .field-list li:last-child { border-bottom: none; }
+  .field-name {
+    font-weight: 600; color: #2b6cb0; min-width: 130px; flex-shrink: 0;
+  }
+  .field-desc { color: #4a5568; }
+  .field-tag {
+    display: inline-block; padding: 1px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 600; margin-left: 4px;
+  }
+  .field-tag-required { background: #fed7d7; color: #9b2c2c; }
+
+  /* ========== 弹窗 ========== */
+  .modal-demo {
+    background: #fff; border: 1px solid #d9d9d9;
+    border-radius: 8px; overflow: hidden;
+    margin: 16px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    max-width: 600px;
+  }
+  .modal-demo-header {
+    background: #fafafa; border-bottom: 1px solid #e8e8e8;
+    padding: 14px 20px; font-weight: 600; color: #1a1f36;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .modal-demo-body { padding: 20px; }
+  .modal-demo-footer {
+    border-top: 1px solid #e8e8e8; padding: 12px 20px;
+    text-align: right; background: #fafafa;
+  }
+
+  .form-row {
+    display: flex; gap: 16px; margin-bottom: 14px; align-items: center;
+  }
+  .form-label {
+    width: 100px; font-size: 13px; color: #4a5568;
+    text-align: right; flex-shrink: 0;
+  }
+  .form-value {
+    flex: 1; font-size: 13px; color: #1a1f36;
+    padding: 6px 12px; background: #f7fafc;
+    border: 1px solid #e8e8e8; border-radius: 4px;
+  }
+  .form-input {
+    flex: 1; font-size: 13px; color: #1a1f36;
+    padding: 6px 12px; background: #fff;
+    border: 1px solid #d9d9d9; border-radius: 4px;
+  }
+
+  .btn {
+    display: inline-block; padding: 5px 16px; border-radius: 4px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid transparent; transition: all 0.2s;
+  }
+  .btn-primary { background: #2b6cb0; color: #fff; border-color: #2b6cb0; }
+  .btn-default { background: #fff; color: #4a5568; border-color: #d9d9d9; }
+  .btn-teal { background: #319795; color: #fff; border-color: #319795; }
+  .btn-link { color: #2b6cb0; background: none; border: none; padding: 0; }
+
+  /* ========== 操作下拉 ========== */
+  .dropdown-demo {
+    display: inline-flex; gap: 4px; align-items: center;
+  }
+  .dropdown-demo .dd-item {
+    font-size: 12px; color: #2b6cb0; padding: 2px 8px;
+    border-right: 1px solid #e8e8e8;
+  }
+  .dropdown-demo .dd-item:last-child { border-right: none; }
+
+  /* ========== 标签页 ========== */
+  .tab-bar {
+    display: flex; gap: 0; border-bottom: 2px solid #e8e8e8;
+    margin: 16px 0;
+  }
+  .tab-item {
+    padding: 8px 20px; font-size: 14px; font-weight: 500;
+    color: #718096; cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+  }
+  .tab-item.active {
+    color: #2b6cb0; border-bottom-color: #2b6cb0;
+  }
+
+  /* ========== 小程序 ========== */
+  .phone-frame {
+    width: 280px; background: #f7f7f7; border-radius: 24px;
+    border: 8px solid #1a1f36; padding: 12px;
+    margin: 16px auto; overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+  }
+  .phone-screen {
+    background: #f0f2f5; border-radius: 16px;
+    overflow: hidden; min-height: 400px;
+  }
+  .phone-header {
+    background: #2b6cb0; color: #fff; padding: 14px 12px;
+    font-size: 14px; font-weight: 600; text-align: center;
+  }
+  .phone-card {
+    background: #fff; border-radius: 8px; margin: 10px;
+    padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .phone-entry {
+    display: flex; align-items: center; gap: 10px; padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .phone-entry:last-child { border-bottom: none; }
+  .phone-entry-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #fff; font-weight: 700; flex-shrink: 0;
+  }
+  .phone-entry-text { font-size: 13px; color: #1a1f36; font-weight: 500; }
+
+  /* ========== 概要信息 ========== */
+  .info-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin: 16px 0;
+  }
+  .info-item {
+    background: #fff; border-radius: 8px; padding: 16px 20px;
+    border: 1px solid #e8e8e8; display: flex; flex-direction: column; gap: 4px;
+  }
+  .info-item .label { font-size: 12px; color: #a0aec0; }
+  .info-item .value { font-size: 15px; font-weight: 600; color: #1a1f36; }
+
+  .pill {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 500; margin: 2px;
+  }
+
+  /* ========== 目录锚点 ========== */
+  :target { scroll-margin-top: 20px; }
+
+  /* ========== 杂项 ========== */
+  .highlight { color: #2b6cb0; font-weight: 600; }
+  .text-teal { color: #319795; font-weight: 600; }
+  .text-red { color: #e53e3e; font-weight: 600; }
+  .text-muted { color: #a0aec0; }
+  .nowrap { white-space: nowrap; }
+  .code-inline {
+    background: #edf2f7; padding: 1px 6px; border-radius: 3px;
+    font-family: "Courier New", monospace; font-size: 13px; color: #d53f8c;
+  }
+
+  hr.divider {
+    border: none; border-top: 1px dashed #d9d9d9; margin: 32px 0;
+  }
+
+  .sub-nav {
+    display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0;
+  }
+  .sub-nav a {
+    font-size: 13px; color: #2b6cb0; text-decoration: none;
+    padding: 4px 12px; background: #ebf8ff; border-radius: 16px;
+    border: 1px solid #bee3f8;
+  }
+  .sub-nav a:hover { background: #2b6cb0; color: #fff; }
+
+  .doc-header {
+    background: #fff; border-radius: 8px; padding: 32px;
+    margin-bottom: 32px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border-top: 4px solid #2b6cb0;
+  }
+  .doc-header h1 {
+    font-size: 28px; color: #1a1f36; margin-bottom: 8px;
+  }
+  .doc-header .subtitle { font-size: 15px; color: #718096; margin-bottom: 20px; }
+
+  .anchor-offset { display: block; position: relative; top: -20px; visibility: hidden; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ============ 侧边栏 ============ -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">智数后台</div>
+    <div class="version">合作分成对账功能 V2.0</div>
+  </div>
+  <div class="sidebar-title">导航</div>
+  <a href="#sec-summary" class="lvl1">文档概要</a>
+  <a href="#sec-bg" class="lvl1">项目背景</a>
+  <a href="#sec-arch" class="lvl1">系统架构</a>
+  <a href="#sec-role" class="lvl1">用户角色</a>
+  <a href="#sec-list" class="lvl1">功能清单</a>
+  <a href="#sec-yws" class="lvl1">亿玩赏对账单</a>
+  <a href="#sec-yws-store-ship" class="lvl2">门店发货对账单</a>
+  <a href="#sec-yws-store-consume" class="lvl2">门店消耗对账单</a>
+  <a href="#sec-yws-cust-ship" class="lvl2">客户发货对账单</a>
+  <a href="#sec-yws-cust-consume" class="lvl2">客户消耗对账单</a>
+  <a href="#sec-bwyz" class="lvl1">爆玩宇宙对账单</a>
+  <a href="#sec-bwyz-store" class="lvl2">门店对账单 <span style="display:inline-block;width:6px;height:6px;background:#f59e0b;border-radius:50%;margin-left:4px;vertical-align:middle;" title="含二期优化"></span></a>
+  <a href="#sec-bwyz-cust" class="lvl2">客户对账单</a>
+  <a href="#sec-period" class="lvl1">分成账期管理</a>
+  <a href="#sec-payback" class="lvl1">合作机台回款管理</a>
+  <a href="#sec-confirm" class="lvl1">认款管理</a>
+  <a href="#sec-confirm-list" class="lvl2">认款列表</a>
+  <a href="#sec-confirm-modal" class="lvl2">认款弹窗</a>
+  <a href="#sec-chat" class="lvl1">群聊关联管理</a>
+  <a href="#sec-base" class="lvl1">基础设置</a>
+  <a href="#sec-mini" class="lvl1">数智全开小程序</a>
+  <a href="#sec-mini-home" class="lvl2">合作机台首页</a>
+  <a href="#sec-mini-cust" class="lvl2">客户对账单</a>
+  <a href="#sec-mini-remind" class="lvl2">打款提醒</a>
+</aside>
+
+<!-- ============ 内容区 ============ -->
+<main class="content">
+
+<!-- ===== 文档头部 ===== -->
+<div class="doc-header">
+  <h1>智数后台 — 合作分成对账功能</h1>
+  <div class="subtitle">二期需求文档 · V2.0 · 已上线功能</div>
+  <div class="info-grid">
+    <div class="info-item"><span class="label">文档版本</span><span class="value">V2.0（二期需求文档）</span></div>
+    <div class="info-item"><span class="label">覆盖范围</span><span class="value">二期已上线功能</span></div>
+    <div class="info-item"><span class="label">涉及系统</span><span class="value">智数后台（PC管理端）、数智全开小程序</span></div>
+    <div class="info-item"><span class="label">文档状态</span><span class="value"><span class="badge badge-done">已上线</span> <span class="badge badge-optimize">含二期优化调整内容</span></span></div>
+  </div>
+</div>
+
+<!-- ===== 1. 文档概要 ===== -->
+<div class="section" id="sec-summary">
+  <span class="anchor-offset" id="sec-summary"></span>
+  <h2>1. 文档概要</h2>
+  <div class="card card-blue">
+    <div class="card-title">文档信息</div>
+    <table>
+      <tbody>
+        <tr><td style="width:140px;font-weight:600;color:#2b6cb0;">项目名称</td><td>智数后台 — 合作分成对账功能</td></tr>
+        <tr><td style="font-weight:600;color:#2b6cb0;">文档版本</td><td>V2.0（二期需求文档）</td></tr>
+        <tr><td style="font-weight:600;color:#2b6cb0;">覆盖范围</td><td>二期已上线功能</td></tr>
+        <tr><td style="font-weight:600;color:#2b6cb0;">涉及系统</td><td>智数后台（PC管理端）、数智全开小程序</td></tr>
+        <tr><td style="font-weight:600;color:#2b6cb0;">文档状态</td><td><span class="badge badge-done">已上线</span> <span class="badge badge-optimize">含二期优化调整内容</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tips">
+    <div class="tips-icon">i</div>
+    <div class="tips-content">本文档仅记录二期已上线功能模块。所有功能模块标题旁均标注 <span class="badge badge-done">二期已上线</span> 绿色标签。入库对账、有消耗全发货对账等标注"二期优化待补充"的功能不在本文档完整描述范围内。</div>
+  </div>
+</div>
+
+<!-- ===== 2. 项目背景 ===== -->
+<div class="section" id="sec-bg">
+  <h2>2. 项目背景 <span class="badge badge-done">二期已上线</span></h2>
+
+  <h3>2.1 业务背景</h3>
+  <p>世宇科技与合作客户在游戏机台运营中存在分成关系。不同业务线（亿玩赏、爆玩宇宙、盲盒宇宙等）的分成对账方式各不相同，涉及门店发货、门店消耗、客户汇总等多种对账维度，且分成比例、结算周期、催款规则因业务线和合作模式差异而异。</p>
+  <p>传统线下对账方式依赖人工核对Excel表格、微信沟通确认，存在效率低、易出错、追溯难等问题。</p>
+
+  <h3>2.2 数字化管理目标</h3>
+  <p>智数后台实现从<strong>对账单生成 → 业务员核对 → 推送客户 → 客户确认 → 认款 → 账期管理 → 催款/锁机</strong>的全链路数字化管理，覆盖以下核心环节：</p>
+  <div class="flow">
+    <div class="flow-node">对账单生成</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">业务员核对</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">推送客户</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">客户确认</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">认款核销</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">账期管理</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">催款/锁机</div>
+  </div>
+
+  <h3>2.3 二期已上线功能统计</h3>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-value">3</div><div class="stat-label">业务线</div></div>
+    <div class="stat-card teal"><div class="stat-value">7+</div><div class="stat-label">对账类型</div></div>
+    <div class="stat-card amber"><div class="stat-value">2</div><div class="stat-label">终端</div></div>
+  </div>
+  <ul>
+    <li><strong>业务线：</strong>亿玩赏、爆玩宇宙、盲盒宇宙（盲盒宇宙分成通过认款管理覆盖）</li>
+    <li><strong>对账类型：</strong>亿玩赏门店发货/消耗、亿玩赏客户发货/消耗、爆玩宇宙门店/客户对账等</li>
+    <li><strong>终端：</strong>智数后台（PC Web端）、数智全开小程序（微信小程序）</li>
+  </ul>
+</div>
+
+<!-- ===== 3. 系统架构 ===== -->
+<div class="section" id="sec-arch">
+  <h2>3. 系统架构 <span class="badge badge-done">二期已上线</span></h2>
+
+  <h3>3.1 三端架构</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>系统名称</th>
+          <th>使用角色</th>
+          <th>核心功能</th>
+          <th>终端类型</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>智数后台</strong></td>
+          <td>业务员</td>
+          <td>对账单生成与管理、分成账期管理、回款管理、认款管理、基础设置、群聊关联</td>
+          <td><span class="badge badge-blue">PC Web端</span></td>
+        </tr>
+        <tr>
+          <td><strong>数智全开小程序</strong></td>
+          <td>合作客户</td>
+          <td>查看对账单、查看分成明细、打款提醒</td>
+          <td><span class="badge badge-teal">微信小程序</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>3.2 数据流向</h3>
+  <div class="flow">
+    <div class="flow-node">外部数据源<br><small style="font-weight:400;font-size:11px;">游艺宝 / 世宇后台</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node active">智数后台<br><small style="font-weight:400;font-size:11px;">生成对账单</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">数据推送<br><small style="font-weight:400;font-size:11px;">企微群 / 小程序</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">客户确认<br><small style="font-weight:400;font-size:11px;">小程序端</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">认款核销<br><small style="font-weight:400;font-size:11px;">后台认款管理</small></div>
+  </div>
+
+  <div class="card card-amber">
+    <div class="card-title">说明</div>
+    <ul style="margin-bottom:0;">
+      <li>外部数据源（游艺宝/世宇后台）提供机台运营数据（投币量、消耗记录、发货记录等）</li>
+      <li>智数后台拉取外部数据后生成各业务线对账单</li>
+      <li>对账单通过企业微信群聊推送和/或数智全开小程序展示给合作客户</li>
+      <li>客户在小程序端确认/异议后，业务员在后台进行认款核销</li>
+      <li><strong class="text-red">注意：不包含外部银行系统对接信息</strong></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 4. 用户角色 ===== -->
+<div class="section" id="sec-role">
+  <h2>4. 用户角色 <span class="badge badge-done">二期已上线</span></h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:120px;">角色</th>
+          <th>使用终端</th>
+          <th>核心职责</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>业务员</strong></td>
+          <td><span class="badge badge-blue">PC Web端</span></td>
+          <td>生成对账单、核对数据、认款操作、催款、锁机、查看分成账期/回款管理、基础设置、群聊关联管理</td>
+        </tr>
+        <tr>
+          <td><strong>合作客户</strong></td>
+          <td><span class="badge badge-teal">微信小程序</span></td>
+          <td>查看对账单、确认/异议、查看打款提醒</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tips">
+    <div class="tips-icon">i</div>
+    <div class="tips-content"><strong>角色说明：</strong>综合组、管理员均为业务员角色，业务员自行管理各自板块。不同业务员负责不同的合作客户和门店，数据相互独立。</div>
+  </div>
+</div>
+
+<!-- ===== 5. 功能清单 ===== -->
+<div class="section" id="sec-list">
+  <h2>5. 功能清单 <span class="badge badge-done">二期已上线</span></h2>
+  <p>以下为二期已上线的全部功能模块，共14项（PC管理端）+ 3项（小程序端），含1项二期优化调整：</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:50px;">序号</th>
+          <th>功能模块</th>
+          <th>所属业务线</th>
+          <th>终端</th>
+          <th style="width:90px;">状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>门店发货对账单</td><td>亿玩赏</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>2</td><td>门店消耗对账单</td><td>亿玩赏</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>3</td><td>客户发货对账单</td><td>亿玩赏</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>4</td><td>客户消耗对账单</td><td>亿玩赏</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>5</td><td>门店对账单</td><td>爆玩宇宙</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>6</td><td>爆玩宇宙门店对账单列表优化</td><td>爆玩宇宙</td><td>PC Web端</td><td><span class="badge badge-optimize">二期优化</span></td></tr>
+        <tr><td>7</td><td>客户对账单</td><td>爆玩宇宙</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>8</td><td>分成账期管理</td><td>通用</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>9</td><td>合作机台回款管理</td><td>通用</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>10</td><td>认款管理</td><td>通用</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>11</td><td>群聊关联管理</td><td>通用</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>12</td><td>客户管理</td><td>基础设置</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>13</td><td>门店管理</td><td>基础设置</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>14</td><td>机台SN管理</td><td>基础设置</td><td>PC Web端</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>15</td><td>合作机台首页</td><td>数智全开</td><td>微信小程序</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>16</td><td>客户对账单</td><td>数智全开</td><td>微信小程序</td><td><span class="badge badge-done">已上线</span></td></tr>
+        <tr><td>17</td><td>打款提醒</td><td>数智全开</td><td>微信小程序</td><td><span class="badge badge-done">已上线</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 6. 亿玩赏对账单 ===== -->
+<div class="section" id="sec-yws">
+  <h2>6. 亿玩赏对账单 <span class="badge badge-done">二期已上线</span></h2>
+
+  <h3>6.1 对账类型总览</h3>
+  <p>亿玩赏业务线支持以下对账类型：</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>对账类型</th>
+          <th>对账维度</th>
+          <th>对账依据</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>消耗对账</strong></td>
+          <td>门店 / 客户</td>
+          <td>机台投币消耗数据</td>
+          <td><span class="badge badge-done">已上线</span></td>
+        </tr>
+        <tr>
+          <td><strong>发货对账</strong></td>
+          <td>门店 / 客户</td>
+          <td>机台发货记录</td>
+          <td><span class="badge badge-done">已上线</span></td>
+        </tr>
+        <tr>
+          <td>入库对账</td>
+          <td>门店</td>
+          <td>机台入库记录</td>
+          <td><span class="badge badge-pending">二期优化待补充</span></td>
+        </tr>
+        <tr>
+          <td>有消耗全发货对账</td>
+          <td>门店</td>
+          <td>有消耗记录的机台全部按发货对账</td>
+          <td><span class="badge badge-pending">二期优化待补充</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tips tips-warn">
+    <div class="tips-icon">!</div>
+    <div class="tips-content">入库对账、有消耗全发货对账标注"二期优化待补充"，不在本文档完整描述范围内。以下详细描述已上线的发货对账和消耗对账功能。</div>
+  </div>
+
+  <!-- ===== 6.2 门店发货对账单 ===== -->
+  <h3 id="sec-yws-store-ship">6.2 门店发货对账单 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>功能描述</h4>
+  <p>按门店维度生成亿玩赏发货对账单。系统从外部数据源拉取门店机台发货记录，自动汇总发货数量和金额，按约定分成比例计算我司分成金额，生成对账单后由业务员核对并推送客户。</p>
+
+  <h4>页面布局</h4>
+  <div class="card card-blue">
+    <div class="card-title">筛选条件区</div>
+    <div class="form-row" style="flex-wrap:wrap;">
+      <div class="form-value" style="width:auto;min-width:120px;">合作客户：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">门店名称：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">对账月份：2026-01</div>
+      <div class="form-value" style="width:auto;min-width:120px;">对账状态：全部</div>
+      <button class="btn btn-primary">查询</button>
+      <button class="btn btn-default">重置</button>
+      <button class="btn btn-primary">生成对账单</button>
+    </div>
+  </div>
+
+  <div class="card card-blue">
+    <div class="card-title">数据表格</div>
+    <div class="table-wrap" style="margin:0;box-shadow:none;">
+      <table>
+        <thead>
+          <tr>
+            <th>门店名称</th>
+            <th>合作客户</th>
+            <th>对账月份</th>
+            <th>发货数量</th>
+            <th>发货金额</th>
+            <th>分成比例</th>
+            <th>我司分成</th>
+            <th>对账状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>万达广场店</td>
+            <td>张三娱乐</td>
+            <td>2026-01</td>
+            <td>50 台</td>
+            <td>¥15,000</td>
+            <td>50%</td>
+            <td class="highlight">¥7,500</td>
+            <td><span class="badge badge-pending">待推送</span></td>
+            <td><div class="dropdown-demo"><span class="dd-item">推送</span><span class="dd-item">查看明细</span><span class="dd-item">编辑</span></div></td>
+          </tr>
+          <tr>
+            <td>吾悦广场店</td>
+            <td>张三娱乐</td>
+            <td>2026-01</td>
+            <td>32 台</td>
+            <td>¥9,600</td>
+            <td>50%</td>
+            <td class="highlight">¥4,800</td>
+            <td><span class="badge badge-info">已推送</span></td>
+            <td><div class="dropdown-demo"><span class="dd-item">查看明细</span><span class="dd-item">作废</span></div></td>
+          </tr>
+          <tr>
+            <td>龙湖天街店</td>
+            <td>李四游艺</td>
+            <td>2026-01</td>
+            <td>45 台</td>
+            <td>¥13,500</td>
+            <td>45%</td>
+            <td class="highlight">¥6,075</td>
+            <td><span class="badge badge-done">已确认</span></td>
+            <td><div class="dropdown-demo"><span class="dd-item">查看明细</span></div></td>
+          </tr>
+          <tr>
+            <td>印象城店</td>
+            <td>李四游艺</td>
+            <td>2026-01</td>
+            <td>28 台</td>
+            <td>¥8,400</td>
+            <td>55%</td>
+            <td class="highlight">¥4,620</td>
+            <td><span class="badge badge-pending">有异议</span></td>
+            <td><div class="dropdown-demo"><span class="dd-item">查看异议</span><span class="dd-item">编辑</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card-blue">
+    <div class="card-title">操作下拉菜单</div>
+    <p>每行数据支持的操作取决于当前对账状态：</p>
+    <div class="table-wrap" style="margin:0;box-shadow:none;">
+      <table>
+        <thead>
+          <tr><th>操作项</th><th>适用状态</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>推送</td><td>待推送</td><td>将对账单推送至客户企微群/小程序</td></tr>
+          <tr><td>查看明细</td><td>所有状态</td><td>查看对账单详细数据</td></tr>
+          <tr><td>编辑</td><td>待推送/有异议</td><td>修改对账数据后重新生成</td></tr>
+          <tr><td>查看异议</td><td>有异议</td><td>查看客户提出的异议内容</td></tr>
+          <tr><td>作废</td><td>已推送/已确认</td><td>作废对账单</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h4>生成对账单弹窗</h4>
+  <p>点击"生成对账单"按钮后弹出弹窗，填写以下信息：</p>
+  <div class="modal-demo">
+    <div class="modal-demo-header">
+      <span>生成亿玩赏对账单</span>
+      <span class="text-muted">x</span>
+    </div>
+    <div class="modal-demo-body">
+      <div class="form-row">
+        <div class="form-label">合作类型</div>
+        <div class="form-value" style="background:#f0f0f0;">亿玩赏 <span class="text-muted">(固定)</span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">对账类型</div>
+        <div style="display:flex;gap:12px;flex:1;">
+          <label><input type="radio" name="type" checked> 发货对账</label>
+          <label><input type="radio" name="type"> 消耗对账</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">选择方式</div>
+        <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap;">
+          <label><input type="radio" name="mode" checked> 按客户选择</label>
+          <label><input type="radio" name="mode"> 按门店选择</label>
+          <label><input type="radio" name="mode"> 按区域选择</label>
+          <label><input type="radio" name="mode"> 全部生成</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">合作客户</div>
+        <select class="form-input"><option>张三娱乐</option><option>李四游艺</option></select>
+      </div>
+      <div class="form-row">
+        <div class="form-label">对账月份</div>
+        <select class="form-input"><option>2026年1月</option><option>2025年12月</option></select>
+      </div>
+      <div class="form-row">
+        <div class="form-label">开始日期</div>
+        <input type="text" class="form-input" value="2026-01-01" placeholder="选择开始日期">
+      </div>
+      <div class="form-row">
+        <div class="form-label">结束日期</div>
+        <input type="text" class="form-input" value="2026-01-31" placeholder="选择结束日期">
+      </div>
+    </div>
+    <div class="modal-demo-footer">
+      <button class="btn btn-default" style="margin-right:8px;">取消</button>
+      <button class="btn btn-primary">生成</button>
+    </div>
+  </div>
+
+  <div class="card card-teal">
+    <div class="card-title">弹窗字段说明</div>
+    <ul class="field-list">
+      <li><span class="field-name">合作类型<span class="field-tag field-tag-required">固定</span></span><span class="field-desc">固定为"亿玩赏"，不可修改</span></li>
+      <li><span class="field-name">对账类型<span class="field-tag field-tag-required">必选</span></span><span class="field-desc">选择"发货对账"或"消耗对账"</span></li>
+      <li><span class="field-name">选择方式<span class="field-tag field-tag-required">必选</span></span><span class="field-desc">4种选择方式：按客户选择、按门店选择、按区域选择、全部生成</span></li>
+      <li><span class="field-name">合作客户</span><span class="field-desc">选择方式为"按客户选择"时显示，下拉选择客户</span></li>
+      <li><span class="field-name">对账月份<span class="field-tag field-tag-required">必填</span></span><span class="field-desc">选择对账月份（年-月）</span></li>
+      <li><span class="field-name">开始日期<span class="field-tag field-tag-required">必填</span></span><span class="field-desc">对账周期开始日期，默认为所选月份第一天</span></li>
+      <li><span class="field-name">结束日期<span class="field-tag field-tag-required">必填</span></span><span class="field-desc">对账周期结束日期，默认为所选月份最后一天</span></li>
+    </ul>
+  </div>
+
+  <h4>业务流程图</h4>
+  <div class="flow">
+    <div class="flow-node">选择参数<br><small style="font-weight:400;font-size:11px;">合作类型/类型/月份</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">拉取数据<br><small style="font-weight:400;font-size:11px;">游艺宝发货记录</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">生成对账单<br><small style="font-weight:400;font-size:11px;">自动计算分成</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">业务员核对<br><small style="font-weight:400;font-size:11px;">确认/编辑</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node active">推送客户<br><small style="font-weight:400;font-size:11px;">企微群/小程序</small></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">客户确认<br><small style="font-weight:400;font-size:11px;">确认/异议</small></div>
+  </div>
+
+  <!-- ===== 6.3 门店消耗对账单 ===== -->
+  <h3 id="sec-yws-store-consume">6.3 门店消耗对账单 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>功能描述</h4>
+  <p>按门店维度生成亿玩赏消耗对账单。与发货对账单的区别在于对账依据不同：消耗对账基于机台投币消耗数据，而非发货记录。</p>
+
+  <h4>与门店发货对账单的差异</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:140px;">对比维度</th><th>门店发货对账单</th><th>门店消耗对账单</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>对账依据</strong></td><td>机台发货记录（出货数量）</td><td class="highlight">机台投币消耗数据（实际消耗次数/金额）</td></tr>
+        <tr><td><strong>特有字段：消耗次数</strong></td><td>无</td><td>有（记录机台总消耗次数）</td></tr>
+        <tr><td><strong>特有字段：消耗金额</strong></td><td>无</td><td>有（按消耗计算的总金额）</td></tr>
+        <tr><td><strong>金额计算逻辑</strong></td><td>发货数量 x 单价 x 分成比例</td><td>消耗金额 x 分成比例</td></tr>
+        <tr><td><strong>适用场景</strong></td><td>按出货量分成</td><td>按实际运营消耗分成</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>页面表格示例</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>门店名称</th>
+          <th>合作客户</th>
+          <th>对账月份</th>
+          <th>消耗次数</th>
+          <th>消耗金额</th>
+          <th>分成比例</th>
+          <th>我司分成</th>
+          <th>对账状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>万达广场店</td><td>张三娱乐</td><td>2026-01</td><td>3,200 次</td><td>¥12,800</td><td>50%</td><td class="highlight">¥6,400</td><td><span class="badge badge-pending">待推送</span></td></tr>
+        <tr><td>吾悦广场店</td><td>张三娱乐</td><td>2026-01</td><td>1,850 次</td><td>¥7,400</td><td>50%</td><td class="highlight">¥3,700</td><td><span class="badge badge-done">已确认</span></td></tr>
+        <tr><td>龙湖天街店</td><td>李四游艺</td><td>2026-01</td><td>2,700 次</td><td>¥10,800</td><td>45%</td><td class="highlight">¥4,860</td><td><span class="badge badge-info">已推送</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>其余页面布局（筛选条件、操作下拉、生成弹窗）与门店发货对账单一致，仅对账类型选择为"消耗对账"。</p>
+
+  <!-- ===== 6.4 客户发货对账单 ===== -->
+  <h3 id="sec-yws-cust-ship">6.4 客户发货对账单 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>功能描述</h4>
+  <p>按合作客户维度汇总该客户下所有门店的发货对账数据，生成客户级发货对账单。一个客户对账单对应多个门店发货对账单的汇总。</p>
+
+  <h4>筛选条件</h4>
+  <div class="card card-blue">
+    <div class="form-row" style="flex-wrap:wrap;">
+      <div class="form-value" style="width:auto;min-width:120px;">合作客户：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">对账月份：2026-01</div>
+      <div class="form-value" style="width:auto;min-width:120px;">对账状态：全部</div>
+      <button class="btn btn-primary">查询</button>
+      <button class="btn btn-default">重置</button>
+      <button class="btn btn-primary">生成对账单</button>
+    </div>
+  </div>
+
+  <h4>表格字段</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>合作客户</th>
+          <th>对账月份</th>
+          <th>门店数量</th>
+          <th>发货总数</th>
+          <th>发货总金额</th>
+          <th>我司分成总额</th>
+          <th>对账状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>张三娱乐</td><td>2026-01</td><td>5 家</td><td>182 台</td><td>¥54,600</td>
+          <td class="highlight">¥27,300</td>
+          <td><span class="badge badge-pending">待推送</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">推送</span><span class="dd-item">查看明细</span><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td>李四游艺</td><td>2026-01</td><td>3 家</td><td>95 台</td><td>¥28,500</td>
+          <td class="highlight">¥14,250</td>
+          <td><span class="badge badge-done">已确认</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span></div></td>
+        </tr>
+        <tr>
+          <td>王五互娱</td><td>2026-01</td><td>7 家</td><td>210 台</td><td>¥63,000</td>
+          <td class="highlight">¥34,650</td>
+          <td><span class="badge badge-info">已推送</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span><span class="dd-item">作废</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card card-teal">
+    <div class="card-title">字段说明</div>
+    <ul class="field-list">
+      <li><span class="field-name">合作客户</span><span class="field-desc">客户名称</span></li>
+      <li><span class="field-name">门店数量</span><span class="field-desc">该客户下参与对账的门店总数</span></li>
+      <li><span class="field-name">发货总数</span><span class="field-desc">所有门店发货数量汇总</span></li>
+      <li><span class="field-name">发货总金额</span><span class="field-desc">所有门店发货金额汇总</span></li>
+      <li><span class="field-name">我司分成总额</span><span class="field-desc">所有门店我司分成金额汇总</span></li>
+      <li><span class="field-name">操作</span><span class="field-desc">推送、查看明细（展开门店列表）、编辑、作废</span></li>
+    </ul>
+  </div>
+
+  <!-- ===== 6.5 客户消耗对账单 ===== -->
+  <h3 id="sec-yws-cust-consume">6.5 客户消耗对账单 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>功能描述</h4>
+  <p>按合作客户维度汇总该客户下所有门店的消耗对账数据，生成客户级消耗对账单。</p>
+
+  <h4>与客户发货对账单的差异</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:140px;">对比维度</th><th>客户发货对账单</th><th>客户消耗对账单</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>对账依据</strong></td><td>各门店发货记录汇总</td><td class="highlight">各门店投币消耗数据汇总</td></tr>
+        <tr><td><strong>特有字段</strong></td><td>发货总数、发货总金额</td><td>消耗总次数、消耗总金额</td></tr>
+        <tr><td><strong>分成计算</strong></td><td>基于发货金额</td><td>基于消耗金额</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>表格示例</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>合作客户</th>
+          <th>对账月份</th>
+          <th>门店数量</th>
+          <th>消耗总次数</th>
+          <th>消耗总额</th>
+          <th>我司分成总额</th>
+          <th>对账状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>张三娱乐</td><td>2026-01</td><td>5 家</td><td>12,400 次</td><td>¥49,600</td>
+          <td class="highlight">¥24,800</td>
+          <td><span class="badge badge-pending">待推送</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">推送</span><span class="dd-item">查看明细</span></div></td>
+        </tr>
+        <tr>
+          <td>李四游艺</td><td>2026-01</td><td>3 家</td><td>7,200 次</td><td>¥28,800</td>
+          <td class="highlight">¥12,960</td>
+          <td><span class="badge badge-done">已确认</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 7. 爆玩宇宙对账单 ===== -->
+<div class="section" id="sec-bwyz">
+  <h2>7. 爆玩宇宙对账单 <span class="badge badge-done">二期已上线</span></h2>
+
+  <!-- ===== 7.1 门店对账单 ===== -->
+  <h3 id="sec-bwyz-store">7.1 门店对账单 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>功能描述</h4>
+  <p>按门店维度生成爆玩宇宙对账单。爆玩宇宙业务线支持<strong>双数据源</strong>：游艺宝和世宇后台，通过Tab切换查看不同数据来源的对账数据。</p>
+
+  <h4>双数据源Tab切换</h4>
+  <div class="tab-bar">
+    <div class="tab-item active">游艺宝</div>
+    <div class="tab-item">世宇后台</div>
+  </div>
+
+  <h4>筛选条件</h4>
+  <div class="card card-blue">
+    <div class="form-row" style="flex-wrap:wrap;">
+      <div class="form-value" style="width:auto;min-width:120px;">合作客户：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">门店名称：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">游戏类型：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">对账月份：2026-01</div>
+      <div class="form-value" style="width:auto;min-width:120px;">对账状态：全部</div>
+      <button class="btn btn-primary">查询</button>
+      <button class="btn btn-default">重置</button>
+      <button class="btn btn-primary">生成对账单</button>
+    </div>
+  </div>
+
+  <h4>游艺宝视图（按游戏分组）</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>游戏名称</th>
+          <th>门店名称</th>
+          <th>对账月份</th>
+          <th>投币量</th>
+          <th>收益金额</th>
+          <th>分成比例</th>
+          <th>我司分成</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>超级玩家</strong></td><td>万达广场店</td><td>2026-01</td><td>8,500</td><td>¥34,000</td><td>50%</td>
+          <td class="highlight">¥17,000</td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td><strong>超级玩家</strong></td><td>吾悦广场店</td><td>2026-01</td><td>5,200</td><td>¥20,800</td><td>50%</td>
+          <td class="highlight">¥10,400</td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span></div></td>
+        </tr>
+        <tr>
+          <td><strong>机甲对决</strong></td><td>万达广场店</td><td>2026-01</td><td>3,600</td><td>¥14,400</td><td>45%</td>
+          <td class="highlight">¥6,480</td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span></div></td>
+        </tr>
+        <tr>
+          <td><strong>机甲对决</strong></td><td>龙湖天街店</td><td>2026-01</td><td>4,100</td><td>¥16,400</td><td>45%</td>
+          <td class="highlight">¥7,380</td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span><span class="dd-item">编辑</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tips">
+    <div class="tips-icon">i</div>
+    <div class="tips-content">游艺宝视图按<strong>游戏分组</strong>展示，同一门店不同游戏分别列出，便于查看各游戏的分成情况。</div>
+  </div>
+
+  <h4>世宇后台视图</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>门店名称</th>
+          <th>对账月份</th>
+          <th>总投币量</th>
+          <th>总收益</th>
+          <th>分成比例</th>
+          <th>我司分成</th>
+          <th>对账状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>万达广场店</td><td>2026-01</td><td>12,100</td><td>¥48,400</td><td>48%</td>
+          <td class="highlight">¥23,232</td>
+          <td><span class="badge badge-pending">待推送</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">推送</span><span class="dd-item">查看明细</span></div></td>
+        </tr>
+        <tr>
+          <td>吾悦广场店</td><td>2026-01</td><td>8,300</td><td>¥33,200</td><td>50%</td>
+          <td class="highlight">¥16,600</td>
+          <td><span class="badge badge-done">已确认</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tips">
+    <div class="tips-icon">i</div>
+    <div class="tips-content">世宇后台视图按<strong>门店维度</strong>汇总展示，不区分游戏，直接显示门店总投币量和总收益。</div>
+  </div>
+
+  <h4>操作下拉</h4>
+  <div class="card card-teal">
+    <ul class="field-list">
+      <li><span class="field-name">查看明细</span><span class="field-desc">展开该游戏/门店的每日消耗明细列表</span></li>
+      <li><span class="field-name">编辑</span><span class="field-desc">修改分成比例或调整数据</span></li>
+      <li><span class="field-name">推送</span><span class="field-desc">推送至客户企微群/小程序</span></li>
+      <li><span class="field-name">作废</span><span class="field-desc">作废该对账记录</span></li>
+    </ul>
+  </div>
+
+  <h4>生成对账单弹窗</h4>
+  <div class="modal-demo">
+    <div class="modal-demo-header">
+      <span>生成爆玩宇宙门店对账单</span>
+      <span class="text-muted">x</span>
+    </div>
+    <div class="modal-demo-body">
+      <div class="form-row">
+        <div class="form-label">合作类型</div>
+        <div class="form-value" style="background:#f0f0f0;">爆玩宇宙 <span class="text-muted">(固定)</span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">数据来源</div>
+        <div style="display:flex;gap:12px;flex:1;">
+          <label><input type="radio" name="src" checked> 游艺宝</label>
+          <label><input type="radio" name="src"> 世宇后台</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">选择方式</div>
+        <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap;">
+          <label><input type="radio" name="mode" checked> 按客户选择</label>
+          <label><input type="radio" name="mode"> 按门店选择</label>
+          <label><input type="radio" name="mode"> 全部生成</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">对账月份</div>
+        <select class="form-input"><option>2026年1月</option></select>
+      </div>
+      <div class="form-row">
+        <div class="form-label">开始日期</div>
+        <input type="text" class="form-input" value="2026-01-01">
+      </div>
+      <div class="form-row">
+        <div class="form-label">结束日期</div>
+        <input type="text" class="form-input" value="2026-01-31">
+      </div>
+    </div>
+    <div class="modal-demo-footer">
+      <button class="btn btn-default" style="margin-right:8px;">取消</button>
+      <button class="btn btn-primary">生成</button>
+    </div>
+  </div>
+
+  <h4>明细列表</h4>
+  <p>点击"查看明细"后展开该游戏/门店的每日消耗数据：</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>游戏名称</th>
+          <th>门店名称</th>
+          <th>投币量</th>
+          <th>收益金额</th>
+          <th>分成比例</th>
+          <th>我司分成</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2026-01-01</td><td>超级玩家</td><td>万达广场店</td><td>320</td><td>¥1,280</td><td>50%</td><td>¥640</td></tr>
+        <tr><td>2026-01-02</td><td>超级玩家</td><td>万达广场店</td><td>280</td><td>¥1,120</td><td>50%</td><td>¥560</td></tr>
+        <tr><td>2026-01-03</td><td>超级玩家</td><td>万达广场店</td><td>350</td><td>¥1,400</td><td>50%</td><td>¥700</td></tr>
+        <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>7.1.5 门店对账单列表优化 <span class="badge badge-optimize">二期优化</span></h4>
+
+  <h5>优化背景</h5>
+  <div class="card card-amber">
+    <ul style="margin-bottom:0;">
+      <li>原列表展示单个机台收币分成情况，信息过于分散，不便于业务员快速查看和操作</li>
+      <li>本次优化统一列表展示方式，提升操作效率</li>
+    </ul>
+  </div>
+
+  <h5>优化内容</h5>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:60px;">序号</th>
+          <th style="width:140px;">优化项</th>
+          <th>原状态</th>
+          <th>优化后</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>机台分成明细</strong></td>
+          <td>按游戏分组展示收币数/分成数/测试币（游艺宝视图）/ 机台信息+图片（世宇后台视图）</td>
+          <td>统一为"机台分成明细"字段，点击后弹窗查看详情</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>是否对账开关</strong></td>
+          <td>无</td>
+          <td>新增"是否对账"开关列</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>发票下载</strong></td>
+          <td>仅显示发票状态</td>
+          <td>发票列增加下载功能</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>删除功能</strong></td>
+          <td>操作下拉中有"删除"选项</td>
+          <td>移除"删除"选项</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h5>明细列表弹窗</h5>
+  <p>点击"机台分成明细"后弹出明细列表弹窗，弹窗结构如下：</p>
+
+  <div class="modal-demo" style="max-width:960px;">
+    <div class="modal-demo-header">
+      <span>明细列表</span>
+      <span class="text-muted">x</span>
+    </div>
+    <div class="modal-demo-body">
+      <!-- 顶部蓝色信息栏 -->
+      <div style="background:#ebf8ff;border:1px solid #bee3f8;border-radius:6px;padding:14px 18px;margin-bottom:16px;display:flex;gap:28px;flex-wrap:wrap;">
+        <div><span style="color:#718096;font-size:12px;">门店名称</span><br><strong style="color:#1a1f36;font-size:14px;">万达广场店</strong></div>
+        <div><span style="color:#718096;font-size:12px;">客户名称</span><br><strong style="color:#1a1f36;font-size:14px;">张三娱乐</strong></div>
+        <div><span style="color:#718096;font-size:12px;">对账月份</span><br><strong style="color:#1a1f36;font-size:14px;">2026年1月</strong></div>
+        <div><span style="color:#718096;font-size:12px;">约定币值</span><br><strong style="color:#1a1f36;font-size:14px;">1币=1元</strong></div>
+        <div><span style="color:#718096;font-size:12px;">分成比例</span><br><strong style="color:#1a1f36;font-size:14px;">50%</strong></div>
+      </div>
+
+      <!-- 6个统计卡片横排 -->
+      <div class="stat-row" style="margin:0 0 16px 0;">
+        <div class="stat-card"><div class="stat-value" style="font-size:20px;">8,500</div><div class="stat-label">摸鱼达人（币）</div></div>
+        <div class="stat-card teal"><div class="stat-value" style="font-size:20px;">6,200</div><div class="stat-label">乖巧派对（币）</div></div>
+        <div class="stat-card amber"><div class="stat-value" style="font-size:20px;">4,800</div><div class="stat-label">勇者大陆（币）</div></div>
+        <div class="stat-card red"><div class="stat-value" style="font-size:20px;">3,500</div><div class="stat-label">向阳而生（币）</div></div>
+        <div class="stat-card"><div class="stat-value" style="font-size:20px;color:#319795;">¥11,500</div><div class="stat-label">世宇分成</div></div>
+        <div class="stat-card"><div class="stat-value" style="font-size:20px;color:#2b6cb0;">¥23,000</div><div class="stat-label">合计金额</div></div>
+      </div>
+
+      <!-- 工具栏 -->
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+        <button class="btn btn-default">⟳ 刷新</button>
+        <input type="text" class="form-input" placeholder="搜索日期" style="width:200px;">
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <button class="btn btn-default" style="background:#ebf8ff;color:#2b6cb0;border-color:#bee3f8;">☰ 表格</button>
+          <button class="btn btn-default">▦ 卡片</button>
+          <button class="btn btn-primary">导出</button>
+        </div>
+      </div>
+
+      <!-- 明细表格 -->
+      <div class="table-wrap" style="margin:0;">
+        <table>
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>摸鱼达人币数</th>
+              <th>乖巧派对币数</th>
+              <th>勇者大陆币数</th>
+              <th>向阳而生币数</th>
+              <th>合计币数</th>
+              <th>合计金额</th>
+              <th>世宇分成金额</th>
+              <th>乐园分成金额</th>
+              <th style="width:70px;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-01-01</td>
+              <td>320</td>
+              <td>240</td>
+              <td>180</td>
+              <td>130</td>
+              <td>870</td>
+              <td>¥870</td>
+              <td>¥435</td>
+              <td>¥435</td>
+              <td><button class="btn btn-teal" style="padding:2px 10px;font-size:12px;">编辑</button></td>
+            </tr>
+            <tr>
+              <td>2026-01-02</td>
+              <td>280</td>
+              <td>210</td>
+              <td>160</td>
+              <td>115</td>
+              <td>765</td>
+              <td>¥765</td>
+              <td>¥382.5</td>
+              <td>¥382.5</td>
+              <td><button class="btn btn-teal" style="padding:2px 10px;font-size:12px;">编辑</button></td>
+            </tr>
+            <tr>
+              <td>2026-01-03</td>
+              <td>350</td>
+              <td>260</td>
+              <td>200</td>
+              <td>145</td>
+              <td>955</td>
+              <td>¥955</td>
+              <td>¥477.5</td>
+              <td>¥477.5</td>
+              <td><button class="btn btn-teal" style="padding:2px 10px;font-size:12px;">编辑</button></td>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h5>编辑功能优化</h5>
+  <div class="card card-blue">
+    <div class="card-title">编辑方式升级</div>
+    <p><strong>当前：</strong>只能修改当天的收币币值</p>
+    <p><strong>优化后：</strong>支持两种编辑方式</p>
+    <ul>
+      <li><strong>a. 按天编辑：</strong>修改某天某款游戏的投币数</li>
+      <li><strong>b. 按总投币编辑（推荐）：</strong>直接修改某款游戏的总投币数，系统按原有每日投币数比例自动均分到每一天</li>
+    </ul>
+  </div>
+
+  <div class="card card-amber">
+    <div class="card-title">示例：按总投币编辑</div>
+    <p>摸鱼达人原总投币 <strong>1000</strong> 个（7天比例 1:2:1.5:3:0.5:1:1），修改为 <strong>2000</strong> 个，则每天按比例翻倍：</p>
+    <div class="table-wrap" style="margin:12px 0;">
+      <table>
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>原投币数</th>
+            <th>修改后投币数</th>
+            <th style="width:100px;">变化</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>第1天</td><td>100</td><td>200</td><td class="text-teal">+100</td></tr>
+          <tr><td>第2天</td><td>200</td><td>400</td><td class="text-teal">+200</td></tr>
+          <tr><td>第3天</td><td>150</td><td>300</td><td class="text-teal">+150</td></tr>
+          <tr><td>第4天</td><td>300</td><td>600</td><td class="text-teal">+300</td></tr>
+          <tr><td>第5天</td><td>50</td><td>100</td><td class="text-teal">+50</td></tr>
+          <tr><td>第6天</td><td>100</td><td>200</td><td class="text-teal">+100</td></tr>
+          <tr><td>第7天</td><td>100</td><td>200</td><td class="text-teal">+100</td></tr>
+          <tr style="background:#f7fafc;font-weight:600;"><td>合计</td><td>1,000</td><td>2,000</td><td class="text-teal">+1,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin:0;">修改后实时计算<strong>合计金额、世宇分成、乐园分成</strong>，并展示修改前后对比。</p>
+  </div>
+
+  <!-- ===== 7.2 客户对账单 ===== -->
+  <h3 id="sec-bwyz-cust">7.2 客户对账单 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>功能描述</h4>
+  <p>按合作客户维度汇总爆玩宇宙各游戏的分成数据。客户对账单展示各游戏的分成明细、我司/他司合计分成、约定币值和分成比例等核心信息，支持批量操作。</p>
+
+  <h4>筛选条件</h4>
+  <div class="card card-blue">
+    <div class="form-row" style="flex-wrap:wrap;">
+      <div class="form-value" style="width:auto;min-width:120px;">合作客户：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">对账月份：2026-01</div>
+      <div class="form-value" style="width:auto;min-width:120px;">对账状态：全部</div>
+      <button class="btn btn-primary">查询</button>
+      <button class="btn btn-default">重置</button>
+      <button class="btn btn-primary">生成对账单</button>
+      <button class="btn btn-teal">批量推送</button>
+    </div>
+  </div>
+
+  <h4>表格字段</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>合作客户</th>
+          <th>对账月份</th>
+          <th>超级玩家分成</th>
+          <th>机甲对决分成</th>
+          <th>更多游戏...</th>
+          <th>我司合计分成</th>
+          <th>他司合计分成</th>
+          <th>约定币值</th>
+          <th>分成比例</th>
+          <th>对账状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>张三娱乐</td><td>2026-01</td>
+          <td>¥27,400</td><td>¥13,860</td><td>-</td>
+          <td class="highlight">¥41,260</td>
+          <td>¥41,260</td>
+          <td>1币=1元</td><td>50%</td>
+          <td><span class="badge badge-pending">待推送</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">推送</span><span class="dd-item">明细</span><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>李四游艺</td><td>2026-01</td>
+          <td>¥18,200</td><td>¥7,380</td><td>¥5,000</td>
+          <td class="highlight">¥30,580</td>
+          <td>¥37,375</td>
+          <td>1币=1元</td><td>45%</td>
+          <td><span class="badge badge-done">已确认</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">明细</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>王五互娱</td><td>2026-01</td>
+          <td>¥32,000</td><td>¥15,200</td><td>¥8,500</td>
+          <td class="highlight">¥55,700</td>
+          <td>¥45,573</td>
+          <td>1币=0.5元</td><td>55%</td>
+          <td><span class="badge badge-info">已推送</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">明细</span><span class="dd-item">作废</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card card-teal">
+    <div class="card-title">核心字段说明</div>
+    <ul class="field-list">
+      <li><span class="field-name">各游戏分成</span><span class="field-desc">该客户在各游戏下的我司分成金额，按游戏列动态展示</span></li>
+      <li><span class="field-name">我司合计分成</span><span class="field-desc">所有游戏我司分成金额合计</span></li>
+      <li><span class="field-name">他司合计分成</span><span class="field-desc">所有游戏客户方分成金额合计</span></li>
+      <li><span class="field-name">约定币值</span><span class="field-desc">投币与金额的换算比例，如1币=1元、1币=0.5元等</span></li>
+      <li><span class="field-name">分成比例</span><span class="field-desc">我司与客户之间的分成比例，如50%、45%、55%等</span></li>
+    </ul>
+  </div>
+
+  <h4>批量操作</h4>
+  <div class="card card-blue">
+    <p>勾选多条记录后支持批量操作：</p>
+    <ul>
+      <li><strong>批量推送：</strong>将选中的待推送对账单一次性推送至客户</li>
+      <li><strong>批量导出：</strong>导出选中的对账单数据</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 8. 分成账期管理 ===== -->
+<div class="section" id="sec-period">
+  <h2>8. 分成账期管理 <span class="badge badge-done">二期已上线</span></h2>
+
+  <h3>8.1 功能描述</h3>
+  <p>管理合作客户的分成账期，自动计算账期期限和逾期天数，跟踪对账收入与已收款差异，支持催款和锁机操作。账期数据与认款管理联动，客户认款后自动更新已收款金额。</p>
+
+  <h3>8.2 计算规则</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:140px;">字段</th><th>计算规则</th><th>说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>账期期限</strong></td><td>对账月份 + 客户账期天数</td><td>根据基础设置中客户配置的账期天数计算</td></tr>
+        <tr><td><strong>逾期天数</strong></td><td>当前日期 - 账期期限（若为正）</td><td>未逾期显示0，逾期显示实际天数</td></tr>
+        <tr><td><strong>对账收入</strong></td><td>该账期内所有已确认对账单的分成总额</td><td>仅统计已确认状态的对账单</td></tr>
+        <tr><td><strong>已收款</strong></td><td>认款管理中该客户该账期的认款总额</td><td>与认款管理数据联动</td></tr>
+        <tr><td><strong>差异金额</strong></td><td>对账收入 - 已收款</td><td>正值表示未收回款，0表示已结清</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>8.3 页面布局</h3>
+
+  <h4>Tips提示</h4>
+  <div class="tips">
+    <div class="tips-icon">i</div>
+    <div class="tips-content">分成账期从<strong>2026年1月</strong>开始计算，去年欠款已归零。逾期超过账期天数的客户将触发催款提醒，逾期超过设定阈值将触发自动锁机。</div>
+  </div>
+
+  <h4>统计行</h4>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-value">¥1,285,600</div><div class="stat-label">对账收入总额</div></div>
+    <div class="stat-card teal"><div class="stat-value">¥986,200</div><div class="stat-label">已收款总额</div></div>
+    <div class="stat-card amber"><div class="stat-value">¥299,400</div><div class="stat-label">差异金额（待收）</div></div>
+    <div class="stat-card red"><div class="stat-value">3</div><div class="stat-label">逾期客户数</div></div>
+  </div>
+
+  <h4>筛选条件</h4>
+  <div class="card card-blue">
+    <div class="form-row" style="flex-wrap:wrap;">
+      <div class="form-value" style="width:auto;min-width:120px;">合作客户：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">账期月份：2026-01</div>
+      <div class="form-value" style="width:auto;min-width:120px;">逾期状态：全部</div>
+      <button class="btn btn-primary">查询</button>
+      <button class="btn btn-default">重置</button>
+    </div>
+  </div>
+
+  <h4>表格列</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>合作客户</th>
+          <th>账期月份</th>
+          <th>账期期限</th>
+          <th>逾期天数</th>
+          <th>对账收入</th>
+          <th>已收款</th>
+          <th>差异金额</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>张三娱乐</td><td>2026-01</td><td>2026-02-28</td><td>0 天</td>
+          <td>¥126,800</td><td>¥126,800</td><td class="text-teal">¥0</td>
+          <td><span class="badge badge-done">已结清</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">详情</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>李四游艺</td><td>2026-01</td><td>2026-02-15</td><td>0 天</td>
+          <td>¥89,200</td><td>¥50,000</td><td class="text-red">¥39,200</td>
+          <td><span class="badge badge-info">未结清</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">催款</span><span class="dd-item">详情</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>王五互娱</td><td>2026-01</td><td>2026-02-10</td><td class="text-red">10 天</td>
+          <td>¥215,400</td><td>¥80,000</td><td class="text-red">¥135,400</td>
+          <td><span class="badge badge-pending">已逾期</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">催款</span><span class="dd-item">锁机</span><span class="dd-item">详情</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>赵六游戏</td><td>2026-01</td><td>2026-01-31</td><td class="text-red">20 天</td>
+          <td>¥178,000</td><td>¥0</td><td class="text-red">¥178,000</td>
+          <td><span class="badge badge-pending">已逾期</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">催款</span><span class="dd-item">锁机</span><span class="dd-item">详情</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>操作与批量操作</h4>
+  <div class="card card-teal">
+    <ul class="field-list">
+      <li><span class="field-name">催款</span><span class="field-desc">向客户发送催款通知（企微消息+小程序提醒）</span></li>
+      <li><span class="field-name">锁机</span><span class="field-desc">对逾期客户的合作机台执行远程锁机操作</span></li>
+      <li><span class="field-name">详情</span><span class="field-desc">查看该账期的对账明细和认款记录</span></li>
+      <li><span class="field-name">批量催款</span><span class="field-desc">勾选多条逾期记录后批量发送催款通知</span></li>
+      <li><span class="field-name">批量锁机</span><span class="field-desc">勾选多条逾期记录后批量执行锁机</span></li>
+    </ul>
+  </div>
+
+  <h3>8.4 催款与锁机功能</h3>
+  <div class="card card-amber">
+    <div class="card-title">催款功能</div>
+    <ul style="margin-bottom:0;">
+      <li>触发方式：手动催款 / 自动催款（基础设置中客户开启"自动催款"后，逾期自动触发）</li>
+      <li>通知渠道：企业微信群消息 + 数智全开小程序打款提醒</li>
+      <li>催款内容：包含客户名称、欠款金额、账期月份、逾期天数</li>
+    </ul>
+  </div>
+  <div class="card card-amber">
+    <div class="card-title">锁机功能</div>
+    <ul style="margin-bottom:0;">
+      <li>触发方式：手动锁机 / 自动锁机（基础设置中客户开启"自动锁机"后，逾期超过阈值自动触发）</li>
+      <li>锁机范围：该客户名下所有支持锁机类型的合作机台</li>
+      <li>解锁条件：客户完成认款，差异金额归零后可手动解锁</li>
+    </ul>
+  </div>
+
+  <h3>8.5 数据说明</h3>
+  <div class="tips tips-warn">
+    <div class="tips-icon">!</div>
+    <div class="tips-content"><strong>重要：</strong>分成账期从<strong>2026年1月</strong>开始计算，去年欠款已归零。2026年1月之前的欠款不纳入系统管理，客户无需补缴历史欠款。</div>
+  </div>
+</div>
+
+<!-- ===== 9. 合作机台回款管理 ===== -->
+<div class="section" id="sec-payback">
+  <h2>9. 合作机台回款管理 <span class="badge badge-done">二期已上线</span></h2>
+
+  <h3>9.1 功能描述</h3>
+  <p>管理合作机台的整体回款情况，统计各客户的机台数量、总回款、已回款、待回款和回款率，帮助业务员掌握整体回款进度。</p>
+
+  <h3>9.2 页面布局</h3>
+
+  <h4>统计卡片</h4>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-value">142</div><div class="stat-label">合作机台总数</div></div>
+    <div class="stat-card teal"><div class="stat-value">¥3,856,000</div><div class="stat-label">总回款金额</div></div>
+    <div class="stat-card"><div class="stat-value">¥2,699,200</div><div class="stat-label">已回款金额</div></div>
+    <div class="stat-card amber"><div class="stat-value">¥1,156,800</div><div class="stat-label">待回款金额</div></div>
+    <div class="stat-card teal"><div class="stat-value">70%</div><div class="stat-label">整体回款率</div></div>
+  </div>
+
+  <h4>筛选条件</h4>
+  <div class="card card-blue">
+    <div class="form-row" style="flex-wrap:wrap;">
+      <div class="form-value" style="width:auto;min-width:120px;">合作客户：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">业务员：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">统计周期：2026年</div>
+      <button class="btn btn-primary">查询</button>
+      <button class="btn btn-default">重置</button>
+      <button class="btn btn-teal">导出</button>
+    </div>
+  </div>
+
+  <h4>表格列</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>合作客户</th>
+          <th>业务员</th>
+          <th>机台数量</th>
+          <th>总回款</th>
+          <th>已回款</th>
+          <th>待回款</th>
+          <th>回款率</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>张三娱乐</td><td>张业务</td><td>38 台</td><td>¥986,000</td><td>¥789,000</td><td>¥197,000</td>
+          <td><span class="badge badge-done">80%</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span><span class="dd-item">回款记录</span></div></td>
+        </tr>
+        <tr>
+          <td>李四游艺</td><td>李业务</td><td>25 台</td><td>¥672,000</td><td>¥403,200</td><td>¥268,800</td>
+          <td><span class="badge badge-info">60%</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span><span class="dd-item">回款记录</span></div></td>
+        </tr>
+        <tr>
+          <td>王五互娱</td><td>张业务</td><td>52 台</td><td>¥1,456,000</td><td>¥873,600</td><td>¥582,400</td>
+          <td><span class="badge badge-pending">60%</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span><span class="dd-item">回款记录</span></div></td>
+        </tr>
+        <tr>
+          <td>赵六游戏</td><td>王业务</td><td>27 台</td><td>¥742,000</td><td>¥633,400</td><td>¥108,600</td>
+          <td><span class="badge badge-done">85%</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看明细</span><span class="dd-item">回款记录</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>操作</h4>
+  <div class="card card-teal">
+    <ul class="field-list">
+      <li><span class="field-name">查看明细</span><span class="field-desc">查看该客户名下各机台的回款明细</span></li>
+      <li><span class="field-name">回款记录</span><span class="field-desc">查看历史回款（认款）记录列表</span></li>
+      <li><span class="field-name">导出</span><span class="field-desc">导出回款管理数据</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 10. 认款管理 ===== -->
+<div class="section" id="sec-confirm">
+  <h2>10. 认款管理 <span class="badge badge-done">二期已上线</span></h2>
+  <p>认款管理是二期已上线的核心功能模块，用于管理客户回款的认款核销流程。业务员通过银行流水导入收款记录，在认款弹窗中将收款金额关联到具体客户和分成所属机台，完成认款核销后自动更新账期管理中的已收款数据。</p>
+
+  <!-- ===== 10.1 认款列表 ===== -->
+  <h3 id="sec-confirm-list">10.1 认款列表 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>银行导入规则</h4>
+  <div class="card card-amber">
+    <div class="card-title">银行流水导入规则</div>
+    <ul style="margin-bottom:0;">
+      <li><strong>导入方式：</strong>业务员从银行下载流水文件（Excel/CSV格式），通过系统导入</li>
+      <li><strong>文件格式：</strong>支持标准银行流水格式，包含流水号、收款金额、收款日期、付款方名称、摘要等字段</li>
+      <li><strong>自动匹配：</strong>系统根据付款方名称自动匹配合作客户，匹配成功率取决于客户名称一致性</li>
+      <li><strong>重复校验：</strong>同一银行流水号不可重复导入，系统自动去重</li>
+      <li><strong>未匹配处理：</strong>自动匹配失败的记录标记为"待认款"，需业务员手动认款</li>
+      <li><strong>认款状态：</strong>待认款 → 已认款 / 已忽略</li>
+    </ul>
+  </div>
+
+  <div class="tips tips-warn">
+    <div class="tips-icon">!</div>
+    <div class="tips-content">银行导入仅导入银行流水记录用于认款匹配，<strong>不包含外部银行系统对接（API直连等）</strong>。业务员手动下载银行流水文件后上传至系统。</div>
+  </div>
+
+  <h4>公告提示</h4>
+  <div class="tips">
+    <div class="tips-icon">i</div>
+    <div class="tips-content"><strong>公告：</strong>请业务员定期导入银行流水并及时认款，认款完成后客户账期将自动更新。未认款的收款记录将影响客户账期准确性。</div>
+  </div>
+
+  <h4>筛选条件</h4>
+  <div class="card card-blue">
+    <div class="form-row" style="flex-wrap:wrap;">
+      <div class="form-value" style="width:auto;min-width:120px;">认款状态：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">合作客户：全部</div>
+      <div class="form-value" style="width:auto;min-width:120px;">收款日期：2026-01-01 ~ 2026-01-31</div>
+      <div class="form-value" style="width:auto;min-width:120px;">认款人：全部</div>
+      <button class="btn btn-primary">查询</button>
+      <button class="btn btn-default">重置</button>
+      <button class="btn btn-primary">导入银行流水</button>
+    </div>
+  </div>
+
+  <h4>功能按钮</h4>
+  <div class="card card-teal">
+    <ul class="field-list">
+      <li><span class="field-name">导入银行流水</span><span class="field-desc">上传银行流水文件，系统自动解析并匹配客户</span></li>
+      <li><span class="field-name">批量认款</span><span class="field-desc">勾选多条待认款记录后批量打开认款弹窗</span></li>
+      <li><span class="field-name">导出</span><span class="field-desc">导出认款列表数据</span></li>
+    </ul>
+  </div>
+
+  <h4>表格字段</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>认款编号</th>
+          <th>银行流水号</th>
+          <th>付款方名称</th>
+          <th>合作客户</th>
+          <th>收款金额</th>
+          <th>收款日期</th>
+          <th>认款状态</th>
+          <th>认款人</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>RK20260115001</td><td>BOC20260115001</td><td>张三娱乐有限公司</td><td>张三娱乐</td>
+          <td class="highlight">¥50,000</td><td>2026-01-15</td>
+          <td><span class="badge badge-done">已认款</span></td><td>张业务</td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>RK20260116002</td><td>BOC20260116002</td><td>李四</td><td>李四游艺</td>
+          <td class="highlight">¥30,000</td><td>2026-01-16</td>
+          <td><span class="badge badge-pending">待认款</span></td><td>-</td>
+          <td><div class="dropdown-demo"><span class="dd-item">认款</span><span class="dd-item">忽略</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>RK20260118003</td><td>CMB20260118003</td><td>王五互娱科技</td><td>王五互娱</td>
+          <td class="highlight">¥80,000</td><td>2026-01-18</td>
+          <td><span class="badge badge-done">已认款</span></td><td>张业务</td>
+          <td><div class="dropdown-demo"><span class="dd-item">查看</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>RK20260120004</td><td>ICBC20260120004</td><td>未知付款方</td><td class="text-muted">未匹配</td>
+          <td class="highlight">¥15,000</td><td>2026-01-20</td>
+          <td><span class="badge badge-pending">待认款</span></td><td>-</td>
+          <td><div class="dropdown-demo"><span class="dd-item">认款</span><span class="dd-item">忽略</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>RK20260122005</td><td>BOC20260122005</td><td>赵六游戏厅</td><td>赵六游戏</td>
+          <td class="highlight">¥100,000</td><td>2026-01-22</td>
+          <td><span class="badge badge-info">已忽略</span></td><td>王业务</td>
+          <td><div class="dropdown-demo"><span class="dd-item">恢复认款</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 10.2 认款弹窗 ===== -->
+  <h3 id="sec-confirm-modal">10.2 认款弹窗 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>弹窗结构</h4>
+  <p>点击"认款"操作后弹出认款弹窗，包含以下区域：</p>
+
+  <div class="modal-demo" style="max-width:680px;">
+    <div class="modal-demo-header">
+      <span>认款</span>
+      <span class="text-muted">x</span>
+    </div>
+    <div class="modal-demo-body">
+      <h4 style="margin-top:0;color:#2b6cb0;">基础信息</h4>
+      <div class="form-row">
+        <div class="form-label">认款编号</div>
+        <div class="form-value">RK20260116002</div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">银行流水号</div>
+        <div class="form-value">BOC20260116002</div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">付款方名称</div>
+        <div class="form-value">李四</div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">收款金额</div>
+        <div class="form-value" style="color:#2b6cb0;font-weight:600;">¥30,000</div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">收款日期</div>
+        <div class="form-value">2026-01-16</div>
+      </div>
+
+      <hr class="divider">
+
+      <h4 style="color:#2b6cb0;">认款明细 <span class="badge badge-info">可多行</span></h4>
+      <div class="table-wrap" style="margin:8px 0;box-shadow:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>合作客户</th>
+              <th>分成所属机台</th>
+              <th>认款金额</th>
+              <th>账期月份</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>李四游艺</td>
+              <td><span class="badge badge-blue">分成-亿玩堂</span></td>
+              <td>¥20,000</td>
+              <td>2026-01</td>
+              <td><button class="btn btn-link" style="color:#e53e3e;">删除</button></td>
+            </tr>
+            <tr>
+              <td>李四游艺</td>
+              <td><span class="badge badge-teal">分成-爆玩宇宙</span></td>
+              <td>¥10,000</td>
+              <td>2026-01</td>
+              <td><button class="btn btn-link" style="color:#e53e3e;">删除</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn btn-default" style="border-style:dashed;width:100%;margin-bottom:16px;">+ 添加认款明细</button>
+
+      <hr class="divider">
+
+      <h4 style="color:#2b6cb0;">金额汇总</h4>
+      <div class="form-row">
+        <div class="form-label">收款金额</div>
+        <div class="form-value">¥30,000</div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">已分配金额</div>
+        <div class="form-value" style="color:#319795;">¥30,000</div>
+      </div>
+      <div class="form-row">
+        <div class="form-label">未分配金额</div>
+        <div class="form-value" style="color:#319795;font-weight:600;">¥0</div>
+      </div>
+
+      <hr class="divider">
+
+      <h4 style="color:#2b6cb0;">认款人</h4>
+      <div class="form-row">
+        <div class="form-label">认款人</div>
+        <div class="form-value">张业务（当前操作人）</div>
+      </div>
+    </div>
+    <div class="modal-demo-footer">
+      <button class="btn btn-default" style="margin-right:8px;">取消</button>
+      <button class="btn btn-primary">确认认款</button>
+    </div>
+  </div>
+
+  <div class="card card-teal">
+    <div class="card-title">弹窗区域说明</div>
+    <ul class="field-list">
+      <li><span class="field-name">基础信息</span><span class="field-desc">展示认款编号、银行流水号、付款方名称、收款金额、收款日期（只读，来自银行流水）</span></li>
+      <li><span class="field-name">认款明细（可多行）</span><span class="field-desc">核心区域，支持添加多行认款明细。每行选择合作客户、分成所属机台、输入认款金额、选择账期月份。一笔收款可拆分认款到多个分成所属机台</span></li>
+      <li><span class="field-name">金额汇总</span><span class="field-desc">实时显示收款金额、已分配金额、未分配金额。未分配金额为0时才可提交认款</span></li>
+      <li><span class="field-name">认款人</span><span class="field-desc">默认为当前登录业务员，不可修改</span></li>
+    </ul>
+  </div>
+
+  <h4>分成所属机台选项</h4>
+  <p>认款明细中"分成所属机台"下拉选项：</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:180px;">选项名称</th><th>说明</th><th>对应业务线</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="badge badge-blue">分成-盲盒</span></td><td>盲盒宇宙业务线的分成回款</td><td>盲盒宇宙</td></tr>
+        <tr><td><span class="badge badge-blue">分成-亿玩堂</span></td><td>亿玩赏业务线的分成回款</td><td>亿玩赏</td></tr>
+        <tr><td><span class="badge badge-teal">分成-爆玩宇宙</span></td><td>爆玩宇宙业务线的分成回款</td><td>爆玩宇宙</td></tr>
+        <tr><td><span class="badge badge-blue">分成-其他</span></td><td>其他业务线的分成回款</td><td>其他</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tips">
+    <div class="tips-icon">i</div>
+    <div class="tips-content">认款完成后，认款金额将自动关联到对应客户的分成账期管理，更新"已收款"和"差异金额"字段。</div>
+  </div>
+</div>
+
+<!-- ===== 11. 群聊关联管理 ===== -->
+<div class="section" id="sec-chat">
+  <h2>11. 群聊关联管理 <span class="badge badge-done">二期已上线</span></h2>
+
+  <h3>11.1 功能描述</h3>
+  <p>管理企业微信群聊与合作客户之间的绑定关系。对账单生成后，系统通过绑定的企微群聊自动推送对账通知给客户，实现消息触达的自动化。</p>
+
+  <h3>11.2 核心功能</h3>
+
+  <h4>群聊绑定</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>合作客户</th>
+          <th>企微群名称</th>
+          <th>群成员数</th>
+          <th>绑定状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>张三娱乐</td><td>张三娱乐-对账群</td><td>5 人</td>
+          <td><span class="badge badge-done">已绑定</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">解绑</span><span class="dd-item">查看成员</span></div></td>
+        </tr>
+        <tr>
+          <td>李四游艺</td><td>李四游艺-分成沟通群</td><td>4 人</td>
+          <td><span class="badge badge-done">已绑定</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">解绑</span><span class="dd-item">查看成员</span></div></td>
+        </tr>
+        <tr>
+          <td>王五互娱</td><td class="text-muted">未绑定</td><td>-</td>
+          <td><span class="badge badge-pending">未绑定</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">绑定群聊</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card card-teal">
+    <ul class="field-list">
+      <li><span class="field-name">绑定群聊</span><span class="field-desc">选择企微群聊与客户绑定，支持搜索群名称</span></li>
+      <li><span class="field-name">解绑</span><span class="field-desc">解除群聊与客户的绑定关系，解绑后不再推送对账消息</span></li>
+      <li><span class="field-name">查看成员</span><span class="field-desc">查看企微群成员列表，确认客户是否在群内</span></li>
+    </ul>
+  </div>
+
+  <h4>对账单推送</h4>
+  <div class="card card-blue">
+    <div class="card-title">推送流程</div>
+    <div class="flow">
+      <div class="flow-node">对账单生成<br><small style="font-weight:400;font-size:11px;">业务员核对完成</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node active">推送至企微群<br><small style="font-weight:400;font-size:11px;">自动/手动触发</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node">客户收到通知<br><small style="font-weight:400;font-size:11px;">群内@相关人员</small></div>
+    </div>
+    <ul style="margin-bottom:0;">
+      <li>对账单推送时，系统向绑定的企微群发送卡片消息，包含对账月份、分成金额、确认链接</li>
+      <li>客户点击链接可跳转至数智全开小程序查看对账详情并确认</li>
+      <li>支持单个推送和批量推送</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 12. 基础设置 ===== -->
+<div class="section" id="sec-base">
+  <h2>12. 基础设置 <span class="badge badge-done">二期已上线</span></h2>
+
+  <h3>12.1 客户管理</h3>
+  <p>管理合作客户基础信息，配置账期天数、自动锁机和自动催款规则。</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>客户名称</th>
+          <th>识别码</th>
+          <th>账期天数</th>
+          <th>自动锁机</th>
+          <th>自动催款</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>张三娱乐</td><td>YS001</td><td>30 天</td>
+          <td><span class="badge badge-done">开启</span></td>
+          <td><span class="badge badge-done">开启</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td>李四游艺</td><td>YS002</td><td>15 天</td>
+          <td><span class="badge badge-info">关闭</span></td>
+          <td><span class="badge badge-done">开启</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td>王五互娱</td><td>YS003</td><td>30 天</td>
+          <td><span class="badge badge-done">开启</span></td>
+          <td><span class="badge badge-info">关闭</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td>赵六游戏</td><td>YS004</td><td>0 天</td>
+          <td><span class="badge badge-info">关闭</span></td>
+          <td><span class="badge badge-info">关闭</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card card-teal">
+    <div class="card-title">字段说明</div>
+    <ul class="field-list">
+      <li><span class="field-name">客户名称</span><span class="field-desc">合作客户名称</span></li>
+      <li><span class="field-name">识别码</span><span class="field-desc">客户唯一识别码，用于银行流水自动匹配</span></li>
+      <li><span class="field-name">账期天数</span><span class="field-desc">对账月份后的回款期限天数，0表示无账期限制</span></li>
+      <li><span class="field-name">自动锁机</span><span class="field-desc">开启后，逾期超过阈值自动触发锁机</span></li>
+      <li><span class="field-name">自动催款</span><span class="field-desc">开启后，逾期自动发送催款通知</span></li>
+    </ul>
+  </div>
+
+  <h3>12.2 门店管理</h3>
+  <p>管理门店基础信息，关联客户和业务员，支持一个门店关联多个业务员。</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>门店名称</th>
+          <th>关联客户</th>
+          <th>业务员</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>万达广场店</td><td>张三娱乐</td>
+          <td>张业务、李业务</td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td>吾悦广场店</td><td>张三娱乐</td>
+          <td>张业务</td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td>龙湖天街店</td><td>李四游艺</td>
+          <td>李业务、王业务</td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+        <tr>
+          <td>印象城店</td><td>李四游艺</td>
+          <td>王业务</td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tips">
+    <div class="tips-icon">i</div>
+    <div class="tips-content">门店管理中业务员支持<strong>多业务员</strong>关联，一个门店可同时由多位业务员负责，数据对关联的业务员均可见。</div>
+  </div>
+
+  <h3>12.3 机台SN管理</h3>
+  <p>管理机台SN（序列号），关联门店，管理锁机状态和支持的锁机类型。</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>机台SN</th>
+          <th>关联门店</th>
+          <th>锁机状态</th>
+          <th>支持锁机类型</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SN-2025-0001</td><td>万达广场店</td>
+          <td><span class="badge badge-done">正常</span></td>
+          <td><span class="pill" style="background:#e6f0ff;color:#2b6cb0;">远程锁机</span> <span class="pill" style="background:#e0fffa;color:#065f65;">物理锁机</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span><span class="dd-item">锁机</span></div></td>
+        </tr>
+        <tr>
+          <td>SN-2025-0002</td><td>万达广场店</td>
+          <td><span class="badge badge-pending">已锁机</span></td>
+          <td><span class="pill" style="background:#e6f0ff;color:#2b6cb0;">远程锁机</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span><span class="dd-item">解锁</span></div></td>
+        </tr>
+        <tr>
+          <td>SN-2025-0003</td><td>龙湖天街店</td>
+          <td><span class="badge badge-done">正常</span></td>
+          <td><span class="pill" style="background:#e6f0ff;color:#2b6cb0;">远程锁机</span> <span class="pill" style="background:#e0fffa;color:#065f65;">物理锁机</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span><span class="dd-item">锁机</span></div></td>
+        </tr>
+        <tr>
+          <td>SN-2025-0004</td><td>印象城店</td>
+          <td><span class="badge badge-done">正常</span></td>
+          <td><span class="pill" style="background:#e0fffa;color:#065f65;">物理锁机</span></td>
+          <td><div class="dropdown-demo"><span class="dd-item">编辑</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card card-teal">
+    <div class="card-title">字段说明</div>
+    <ul class="field-list">
+      <li><span class="field-name">机台SN</span><span class="field-desc">机台序列号，唯一标识</span></li>
+      <li><span class="field-name">关联门店</span><span class="field-desc">该机台所属门店</span></li>
+      <li><span class="field-name">锁机状态</span><span class="field-desc">正常 / 已锁机</span></li>
+      <li><span class="field-name">支持锁机类型</span><span class="field-desc">远程锁机（系统远程控制）/ 物理锁机（现场操作），一个机台可支持多种类型</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 13. 数智全开小程序 ===== -->
+<div class="section" id="sec-mini">
+  <h2>13. 数智全开小程序 <span class="badge badge-done">二期已上线</span></h2>
+  <p>数智全开小程序是面向合作客户的微信小程序端，客户通过小程序查看对账单、分成明细和打款提醒。以下为二期已上线的小程序功能模块。</p>
+
+  <!-- ===== 13.1 合作机台首页 ===== -->
+  <h3 id="sec-mini-home">13.1 合作机台首页 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>功能描述</h4>
+  <p>小程序首页展示3个入口卡片，客户点击进入对应功能模块：</p>
+
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="phone-header">数智全开</div>
+      <div style="padding:10px;">
+        <div class="phone-card" style="border-left:4px solid #2b6cb0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="phone-entry-icon" style="background:#2b6cb0;">亿</div>
+            <div>
+              <div class="phone-entry-text">亿玩赏</div>
+              <div style="font-size:11px;color:#a0aec0;">查看亿玩赏对账单</div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-card" style="border-left:4px solid #319795;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="phone-entry-icon" style="background:#319795;">爆</div>
+            <div>
+              <div class="phone-entry-text">爆玩宇宙</div>
+              <div style="font-size:11px;color:#a0aec0;">查看爆玩宇宙对账单</div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-card" style="border-left:4px solid #d69e2e;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="phone-entry-icon" style="background:#d69e2e;">款</div>
+            <div>
+              <div class="phone-entry-text">款项记录</div>
+              <div style="font-size:11px;color:#a0aec0;">查看打款提醒记录</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-teal">
+    <div class="card-title">3个入口卡片</div>
+    <ul class="field-list">
+      <li><span class="field-name" style="color:#2b6cb0;">亿玩赏</span><span class="field-desc">进入亿玩赏客户对账单列表，查看各月份对账数据</span></li>
+      <li><span class="field-name" style="color:#319795;">爆玩宇宙</span><span class="field-desc">进入爆玩宇宙客户对账单列表，查看各月份分成数据</span></li>
+      <li><span class="field-name" style="color:#d69e2e;">款项记录</span><span class="field-desc">进入打款提醒列表，查看催款和回款提醒记录</span></li>
+    </ul>
+  </div>
+
+  <!-- ===== 13.2 客户对账单 ===== -->
+  <h3 id="sec-mini-cust">13.2 爆玩宇宙客户对账单 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>列表页（按月份卡片）</h4>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="phone-header">爆玩宇宙对账单</div>
+      <div style="padding:10px;">
+        <div class="phone-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:15px;">2026年1月</strong>
+            <span class="badge badge-done" style="font-size:11px;">已确认</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#718096;">
+            <span>我司分成：<strong style="color:#2b6cb0;">¥41,260</strong></span>
+            <span>他司分成：¥41,260</span>
+          </div>
+          <div style="text-align:right;margin-top:6px;">
+            <span style="font-size:12px;color:#2b6cb0;">查看明细 &gt;</span>
+          </div>
+        </div>
+        <div class="phone-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:15px;">2025年12月</strong>
+            <span class="badge badge-pending" style="font-size:11px;">待确认</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#718096;">
+            <span>我司分成：<strong style="color:#2b6cb0;">¥38,500</strong></span>
+            <span>他司分成：¥38,500</span>
+          </div>
+          <div style="text-align:right;margin-top:6px;">
+            <span style="font-size:12px;color:#2b6cb0;">查看明细 &gt;</span>
+          </div>
+        </div>
+        <div class="phone-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:15px;">2025年11月</strong>
+            <span class="badge badge-done" style="font-size:11px;">已确认</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#718096;">
+            <span>我司分成：<strong style="color:#2b6cb0;">¥35,200</strong></span>
+            <span>他司分成：¥35,200</span>
+          </div>
+          <div style="text-align:right;margin-top:6px;">
+            <span style="font-size:12px;color:#2b6cb0;">查看明细 &gt;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>明细页（2x2统计卡片 + 门店列表）</h4>
+  <p>点击月份卡片进入明细页，展示2x2统计卡片和门店对账列表：</p>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="phone-header">2026年1月对账明细</div>
+      <div style="padding:10px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div style="background:#2b6cb0;color:#fff;border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:18px;font-weight:700;">¥41,260</div>
+            <div style="font-size:11px;opacity:0.9;">我司分成</div>
+          </div>
+          <div style="background:#319795;color:#fff;border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:18px;font-weight:700;">¥41,260</div>
+            <div style="font-size:11px;opacity:0.9;">他司分成</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:18px;font-weight:700;color:#2b6cb0;">1币=1元</div>
+            <div style="font-size:11px;color:#a0aec0;">约定币值</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:18px;font-weight:700;color:#319795;">50%</div>
+            <div style="font-size:11px;color:#a0aec0;">分成比例</div>
+          </div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:#1a1f36;margin-bottom:8px;">门店对账列表</div>
+        <div class="phone-card" style="padding:10px;margin:0 0 8px 0;">
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-size:13px;">万达广场店</span>
+            <span style="font-size:13px;color:#2b6cb0;font-weight:600;">¥27,400</span>
+          </div>
+        </div>
+        <div class="phone-card" style="padding:10px;margin:0 0 8px 0;">
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-size:13px;">吾悦广场店</span>
+            <span style="font-size:13px;color:#2b6cb0;font-weight:600;">¥13,860</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:4px;">确认对账</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-teal">
+    <div class="card-title">2x2统计卡片</div>
+    <ul class="field-list">
+      <li><span class="field-name" style="color:#2b6cb0;">我司分成</span><span class="field-desc">蓝色卡片，显示当月我司合计分成金额</span></li>
+      <li><span class="field-name" style="color:#319795;">他司分成</span><span class="field-desc">青绿色卡片，显示当月客户方合计分成金额</span></li>
+      <li><span class="field-name">约定币值</span><span class="field-desc">白色卡片，显示投币与金额换算比例</span></li>
+      <li><span class="field-name">分成比例</span><span class="field-desc">白色卡片，显示我司分成比例</span></li>
+    </ul>
+  </div>
+
+  <h4>爆玩宇宙门店对账单明细</h4>
+  <p>点击门店列表中的门店进入门店明细页，展示统计卡片和每日数据表（按游戏分组）：</p>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="phone-header">万达广场店明细</div>
+      <div style="padding:10px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:10px;text-align:center;">
+            <div style="font-size:16px;font-weight:700;color:#2b6cb0;">8,500</div>
+            <div style="font-size:11px;color:#a0aec0;">总投币量</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:10px;text-align:center;">
+            <div style="font-size:16px;font-weight:700;color:#319795;">¥27,400</div>
+            <div style="font-size:11px;color:#a0aec0;">我司分成</div>
+          </div>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:#2b6cb0;background:#ebf8ff;padding:6px 10px;border-radius:4px;margin-bottom:6px;">超级玩家</div>
+        <div style="background:#fff;border-radius:6px;overflow:hidden;margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;">
+            <span>01-01</span><span style="color:#2b6cb0;">¥640</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;">
+            <span>01-02</span><span style="color:#2b6cb0;">¥560</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 10px;font-size:12px;">
+            <span>01-03</span><span style="color:#2b6cb0;">¥700</span>
+          </div>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:#319795;background:#e0fffa;padding:6px 10px;border-radius:4px;margin-bottom:6px;">机甲对决</div>
+        <div style="background:#fff;border-radius:6px;overflow:hidden;">
+          <div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;">
+            <span>01-01</span><span style="color:#319795;">¥320</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 10px;font-size:12px;">
+            <span>01-02</span><span style="color:#319795;">¥280</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 13.3 打款提醒 ===== -->
+  <h3 id="sec-mini-remind">13.3 打款提醒 <span class="badge badge-done">二期已上线</span></h3>
+
+  <h4>功能描述</h4>
+  <p>客户在小程序端查看打款提醒记录，包括催款通知和回款确认通知。同时支持微信服务通知推送，客户在微信聊天列表中收到提醒卡片。</p>
+
+  <h4>列表页</h4>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="phone-header">打款提醒</div>
+      <div style="padding:10px;">
+        <div class="phone-card" style="border-left:4px solid #e53e3e;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <strong style="font-size:13px;color:#e53e3e;">催款通知</strong>
+            <span style="font-size:11px;color:#a0aec0;">2026-02-11</span>
+          </div>
+          <div style="font-size:12px;color:#4a5568;">您2026年1月分成账期已逾期1天，待回款金额 ¥39,200，请尽快安排打款。</div>
+          <div style="text-align:right;margin-top:4px;">
+            <span style="font-size:12px;color:#2b6cb0;">查看详情 &gt;</span>
+          </div>
+        </div>
+        <div class="phone-card" style="border-left:4px solid #319795;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <strong style="font-size:13px;color:#319795;">回款确认</strong>
+            <span style="font-size:11px;color:#a0aec0;">2026-01-16</span>
+          </div>
+          <div style="font-size:12px;color:#4a5568;">您于2026-01-15的收款 ¥50,000 已认款成功，已更新账期记录。</div>
+          <div style="text-align:right;margin-top:4px;">
+            <span style="font-size:12px;color:#2b6cb0;">查看详情 &gt;</span>
+          </div>
+        </div>
+        <div class="phone-card" style="border-left:4px solid #e53e3e;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <strong style="font-size:13px;color:#e53e3e;">催款通知</strong>
+            <span style="font-size:11px;color:#a0aec0;">2026-02-01</span>
+          </div>
+          <div style="font-size:12px;color:#4a5568;">您2025年12月分成账期已到期，待回款金额 ¥25,000，请尽快安排打款。</div>
+          <div style="text-align:right;margin-top:4px;">
+            <span style="font-size:12px;color:#2b6cb0;">查看详情 &gt;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>详情页</h4>
+  <p>点击列表中的提醒卡片进入详情页，展示完整的催款/回款信息：</p>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="phone-header">催款详情</div>
+      <div style="padding:10px;">
+        <div class="phone-card" style="border-left:4px solid #e53e3e;">
+          <div style="text-align:center;margin-bottom:10px;">
+            <div style="font-size:24px;font-weight:700;color:#e53e3e;">¥39,200</div>
+            <div style="font-size:12px;color:#a0aec0;">待回款金额</div>
+          </div>
+          <div style="border-top:1px solid #f0f0f0;padding-top:10px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;">
+              <span style="color:#a0aec0;">提醒类型</span><span style="color:#e53e3e;font-weight:600;">催款通知</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;">
+              <span style="color:#a0aec0;">账期月份</span><span>2026年1月</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;">
+              <span style="color:#a0aec0;">账期期限</span><span>2026-02-10</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;">
+              <span style="color:#a0aec0;">逾期天数</span><span style="color:#e53e3e;">1 天</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;">
+              <span style="color:#a0aec0;">发送时间</span><span>2026-02-11 09:00</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:#fffbeb;border:1px solid #fbd38d;border-radius:6px;padding:10px;margin-top:10px;">
+          <div style="font-size:12px;color:#92400e;">请尽快安排打款，逾期超过账期天数将触发自动锁机。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>空状态</h4>
+  <p>当客户没有打款提醒记录时，展示空状态页面：</p>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="phone-header">打款提醒</div>
+      <div style="padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;">
+        <div style="width:60px;height:60px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:28px;color:#a0aec0;margin-bottom:12px;">&#x1f4ed;</div>
+        <div style="font-size:14px;color:#a0aec0;">暂无打款提醒</div>
+        <div style="font-size:12px;color:#cbd5e0;margin-top:4px;">当前没有待处理的催款或回款通知</div>
+      </div>
+    </div>
+  </div>
+
+  <h4>微信推送</h4>
+  <p>催款通知触发时，系统同步向客户微信发送服务通知推送。以下是微信聊天列表中的推送封面和卡片样式：</p>
+
+  <div style="display:flex;gap:24px;flex-wrap:wrap;margin:16px 0;">
+    <!-- 微信聊天列表中的服务通知 -->
+    <div style="flex:1;min-width:300px;max-width:360px;background:#ededed;border-radius:8px;padding:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div style="width:32px;height:32px;border-radius:6px;background:#07c160;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:700;">通</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#1a1f36;">服务通知</div>
+          <div style="font-size:11px;color:#a0aec0;">10分钟前</div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:12px;border-left:4px solid #e53e3e;">
+        <div style="font-size:13px;font-weight:600;color:#1a1f36;margin-bottom:6px;">分成账期催款提醒</div>
+        <div style="font-size:12px;color:#4a5568;margin-bottom:8px;">尊敬的客户，您2026年1月分成账期已逾期，待回款金额 ¥39,200，请尽快安排打款。</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f0f0f0;padding-top:8px;">
+          <span style="font-size:11px;color:#a0aec0;">数智全开</span>
+          <span style="font-size:12px;color:#2b6cb0;">查看详情 &gt;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 微信卡片消息（企微群推送） -->
+    <div style="flex:1;min-width:300px;max-width:360px;background:#ededed;border-radius:8px;padding:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div style="width:32px;height:32px;border-radius:6px;background:#2b6cb0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:700;">智</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#1a1f36;">智数后台助手</div>
+          <div style="font-size:11px;color:#a0aec0;">刚刚</div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:0;overflow:hidden;">
+        <div style="background:linear-gradient(135deg,#2b6cb0,#319795);padding:12px;color:#fff;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">爆玩宇宙对账单</div>
+          <div style="font-size:11px;opacity:0.9;">2026年1月 · 待确认</div>
+        </div>
+        <div style="padding:12px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;">
+            <span style="color:#718096;">我司分成</span>
+            <span style="color:#2b6cb0;font-weight:600;">¥41,260</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px;">
+            <span style="color:#718096;">他司分成</span>
+            <span>¥41,260</span>
+          </div>
+          <div style="text-align:center;">
+            <span style="display:inline-block;background:#2b6cb0;color:#fff;font-size:12px;padding:4px 24px;border-radius:16px;">确认对账</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-teal">
+    <div class="card-title">微信推送说明</div>
+    <ul class="field-list">
+      <li><span class="field-name">服务通知</span><span class="field-desc">催款触发时，系统向客户微信发送服务通知推送，封面显示"分成账期催款提醒"，包含待回款金额和查看详情入口</span></li>
+      <li><span class="field-name">企微群卡片消息</span><span class="field-desc">对账单推送时，系统向绑定的企微群发送卡片消息，顶部渐变色标题展示业务线和对账月份，下方展示分成金额和确认按钮</span></li>
+      <li><span class="field-name">推送时机</span><span class="field-desc">催款通知：账期逾期时自动触发；对账单：业务员推送时触发；回款确认：认款完成时触发</span></li>
+    </ul>
+  </div>
+</div>
+
+<div style="text-align:center;padding:40px 0 20px;color:#a0aec0;font-size:13px;border-top:1px solid #e8e8e8;margin-top:40px;">
+  智数后台 — 合作分成对账功能 二期需求文档 V2.0 · 文档状态：已上线<br>
+  本文档仅包含二期已上线功能
+</div>
+
+</main>
+</div>
+</body>
+</html>
