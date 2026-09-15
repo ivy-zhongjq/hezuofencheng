@@ -1890,55 +1890,59 @@ function bwSelMode(btn,mode){
         <button class="btn-edit-note" onclick="openModal('modalEditNote')">📋 编辑优化说明</button>
       </div>
 
-      <!-- 统计卡片：4个游戏（分成数+收币数+测试币）+ 合计收币数 + 合计测试币 -->
-      <div class="detail-stat-row" style="flex-wrap:wrap;gap:10px;">
-        <div class="detail-stat-card" style="border-left:4px solid #3182ce;">
-          <div class="ds-label" style="color:#3182ce;font-weight:600;">摸鱼达人</div>
-          <div class="ds-value" style="font-size:13px;line-height:1.6;">
-            <div>分成数: <b>2,687</b></div>
-            <div>收币数: <b>2,687</b></div>
-            <div>测试币: <b>0</b></div>
+      <!-- 机台分成明细表格 -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:14px;font-weight:600;color:#2c3e50;margin-bottom:8px;padding-left:4px;border-left:3px solid #3182ce;">机台分成明细</div>
+        <table class="data" style="width:100%;">
+          <thead>
+            <tr>
+              <th style="width:25%;">机台名称</th>
+              <th>分成数</th>
+              <th>收币数</th>
+              <th>测试币</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#3182ce;margin-right:6px;"></span>摸鱼达人</td><td class="amt">2,687</td><td class="amt">2,687</td><td class="amt">0</td></tr>
+            <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#38a169;margin-right:6px;"></span>乖巧派对</td><td class="amt">6,246</td><td class="amt">6,246</td><td class="amt">0</td></tr>
+            <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d69e2e;margin-right:6px;"></span>勇者大陆</td><td class="amt">2,809</td><td class="amt">2,809</td><td class="amt">0</td></tr>
+            <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#805ad5;margin-right:6px;"></span>向阳而生</td><td class="amt">2,208</td><td class="amt">2,208</td><td class="amt">0</td></tr>
+          </tbody>
+          <tfoot>
+            <tr style="font-weight:600;background:#f7fafc;">
+              <td>合计</td>
+              <td class="amt">13,950</td>
+              <td class="amt">13,950</td>
+              <td class="amt">0</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- 结算汇总区域 -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:14px;font-weight:600;color:#2c3e50;margin-bottom:8px;padding-left:4px;border-left:3px solid #38a169;">结算汇总</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <div class="detail-stat-card" style="border-left:4px solid #3182ce;flex:1;min-width:140px;">
+            <div class="ds-label">合计收币数</div>
+            <div class="ds-value">15,417<span class="unit">币</span></div>
           </div>
-        </div>
-        <div class="detail-stat-card" style="border-left:4px solid #38a169;">
-          <div class="ds-label" style="color:#38a169;font-weight:600;">乖巧派对</div>
-          <div class="ds-value" style="font-size:13px;line-height:1.6;">
-            <div>分成数: <b>6,246</b></div>
-            <div>收币数: <b>6,246</b></div>
-            <div>测试币: <b>0</b></div>
+          <div class="detail-stat-card" style="border-left:4px solid #805ad5;flex:1;min-width:140px;">
+            <div class="ds-label">合计测试币</div>
+            <div class="ds-value">0<span class="unit">币</span></div>
           </div>
-        </div>
-        <div class="detail-stat-card" style="border-left:4px solid #d69e2e;">
-          <div class="ds-label" style="color:#d69e2e;font-weight:600;">勇者大陆</div>
-          <div class="ds-value" style="font-size:13px;line-height:1.6;">
-            <div>分成数: <b>2,809</b></div>
-            <div>收币数: <b>2,809</b></div>
-            <div>测试币: <b>0</b></div>
+          <div class="detail-stat-card" style="border-left:4px solid #2c3e50;flex:1;min-width:140px;">
+            <div class="ds-label">合计金额</div>
+            <div class="ds-value">¥3,083.40</div>
           </div>
-        </div>
-        <div class="detail-stat-card" style="border-left:4px solid #805ad5;">
-          <div class="ds-label" style="color:#805ad5;font-weight:600;">向阳而生</div>
-          <div class="ds-value" style="font-size:13px;line-height:1.6;">
-            <div>分成数: <b>2,208</b></div>
-            <div>收币数: <b>2,208</b></div>
-            <div>测试币: <b>0</b></div>
+          <div class="detail-stat-card success" style="flex:1;min-width:140px;">
+            <div class="ds-label">世宇分成</div>
+            <div class="ds-value">¥616.68</div>
           </div>
-        </div>
-        <div class="detail-stat-card" style="border-left:4px solid #2c3e50;">
-          <div class="ds-label" style="color:#2c3e50;font-weight:600;">合计收币数</div>
-          <div class="ds-value">15,417<span class="unit">币</span></div>
-        </div>
-        <div class="detail-stat-card" style="border-left:4px solid #2c3e50;">
-          <div class="ds-label" style="color:#2c3e50;font-weight:600;">合计测试币</div>
-          <div class="ds-value">0<span class="unit">币</span></div>
-        </div>
-        <div class="detail-stat-card success">
-          <div class="ds-label">世宇分成</div>
-          <div class="ds-value">¥616.68</div>
-        </div>
-        <div class="detail-stat-card">
-          <div class="ds-label">合计金额</div>
-          <div class="ds-value">¥3,083.40</div>
+          <div class="detail-stat-card" style="border-left:4px solid #38a169;flex:1;min-width:140px;">
+            <div class="ds-label">乐园分成</div>
+            <div class="ds-value">¥2,466.72</div>
+          </div>
         </div>
       </div>
 
@@ -1958,47 +1962,33 @@ function bwSelMode(btn,mode){
         </div>
       </div>
 
-      <!-- 明细表格（带子列分组，游戏间用颜色区分） -->
+      <!-- 每日明细表格（每款游戏单列收币数） -->
       <div class="table-wrap" style="overflow-x:auto;">
-        <table class="data" style="min-width:1100px;">
+        <table class="data" style="min-width:800px;">
           <thead>
             <tr>
-              <th rowspan="2">日期</th>
-              <th colspan="3" style="text-align:center;background:#ebf5fb;color:#3182ce;">摸鱼达人</th>
-              <th colspan="3" style="text-align:center;background:#e6fffa;color:#38a169;">乖巧派对</th>
-              <th colspan="3" style="text-align:center;background:#fffbeb;color:#d69e2e;">勇者大陆</th>
-              <th colspan="3" style="text-align:center;background:#faf5ff;color:#805ad5;">向阳而生</th>
-              <th colspan="2" style="text-align:center;background:#f0f5ff;">合计</th>
-              <th rowspan="2">合计金额</th>
-              <th rowspan="2">世宇分成</th>
-              <th rowspan="2">乐园分成</th>
-              <th rowspan="2">操作</th>
-            </tr>
-            <tr>
-              <th style="font-size:11px;background:#f7fafc;">分成数</th>
-              <th style="font-size:11px;background:#f7fafc;">收币数</th>
-              <th style="font-size:11px;background:#f7fafc;">测试币</th>
-              <th style="font-size:11px;background:#f7fafc;">分成数</th>
-              <th style="font-size:11px;background:#f7fafc;">收币数</th>
-              <th style="font-size:11px;background:#f7fafc;">测试币</th>
-              <th style="font-size:11px;background:#f7fafc;">分成数</th>
-              <th style="font-size:11px;background:#f7fafc;">收币数</th>
-              <th style="font-size:11px;background:#f7fafc;">测试币</th>
-              <th style="font-size:11px;background:#f7fafc;">分成数</th>
-              <th style="font-size:11px;background:#f7fafc;">收币数</th>
-              <th style="font-size:11px;background:#f7fafc;">测试币</th>
-              <th style="font-size:11px;background:#e6f3ff;">合计收币数</th>
-              <th style="font-size:11px;background:#e6f3ff;">合计测试币</th>
+              <th>日期</th>
+              <th style="background:#ebf5fb;color:#3182ce;">摸鱼达人</th>
+              <th style="background:#e6fffa;color:#38a169;">乖巧派对</th>
+              <th style="background:#fffbeb;color:#d69e2e;">勇者大陆</th>
+              <th style="background:#faf5ff;color:#805ad5;">向阳而生</th>
+              <th style="background:#e6f3ff;">合计收币数</th>
+              <th style="background:#e6f3ff;">合计测试币</th>
+              <th>合计金额</th>
+              <th>世宇分成</th>
+              <th>乐园分成</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody id="detail-tbody">
             <tr>
               <td>2026-07-01</td>
-              <td class="amt">0</td><td class="amt">0</td><td class="amt">0</td>
-              <td class="amt">0</td><td class="amt">0</td><td class="amt">0</td>
-              <td class="amt">0</td><td class="amt">0</td><td class="amt">0</td>
-              <td class="amt">253</td><td class="amt">253</td><td class="amt">0</td>
-              <td class="amt">253</td><td class="amt">0</td>
+              <td class="amt">0</td>
+              <td class="amt">0</td>
+              <td class="amt">0</td>
+              <td class="amt">253</td>
+              <td class="amt">253</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥50.60</td>
               <td class="amt">¥10.12</td>
               <td class="amt amt-green">¥40.48</td>
@@ -2006,11 +1996,12 @@ function bwSelMode(btn,mode){
             </tr>
             <tr>
               <td>2026-07-02</td>
-              <td class="amt">150</td><td class="amt">150</td><td class="amt">0</td>
-              <td class="amt">0</td><td class="amt">0</td><td class="amt">0</td>
-              <td class="amt">323</td><td class="amt">323</td><td class="amt">0</td>
-              <td class="amt">0</td><td class="amt">0</td><td class="amt">0</td>
-              <td class="amt">473</td><td class="amt">0</td>
+              <td class="amt">150</td>
+              <td class="amt">0</td>
+              <td class="amt">323</td>
+              <td class="amt">0</td>
+              <td class="amt">473</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥94.60</td>
               <td class="amt">¥18.92</td>
               <td class="amt amt-green">¥75.68</td>
@@ -2018,11 +2009,12 @@ function bwSelMode(btn,mode){
             </tr>
             <tr>
               <td>2026-07-03</td>
-              <td class="amt">85</td><td class="amt">85</td><td class="amt">0</td>
-              <td class="amt">240</td><td class="amt">240</td><td class="amt">0</td>
-              <td class="amt">151</td><td class="amt">151</td><td class="amt">0</td>
-              <td class="amt">303</td><td class="amt">303</td><td class="amt">0</td>
-              <td class="amt">779</td><td class="amt">0</td>
+              <td class="amt">85</td>
+              <td class="amt">240</td>
+              <td class="amt">151</td>
+              <td class="amt">303</td>
+              <td class="amt">779</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥155.80</td>
               <td class="amt">¥31.16</td>
               <td class="amt amt-green">¥124.64</td>
@@ -2030,11 +2022,12 @@ function bwSelMode(btn,mode){
             </tr>
             <tr>
               <td>2026-07-04</td>
-              <td class="amt">435</td><td class="amt">435</td><td class="amt">0</td>
-              <td class="amt">745</td><td class="amt">745</td><td class="amt">0</td>
-              <td class="amt">463</td><td class="amt">463</td><td class="amt">0</td>
-              <td class="amt">103</td><td class="amt">103</td><td class="amt">0</td>
-              <td class="amt">1,746</td><td class="amt">0</td>
+              <td class="amt">435</td>
+              <td class="amt">745</td>
+              <td class="amt">463</td>
+              <td class="amt">103</td>
+              <td class="amt">1,746</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥349.20</td>
               <td class="amt">¥69.84</td>
               <td class="amt amt-green">¥279.36</td>
@@ -2042,11 +2035,12 @@ function bwSelMode(btn,mode){
             </tr>
             <tr>
               <td>2026-07-05</td>
-              <td class="amt">1,098</td><td class="amt">1,098</td><td class="amt">0</td>
-              <td class="amt">2,953</td><td class="amt">2,953</td><td class="amt">0</td>
-              <td class="amt">1,154</td><td class="amt">1,154</td><td class="amt">0</td>
-              <td class="amt">408</td><td class="amt">408</td><td class="amt">0</td>
-              <td class="amt">5,613</td><td class="amt">0</td>
+              <td class="amt">1,098</td>
+              <td class="amt">2,953</td>
+              <td class="amt">1,154</td>
+              <td class="amt">408</td>
+              <td class="amt">5,613</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥1,122.60</td>
               <td class="amt">¥224.52</td>
               <td class="amt amt-green">¥898.08</td>
@@ -2054,11 +2048,12 @@ function bwSelMode(btn,mode){
             </tr>
             <tr>
               <td>2026-07-06</td>
-              <td class="amt">131</td><td class="amt">131</td><td class="amt">0</td>
-              <td class="amt">967</td><td class="amt">967</td><td class="amt">0</td>
-              <td class="amt">16</td><td class="amt">16</td><td class="amt">0</td>
-              <td class="amt">77</td><td class="amt">77</td><td class="amt">0</td>
-              <td class="amt">1,191</td><td class="amt">0</td>
+              <td class="amt">131</td>
+              <td class="amt">967</td>
+              <td class="amt">16</td>
+              <td class="amt">77</td>
+              <td class="amt">1,191</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥238.20</td>
               <td class="amt">¥47.64</td>
               <td class="amt amt-green">¥190.56</td>
@@ -2066,11 +2061,12 @@ function bwSelMode(btn,mode){
             </tr>
             <tr>
               <td>2026-07-07</td>
-              <td class="amt">242</td><td class="amt">242</td><td class="amt">0</td>
-              <td class="amt">407</td><td class="amt">407</td><td class="amt">0</td>
-              <td class="amt">221</td><td class="amt">221</td><td class="amt">0</td>
-              <td class="amt">435</td><td class="amt">435</td><td class="amt">0</td>
-              <td class="amt">1,305</td><td class="amt">0</td>
+              <td class="amt">242</td>
+              <td class="amt">407</td>
+              <td class="amt">221</td>
+              <td class="amt">435</td>
+              <td class="amt">1,305</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥261.00</td>
               <td class="amt">¥52.20</td>
               <td class="amt amt-green">¥208.80</td>
@@ -2078,11 +2074,12 @@ function bwSelMode(btn,mode){
             </tr>
             <tr>
               <td>2026-07-08</td>
-              <td class="amt">268</td><td class="amt">268</td><td class="amt">0</td>
-              <td class="amt">819</td><td class="amt">819</td><td class="amt">0</td>
-              <td class="amt">147</td><td class="amt">147</td><td class="amt">0</td>
-              <td class="amt">263</td><td class="amt">263</td><td class="amt">0</td>
-              <td class="amt">1,497</td><td class="amt">0</td>
+              <td class="amt">268</td>
+              <td class="amt">819</td>
+              <td class="amt">147</td>
+              <td class="amt">263</td>
+              <td class="amt">1,497</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥299.40</td>
               <td class="amt">¥59.88</td>
               <td class="amt amt-green">¥239.52</td>
@@ -2090,24 +2087,26 @@ function bwSelMode(btn,mode){
             </tr>
             <tr>
               <td>2026-07-09</td>
-              <td class="amt">278</td><td class="amt">278</td><td class="amt">0</td>
-              <td class="amt">115</td><td class="amt">115</td><td class="amt">0</td>
-              <td class="amt">334</td><td class="amt">334</td><td class="amt">0</td>
-              <td class="amt">366</td><td class="amt">366</td><td class="amt">0</td>
-              <td class="amt">1,093</td><td class="amt">0</td>
+              <td class="amt">278</td>
+              <td class="amt">115</td>
+              <td class="amt">334</td>
+              <td class="amt">366</td>
+              <td class="amt">1,093</td>
+              <td class="amt">0</td>
               <td class="amt amt-blue">¥218.60</td>
               <td class="amt">¥43.72</td>
               <td class="amt amt-green">¥174.88</td>
               <td><button class="btn-edit-green" onclick="openEditModal('摸鱼达人','2026-07-09',278)">编辑</button></td>
             </tr>
           </tbody>
-          <tfoot><tr>
+          <tfoot><tr style="font-weight:600;background:#f7fafc;">
             <td>合计</td>
-            <td class="amt">2,687</td><td class="amt">2,687</td><td class="amt">0</td>
-            <td class="amt">6,246</td><td class="amt">6,246</td><td class="amt">0</td>
-            <td class="amt">2,809</td><td class="amt">2,809</td><td class="amt">0</td>
-            <td class="amt">2,208</td><td class="amt">2,208</td><td class="amt">0</td>
-            <td class="amt">15,417</td><td class="amt">0</td>
+            <td class="amt">2,687</td>
+            <td class="amt">6,246</td>
+            <td class="amt">2,809</td>
+            <td class="amt">2,208</td>
+            <td class="amt">15,417</td>
+            <td class="amt">0</td>
             <td class="amt amt-blue">¥3,083.40</td>
             <td class="amt">¥616.68</td>
             <td class="amt amt-green">¥2,466.72</td>
