@@ -4318,16 +4318,29 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
     <div class="modal-header"><span class="modal-title">生成对账单</span><button class="modal-close" onclick="closeModal('modal1')">×</button></div>
     <div class="modal-body">
       <div class="form-row">
-        <div class="form-col"><div class="form-label">合作类型</div><select class="select"><option>亿玩赏</option></select></div>
-        <div class="form-col"><div class="form-label">对账类型</div><select class="select"><option>发货对账</option><option>消耗对账</option><option style="background:#dbeafe;color:#1e40af;font-weight:600">入库对账<span style="float:right;background:#3b82f6;color:#fff;font-size:10px;padding:1px 6px;border-radius:3px;margin-top:2px;">三期新增</span></option><option style="background:#dbeafe;color:#1e40af;font-weight:600">有消耗全发货对账<span style="float:right;background:#3b82f6;color:#fff;font-size:10px;padding:1px 6px;border-radius:3px;margin-top:2px;">三期新增</span></option></select>
-          <div class="phase-new-hint">注："入库对账"和"有消耗全发货对账"为三期规划功能，暂未开发</div></div>
+        <div class="form-col"><div class="form-label">合作类型</div><input class="input" value="亿玩赏" readonly style="background:#f5f5f5;color:#999"></div>
+        <div class="form-col"><div class="form-label">对账类型</div>
+          <div style="display:flex;gap:0;border-radius:4px;overflow:hidden;border:1px solid #d9d9d9;">
+            <button type="button" class="recon-type-btn active" onclick="reconTypeSelect(this)" style="padding:6px 14px;font-size:13px;border:none;background:#2b6cb0;color:#fff;cursor:pointer;">发货对账单</button>
+            <button type="button" class="recon-type-btn" onclick="reconTypeSelect(this)" style="padding:6px 14px;font-size:13px;border:none;border-left:1px solid #d9d9d9;background:#fff;color:#2c3e50;cursor:pointer;">消耗对账单</button>
+            <button type="button" class="recon-type-btn" onclick="reconTypeSelect(this)" style="padding:6px 14px;font-size:13px;border:none;border-left:1px solid #d9d9d9;background:#fff;color:#1e40af;font-weight:600;cursor:pointer;">入库对账单 <span style="background:#3b82f6;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;">三期</span></button>
+            <button type="button" class="recon-type-btn" onclick="reconTypeSelect(this)" style="padding:6px 14px;font-size:13px;border:none;border-left:1px solid #d9d9d9;background:#fff;color:#1e40af;font-weight:600;cursor:pointer;">发货(消耗)对账单 <span style="background:#3b82f6;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;">三期</span></button>
+          </div>
+        </div>
       </div>
       <div class="form-row">
-        <div class="form-col" style="flex:2"><div class="form-label">选择方式</div>
-          <label style="font-size:13px;margin-right:16px"><input type="radio" name="selmode" checked=""> 按业务员</label>
-          <label style="font-size:13px;margin-right:16px"><input type="radio" name="selmode"> 按门店</label>
-          <label style="font-size:13px;margin-right:16px"><input type="radio" name="selmode"> 按客户</label>
-          <label style="font-size:13px"><input type="radio" name="selmode"> 按全部</label>
+        <div class="form-col" style="flex:3"><div class="form-label">选择方式</div>
+          <div style="display:flex;gap:24px;border-bottom:1px solid #e8e8e8;padding-bottom:0;">
+            <span class="sel-mode-tab active" onclick="selModeTab(this,'salesman')" style="font-size:13px;color:#2b6cb0;border-bottom:2px solid #2b6cb0;padding-bottom:8px;cursor:pointer;">按业务员</span>
+            <span class="sel-mode-tab" onclick="selModeTab(this,'store')" style="font-size:13px;color:#8492a6;border-bottom:2px solid transparent;padding-bottom:8px;cursor:pointer;">按门店</span>
+            <span class="sel-mode-tab" onclick="selModeTab(this,'customer')" style="font-size:13px;color:#8492a6;border-bottom:2px solid transparent;padding-bottom:8px;cursor:pointer;">按客户</span>
+            <span class="sel-mode-tab" onclick="selModeTab(this,'all')" style="font-size:13px;color:#8492a6;border-bottom:2px solid transparent;padding-bottom:8px;cursor:pointer;">按全部</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-row" id="selModeField">
+        <div class="form-col"><div class="form-label">选择业务员</div>
+          <select class="select"><option>请选择业务员</option><option>张三</option><option>李四</option><option>王五</option></select>
         </div>
       </div>
       <div class="form-row">
@@ -4336,9 +4349,35 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         <div class="form-col"><div class="form-label">结束日期</div><input type="date" class="input" value="2026-08-31"></div>
       </div>
     </div>
-    <div class="modal-footer"><button class="btn" onclick="closeModal('modal1')">取消</button><button class="btn btn-primary" onclick="closeModal('modal1')">确定</button></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('modal1')">关闭</button><button class="btn btn-primary" onclick="closeModal('modal1')">确定</button></div>
   </div>
 </div>
+<style>
+.recon-type-btn:hover{opacity:.85;}
+.sel-mode-tab:hover{color:#2b6cb0;}
+</style>
+<script>
+function reconTypeSelect(btn){
+  var siblings=btn.parentNode.querySelectorAll('.recon-type-btn');
+  siblings.forEach(function(s){s.style.background='#fff';s.style.color='#2c3e50';s.style.fontWeight='normal';});
+  btn.style.background='#2b6cb0';btn.style.color='#fff';
+}
+function selModeTab(el,mode){
+  var tabs=el.parentNode.querySelectorAll('.sel-mode-tab');
+  tabs.forEach(function(t){t.classList.remove('active');t.style.color='#8492a6';t.style.borderBottomColor='transparent';t.style.fontWeight='normal';});
+  el.classList.add('active');el.style.color='#2b6cb0';el.style.borderBottomColor='#2b6cb0';el.style.fontWeight='600';
+  var field=document.getElementById('selModeField');
+  if(mode==='all'){field.style.display='none';}
+  else{
+    field.style.display='flex';
+    var labels={'salesman':'选择业务员','store':'选择门店','customer':'选择客户'};
+    var placeholders={'salesman':'请选择业务员','store':'请选择门店（可多选）','customer':'请选择客户（可多选）'};
+    field.querySelector('.form-label').textContent=labels[mode];
+    var sel=field.querySelector('select');
+    sel.innerHTML='<option>'+placeholders[mode]+'</option><option>示例数据1</option><option>示例数据2</option>';
+  }
+}
+</script>
 
 <!-- ============ MODAL 2: 认款 ============ -->
 <div class="modal-mask" id="modal2">
@@ -5249,10 +5288,200 @@ function updateEditPreview(){
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary" onclick="closeModal('modalImportInbound')">确定导入</button>
+      <button class="btn btn-primary" onclick="closeModal('modalImportInbound');openModal('modalCompareList')">确定导入</button>
       <button class="btn" onclick="closeModal('modalImportInbound')">取消</button>
     </div>
   </div>
 </div>
+
+<!-- ============ MODAL: 导入对比列表 ============ -->
+<div class="modal-mask" id="modalCompareList">
+  <div class="modal" style="width:1200px;max-width:95vw;">
+    <div class="modal-header">
+      <span class="modal-title">导入对比列表 - 深圳市乐的文化股份有限公司 - 2026年08月</span>
+      <button class="modal-close" onclick="closeModal('modalCompareList')">×</button>
+    </div>
+    <div class="modal-body" style="max-height:65vh;overflow-y:auto;">
+      <!-- 统计卡片 -->
+      <div style="display:flex;gap:16px;margin-bottom:16px;">
+        <div style="flex:1;background:#f0f5ff;border-radius:6px;padding:14px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:#2b6cb0;">128</div>
+          <div style="font-size:12px;color:#8492a6;margin-top:4px;">总记录数</div>
+        </div>
+        <div style="flex:1;background:#f0fff4;border-radius:6px;padding:14px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:#38a169;">115</div>
+          <div style="font-size:12px;color:#8492a6;margin-top:4px;">已匹配数</div>
+        </div>
+        <div style="flex:1;background:#fff5f5;border-radius:6px;padding:14px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:#e53e3e;">13</div>
+          <div style="font-size:12px;color:#8492a6;margin-top:4px;">未匹配数</div>
+        </div>
+        <div style="flex:1;background:#fffaf0;border-radius:6px;padding:14px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:#dd6b20;">89.8%</div>
+          <div style="font-size:12px;color:#8492a6;margin-top:4px;">匹配率</div>
+        </div>
+      </div>
+      <!-- 提示 -->
+      <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:4px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#ad6800;">
+        <strong>操作提示：</strong>橙色行为部分匹配（数量/金额有差异），红色行为未匹配（将自动调拨至下月），请在操作列修改匹配或删除。确认无误后点击"确认核对"生成对账单。
+      </div>
+      <!-- 对比表格 -->
+      <div class="table-wrap">
+        <table class="data" style="min-width:1200px;">
+          <thead>
+            <tr>
+              <th style="width:40px;">序号</th>
+              <th>客户物料名称</th>
+              <th>客户收货组织</th>
+              <th class="center">客户实收数量</th>
+              <th class="center">客户价税合计</th>
+              <th>我方门店名称</th>
+              <th>我方礼品名称</th>
+              <th class="center">我方发货数量</th>
+              <th class="center">我方发货金额</th>
+              <th class="center">数量差异</th>
+              <th class="center">金额差异</th>
+              <th class="center">匹配状态</th>
+              <th class="center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#f0fff4;">
+              <td>1</td>
+              <td>玩具总动员亿玩赏套餐A2607</td>
+              <td>真快活武汉武昌店</td>
+              <td class="center">100</td>
+              <td class="center amt-green">3,800.00</td>
+              <td>真快活武汉武昌店</td>
+              <td>玩具总动员亿玩赏套餐A2607</td>
+              <td class="center">100</td>
+              <td class="center">3,800.00</td>
+              <td class="center">0</td>
+              <td class="center">0.00</td>
+              <td class="center"><span class="tag tag-success">已匹配</span></td>
+              <td class="center"><span class="btn-link">—</span></td>
+            </tr>
+            <tr style="background:#f0fff4;">
+              <td>2</td>
+              <td>乖巧宝宝亿玩赏套餐A2619</td>
+              <td>真快活武汉光谷店</td>
+              <td class="center">50</td>
+              <td class="center amt-green">2,500.00</td>
+              <td>真快活武汉光谷店</td>
+              <td>乖巧宝宝亿玩赏套餐A2619</td>
+              <td class="center">50</td>
+              <td class="center">2,500.00</td>
+              <td class="center">0</td>
+              <td class="center">0.00</td>
+              <td class="center"><span class="tag tag-success">已匹配</span></td>
+              <td class="center"><span class="btn-link">—</span></td>
+            </tr>
+            <tr style="background:#fff5f0;">
+              <td>3</td>
+              <td>玩具总动员亿玩赏套餐A2607/103抽</td>
+              <td>真快活长沙芙蓉店</td>
+              <td class="center">80</td>
+              <td class="center amt-green">3,040.00</td>
+              <td>真快活长沙芙蓉店</td>
+              <td>玩具总动员亿玩赏套餐A2607</td>
+              <td class="center">100</td>
+              <td class="center">3,800.00</td>
+              <td class="center amt-red">-20</td>
+              <td class="center amt-red">-760.00</td>
+              <td class="center"><span class="tag tag-warning">部分匹配</span></td>
+              <td class="center"><span class="btn-link" onclick="alert('修改匹配：可手动关联到其他物料')">修改匹配</span></td>
+            </tr>
+            <tr style="background:#fff5f0;">
+              <td>4</td>
+              <td>向阳而生乖巧版亿玩赏套餐B2601</td>
+              <td>真快活南昌红谷滩店</td>
+              <td class="center">60</td>
+              <td class="center amt-green">2,160.00</td>
+              <td>真快活南昌红谷滩店</td>
+              <td>向阳而生乖巧版亿玩赏套餐B2601</td>
+              <td class="center">60</td>
+              <td class="center">2,200.00</td>
+              <td class="center">0</td>
+              <td class="center amt-red">-40.00</td>
+              <td class="center"><span class="tag tag-warning">部分匹配</span></td>
+              <td class="center"><span class="btn-link">修改匹配</span></td>
+            </tr>
+            <tr style="background:#fff5f5;">
+              <td>5</td>
+              <td>勇者大陆亿玩赏套餐C2603</td>
+              <td>真快活郑州二七店</td>
+              <td class="center">40</td>
+              <td class="center amt-green">1,600.00</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="center">—</td>
+              <td class="center">—</td>
+              <td class="center amt-red">—</td>
+              <td class="center amt-red">—</td>
+              <td class="center"><span class="tag tag-danger">未匹配</span></td>
+              <td class="center"><span class="btn-link" style="color:#e53e3e">删除</span></td>
+            </tr>
+            <tr style="background:#f0fff4;">
+              <td>6</td>
+              <td>乖巧派对亿玩赏套餐A2619-2</td>
+              <td>真快活武汉武昌店</td>
+              <td class="center">120</td>
+              <td class="center amt-green">6,000.00</td>
+              <td>真快活武汉武昌店</td>
+              <td>乖巧派对亿玩赏套餐A2619-2</td>
+              <td class="center">120</td>
+              <td class="center">6,000.00</td>
+              <td class="center">0</td>
+              <td class="center">0.00</td>
+              <td class="center"><span class="tag tag-success">已匹配</span></td>
+              <td class="center"><span class="btn-link">—</span></td>
+            </tr>
+            <tr style="background:#fff5f5;">
+              <td>7</td>
+              <td>—（调拨至下月）</td>
+              <td>真快活武汉光谷店</td>
+              <td class="center">—</td>
+              <td class="center">—</td>
+              <td>真快活武汉光谷店</td>
+              <td>乖巧宝宝亿玩赏套餐A2619</td>
+              <td class="center">20</td>
+              <td class="center">1,000.00</td>
+              <td class="center amt-red">未入库</td>
+              <td class="center amt-red">1,000.00</td>
+              <td class="center"><span class="tag tag-default">调拨下月</span></td>
+              <td class="center"><span class="btn-link">查看</span></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="text-align:right;">合计：</td>
+              <td class="center">450</td>
+              <td class="center amt-green">19,100.00</td>
+              <td colspan="2"></td>
+              <td class="center">450</td>
+              <td class="center">21,300.00</td>
+              <td class="center amt-red">—</td>
+              <td class="center amt-red">-2,200.00</td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="closeModal('modalCompareList')">确认核对</button>
+      <button class="btn" onclick="closeModal('modalCompareList')">关闭</button>
+    </div>
+  </div>
+</div>
+<style>
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-size:12px;font-weight:600;}
+.tag-success{background:#c6f6d5;color:#22543d;}
+.tag-warning{background:#fefcbf;color:#744210;}
+.tag-danger{background:#fed7d7;color:#742a2a;}
+.tag-default{background:#e2e8f0;color:#4a5568;}
+.amt-red{color:#e53e3e;font-weight:600;}
+.amt-green{color:#38a169;}
+</style>
 
 </body></html>
