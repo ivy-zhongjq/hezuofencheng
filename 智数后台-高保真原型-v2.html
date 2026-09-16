@@ -102,6 +102,13 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 .btn-text:hover{background:#b2f5ea;}
 .btn-sm{height:26px;padding:0 10px;font-size:12px;}
 .btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+/* 扭蛋玛特机台营收台账工具栏 */
+.ndmt-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-bottom:14px;}
+.ndmt-toolbar .tool-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#606266;cursor:pointer;font-size:16px;transition:all .15s;}
+.ndmt-toolbar .tool-btn:hover{border-color:#409eff;color:#409eff;}
+.ndmt-toolbar .tool-btn-dark{background:#4a5568;color:#fff;border-color:#4a5568;}
+.ndmt-toolbar .tool-btn-dark:hover{background:#2d3748;border-color:#2d3748;color:#fff;}
+.ndmt-toolbar .tool-export{margin-left:4px;height:36px;padding:0 18px;font-size:14px;}
 
 /* ===== Table ===== */
 .table-wrap{overflow-x:auto;border:1px solid #e8e8e8;border-radius:6px;}
@@ -342,9 +349,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
           <div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">🥚</span>扭蛋玛特</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
-            <div class="nav-item" data-page="p_ndmt_store">门店台账</div>
-            <div class="nav-item" data-page="p_ndmt_cust">客户台账</div>
             <div class="nav-item" data-page="p_ndmt_machine">机台营收台账</div>
+            <div class="nav-item" data-page="p_ndmt_store" style="display:none;">门店台账</div>
+            <div class="nav-item" data-page="p_ndmt_cust" style="display:none;">客户台账</div>
           </div>
         </div>
       </div>
@@ -1127,7 +1134,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
           <div class="filter-bar">
             <div class="filter-item"><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option><option>星际传奇(武汉荟聚店)</option><option>萌朵拉(孝感吾悦广场店)</option></select></div>
             <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>武汉市星际文娱有限公司</option></select></div>
-            <div class="filter-item"><label>机台名称</label><select class="select"><option>全部</option><option>扭蛋机A1</option><option>扭蛋机A2</option><option>扭蛋机B1</option></select></div>
+            <div class="filter-item"><label>机台名称</label><select class="select"><option>全部</option><option>扭蛋玛特</option></select></div>
             <div class="filter-item"><label>日期</label><input type="date" class="input" value="2026-07-15"></div>
             <button class="btn btn-primary">查 询</button>
             <div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
@@ -1135,9 +1142,13 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         </div>
 
         <div class="card">
-          <div class="btn-group">
-            <button class="btn btn-primary">＋ 新增台账</button>
-            <button class="btn">导 出</button>
+          <div class="ndmt-toolbar">
+            <div class="tool-btn" title="列表视图">▦</div>
+            <div class="tool-btn" title="密度">▦ ▾</div>
+            <div class="tool-btn" title="排序">⇅ ▾</div>
+            <div class="tool-btn" title="搜索">🔍</div>
+            <div class="tool-btn tool-btn-dark" title="刷新">⟳</div>
+            <button class="btn btn-primary tool-export">⬇ 导出数据</button>
           </div>
           <div class="table-wrap" style="overflow-x:auto;">
             <table class="data" style="min-width:1600px;">
@@ -1161,7 +1172,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                 <tr>
                   <td>星际传奇(深圳KKMall店)</td>
                   <td>深圳市乐的文化股份有限公司</td>
-                  <td>扭蛋机A1</td>
+                  <td>扭蛋玛特</td>
                   <td class="amt">2,350</td>
                   <td class="amt">120</td>
                   <td class="amt">480</td>
@@ -1177,7 +1188,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                 <tr>
                   <td>星际传奇(深圳KKMall店)</td>
                   <td>深圳市乐的文化股份有限公司</td>
-                  <td>扭蛋机A2</td>
+                  <td>扭蛋玛特</td>
                   <td class="amt">1,860</td>
                   <td class="amt">95</td>
                   <td class="amt">380</td>
@@ -1193,7 +1204,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                 <tr>
                   <td>星际传奇(深圳KKMall店)</td>
                   <td>深圳市乐的文化股份有限公司</td>
-                  <td>扭蛋机B1</td>
+                  <td>扭蛋玛特</td>
                   <td class="amt">3,120</td>
                   <td class="amt">180</td>
                   <td class="amt">620</td>
@@ -1209,7 +1220,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                 <tr>
                   <td>星际传奇(武汉荟聚店)</td>
                   <td>武汉市星际文娱有限公司</td>
-                  <td>扭蛋机A1</td>
+                  <td>扭蛋玛特</td>
                   <td class="amt">1,540</td>
                   <td class="amt">78</td>
                   <td class="amt">310</td>
@@ -1225,7 +1236,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                 <tr>
                   <td>萌朵拉(孝感吾悦广场店)</td>
                   <td>广州萌朵拉文创科技有限公司</td>
-                  <td>扭蛋机B1</td>
+                  <td>扭蛋玛特</td>
                   <td class="amt">2,680</td>
                   <td class="amt">145</td>
                   <td class="amt">540</td>
@@ -1241,7 +1252,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                 <tr>
                   <td>萌朵拉(孝感吾悦广场店)</td>
                   <td>广州萌朵拉文创科技有限公司</td>
-                  <td>扭蛋机A2</td>
+                  <td>扭蛋玛特</td>
                   <td class="amt">980</td>
                   <td class="amt">52</td>
                   <td class="amt">200</td>
@@ -1255,19 +1266,6 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>20.00%</td>
                 </tr>
               </tbody>
-              <tfoot><tr style="font-weight:600;background:#f7fafc;">
-                <td colspan="3">合计</td>
-                <td class="amt">12,530</td>
-                <td class="amt">670</td>
-                <td class="amt">2,530</td>
-                <td class="amt">1,085</td>
-                <td class="amt">443</td>
-                <td class="amt">¥8,860.00</td>
-                <td class="amt">3,200</td>
-                <td class="amt">¥17,030.00</td>
-                <td class="amt amt-blue">¥2,506.00</td>
-                <td colspan="2"></td>
-              </tr></tfoot>
             </table>
           </div>
           <div class="pagination">
@@ -1995,7 +1993,7 @@ function selModeTab(el,mode){
         <div class="form-col"><div class="form-label">数据来源:</div>
           <select class="select" style="flex:1;">
             <option value="">请选择</option>
-            <option value="yyb" selected>游艺宝</option>
+            <option value="yyb" selected="">游艺宝</option>
             <option value="syht">世宇后台</option>
           </select>
         </div>
