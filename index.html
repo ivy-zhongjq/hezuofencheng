@@ -38,6 +38,16 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 .nav-sub{overflow:hidden;max-height:0;transition:max-height .25s ease;}
 .nav-parent.open + .nav-sub{max-height:400px;}
 .nav-sub .nav-item{padding-left:52px;font-size:13px;}
+/* 二级子菜单（扭蛋玛特等产品分组） */
+.nav-sub-parent{display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 52px;height:36px;color:#c0ccda;font-size:13px;font-weight:500;cursor:pointer;}
+.nav-sub-parent:hover{background:#232a47;color:#fff;}
+.nav-sub-parent .left{display:flex;align-items:center;}
+.nav-sub-parent .icon{width:14px;margin-right:8px;opacity:.85;}
+.nav-sub-parent .arrow{font-size:9px;transition:transform .2s;}
+.nav-sub-parent.open .arrow{transform:rotate(90deg);}
+.nav-sub-sub{overflow:hidden;max-height:0;transition:max-height .25s ease;}
+.nav-sub-parent.open + .nav-sub-sub{max-height:300px;}
+.nav-sub-sub .nav-item{padding-left:76px;font-size:12.5px;color:#a0aec0;}
 
 /* ===== Main Header ===== */
 .header{height:56px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #e8e8e8;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.04);}
@@ -58,6 +68,10 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 
 /* ===== Card ===== */
 .card{background:#fff;border-radius:6px;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.empty-state{padding:80px 20px;text-align:center;color:#909399;}
+.empty-state .empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-state .empty-title{font-size:18px;font-weight:600;color:#606266;margin-bottom:8px;}
+.empty-state .empty-desc{font-size:14px;color:#909399;}
 .card-title{font-size:15px;font-weight:600;color:#2c3e50;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
 
 /* ===== Filter Bar ===== */
@@ -326,7 +340,12 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
           <div class="nav-item" data-page="p2">爆玩宇宙门店对账单</div>
           <div class="nav-item" data-page="p3">亿玩赏客户对账单</div>
           <div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
-          <div class="nav-item" data-page="p_ndmt">扭蛋玛特-机台营收台账</div>
+          <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">🥚</span>扭蛋玛特</span><span class="arrow">▶</span></div>
+          <div class="nav-sub-sub">
+            <div class="nav-item" data-page="p_ndmt_store">门店台账</div>
+            <div class="nav-item" data-page="p_ndmt_cust">客户台账</div>
+            <div class="nav-item" data-page="p_ndmt_machine">机台营收台账</div>
+          </div>
         </div>
       </div>
 
@@ -1103,7 +1122,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       </div>
 
       <!-- ===================== PAGE: 扭蛋玛特-机台营收台账 ===================== -->
-      <div class="page" id="page-p_ndmt">
+      <div class="page" id="page-p_ndmt_machine">
         <div class="card">
           <div class="filter-bar">
             <div class="filter-item"><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option><option>星际传奇(武汉荟聚店)</option><option>萌朵拉(孝感吾悦广场店)</option></select></div>
@@ -1258,6 +1277,28 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <button class="page-btn">2</button>
             <button class="page-btn">›</button>
             <select class="select" style="height:30px;width:90px"><option>20条/页</option></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== PAGE: 扭蛋玛特-门店台账 ===================== -->
+      <div class="page" id="page-p_ndmt_store">
+        <div class="card">
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-title">门店台账</div>
+            <div class="empty-desc">页面内容待规划，稍后补充</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== PAGE: 扭蛋玛特-客户台账 ===================== -->
+      <div class="page" id="page-p_ndmt_cust">
+        <div class="card">
+          <div class="empty-state">
+            <div class="empty-icon">👥</div>
+            <div class="empty-title">客户台账</div>
+            <div class="empty-desc">页面内容待规划，稍后补充</div>
           </div>
         </div>
       </div>
@@ -2274,7 +2315,9 @@ const crumbs = {
   base_store:['基础设置','门店管理'],
   base_sn:['基础设置','机台SN管理'],
   p_bw_cust:['合作机台','爆玩宇宙客户对账单'],
-  p_ndmt:['合作机台','扭蛋玛特-机台营收台账'],
+  p_ndmt_store:['合作机台 / 扭蛋玛特','门店台账'],
+  p_ndmt_cust:['合作机台 / 扭蛋玛特','客户台账'],
+  p_ndmt_machine:['合作机台 / 扭蛋玛特','机台营收台账'],
   dashboard:['','仪表盘'],
 };
 const phases = {
@@ -2283,7 +2326,9 @@ const phases = {
   p7:'online', p7d:'online', p_chat:'online',
   base_cust:'online', base_store:'online', base_sn:'online',
   p_bw_cust:'online',
-  p_ndmt:'online',
+  p_ndmt_store:'online',
+  p_ndmt_cust:'online',
+  p_ndmt_machine:'online',
 };
 const phaseLabels = {online:'二期已上线', opt:'三期新增', new:'三期新增'};
 function renderBreadcrumb(pg){
