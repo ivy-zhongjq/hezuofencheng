@@ -103,12 +103,41 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 .btn-sm{height:26px;padding:0 10px;font-size:12px;}
 .btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
 /* 扭蛋玛特机台营收台账工具栏 */
-.ndmt-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-bottom:14px;}
+.ndmt-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ndmt-toolbar-left{display:flex;align-items:center;gap:8px;}
+.ndmt-toolbar-right{display:flex;align-items:center;gap:6px;}
 .ndmt-toolbar .tool-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#606266;cursor:pointer;font-size:16px;transition:all .15s;}
 .ndmt-toolbar .tool-btn:hover{border-color:#409eff;color:#409eff;}
 .ndmt-toolbar .tool-btn-dark{background:#4a5568;color:#fff;border-color:#4a5568;}
 .ndmt-toolbar .tool-btn-dark:hover{background:#2d3748;border-color:#2d3748;color:#fff;}
-.ndmt-toolbar .tool-export{margin-left:4px;height:36px;padding:0 18px;font-size:14px;}
+.ndmt-toolbar .tool-export{height:36px;padding:0 18px;font-size:14px;}
+/* 日期范围选择器 */
+.date-range-picker{position:relative;}
+.drp-inputs{display:flex;align-items:center;gap:0;}
+.drp-input{display:flex;align-items:center;gap:6px;height:32px;padding:0 10px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;font-size:13px;color:#606266;min-width:130px;}
+.drp-input:first-child{border-right:none;border-radius:4px 0 0 4px;}
+.drp-input:last-child{border-radius:0 4px 4px 0;}
+.drp-input .drp-icon{font-size:14px;opacity:.7;}
+.drp-sep{padding:0 8px;font-size:12px;color:#909399;}
+.drp-panel{position:absolute;top:calc(100% + 4px);left:0;z-index:100;display:flex;background:#fff;border:1px solid #e4e7ed;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.1);}
+.drp-shortcuts{width:110px;padding:8px 0;border-right:1px solid #e4e7ed;}
+.drp-sc-item{padding:8px 16px;font-size:13px;color:#606266;cursor:pointer;}
+.drp-sc-item:hover{background:#ecf5ff;color:#409eff;}
+.drp-sc-item.active{background:#409eff;color:#fff;}
+.drp-sc-item.custom{background:#409eff;color:#fff;font-weight:500;}
+.drp-calendars{display:flex;padding:10px;}
+.drp-cal{width:220px;padding:0 8px;}
+.drp-cal-header{display:flex;align-items:center;justify-content:space-between;height:32px;font-size:14px;font-weight:600;color:#303133;margin-bottom:6px;}
+.drp-arrow{width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#909399;}
+.drp-arrow:hover{color:#409eff;}
+.drp-weekdays{display:grid;grid-template-columns:repeat(7,1fr);font-size:12px;color:#909399;text-align:center;height:24px;line-height:24px;}
+.drp-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.drp-day{height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#606266;cursor:pointer;border-radius:2px;}
+.drp-day:hover{color:#409eff;}
+.drp-day.other{color:#c0c4cc;}
+.drp-day.in-range{background:#ecf5ff;color:#409eff;}
+.drp-day.start,.drp-day.end{background:#409eff;color:#fff;border-radius:2px;}
+.drp-day.start:hover,.drp-day.end:hover{color:#fff;}
 
 /* ===== Table ===== */
 .table-wrap{overflow-x:auto;border:1px solid #e8e8e8;border-radius:6px;}
@@ -1135,7 +1164,54 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <div class="filter-item"><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option><option>星际传奇(武汉荟聚店)</option><option>萌朵拉(孝感吾悦广场店)</option></select></div>
             <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>武汉市星际文娱有限公司</option></select></div>
             <div class="filter-item"><label>机台名称</label><select class="select"><option>全部</option><option>扭蛋玛特</option></select></div>
-            <div class="filter-item"><label>日期</label><input type="date" class="input" value="2026-07-15"></div>
+            <div class="filter-item ndmt-date-filter"><label>日期</label>
+              <div class="date-range-picker">
+                <div class="drp-inputs">
+                  <div class="drp-input"><span class="drp-icon">📅</span>2026-09-14</div>
+                  <span class="drp-sep">至</span>
+                  <div class="drp-input"><span class="drp-icon">📅</span>2026-09-20</div>
+                </div>
+                <div class="drp-panel">
+                  <div class="drp-shortcuts">
+                    <div class="drp-sc-item">今天</div>
+                    <div class="drp-sc-item">昨天</div>
+                    <div class="drp-sc-item active">最近7天</div>
+                    <div class="drp-sc-item">最近30天</div>
+                    <div class="drp-sc-item">本月</div>
+                    <div class="drp-sc-item">上月</div>
+                    <div class="drp-sc-item custom">自定义</div>
+                  </div>
+                  <div class="drp-calendars">
+                    <div class="drp-cal">
+                      <div class="drp-cal-header"><span class="drp-arrow">‹</span><span class="drp-month">9月 2026</span></div>
+                      <div class="drp-weekdays"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+                      <div class="drp-days">
+                        <span class="drp-day other">31</span>
+                        <span class="drp-day">1</span><span class="drp-day">2</span><span class="drp-day">3</span><span class="drp-day">4</span><span class="drp-day">5</span><span class="drp-day">6</span>
+                        <span class="drp-day">7</span><span class="drp-day">8</span><span class="drp-day">9</span><span class="drp-day">10</span><span class="drp-day">11</span><span class="drp-day">12</span><span class="drp-day">13</span>
+                        <span class="drp-day start">14</span><span class="drp-day in-range">15</span><span class="drp-day in-range">16</span><span class="drp-day in-range">17</span><span class="drp-day in-range">18</span><span class="drp-day in-range">19</span><span class="drp-day end">20</span>
+                        <span class="drp-day">21</span><span class="drp-day">22</span><span class="drp-day">23</span><span class="drp-day">24</span><span class="drp-day">25</span><span class="drp-day">26</span><span class="drp-day">27</span>
+                        <span class="drp-day">28</span><span class="drp-day">29</span><span class="drp-day">30</span>
+                        <span class="drp-day other">1</span><span class="drp-day other">2</span><span class="drp-day other">3</span><span class="drp-day other">4</span>
+                      </div>
+                    </div>
+                    <div class="drp-cal">
+                      <div class="drp-cal-header"><span class="drp-month">10月 2026</span><span class="drp-arrow">›</span></div>
+                      <div class="drp-weekdays"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+                      <div class="drp-days">
+                        <span class="drp-day other">28</span><span class="drp-day other">29</span><span class="drp-day other">30</span>
+                        <span class="drp-day">1</span><span class="drp-day">2</span><span class="drp-day">3</span><span class="drp-day">4</span>
+                        <span class="drp-day">5</span><span class="drp-day">6</span><span class="drp-day">7</span><span class="drp-day">8</span><span class="drp-day">9</span><span class="drp-day">10</span><span class="drp-day">11</span>
+                        <span class="drp-day">12</span><span class="drp-day">13</span><span class="drp-day">14</span><span class="drp-day">15</span><span class="drp-day">16</span><span class="drp-day">17</span><span class="drp-day">18</span>
+                        <span class="drp-day">19</span><span class="drp-day">20</span><span class="drp-day">21</span><span class="drp-day">22</span><span class="drp-day">23</span><span class="drp-day">24</span><span class="drp-day">25</span>
+                        <span class="drp-day">26</span><span class="drp-day">27</span><span class="drp-day">28</span><span class="drp-day">29</span><span class="drp-day">30</span><span class="drp-day">31</span>
+                        <span class="drp-day other">1</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <button class="btn btn-primary">查 询</button>
             <div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
           </div>
@@ -1143,12 +1219,16 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
 
         <div class="card">
           <div class="ndmt-toolbar">
-            <div class="tool-btn" title="列表视图">▦</div>
-            <div class="tool-btn" title="密度">▦ ▾</div>
-            <div class="tool-btn" title="排序">⇅ ▾</div>
-            <div class="tool-btn" title="搜索">🔍</div>
-            <div class="tool-btn tool-btn-dark" title="刷新">⟳</div>
-            <button class="btn btn-primary tool-export">⬇ 导出数据</button>
+            <div class="ndmt-toolbar-left">
+              <div class="tool-btn tool-btn-dark" title="刷新">⟳</div>
+              <button class="btn btn-primary tool-export">⬇ 导出数据</button>
+            </div>
+            <div class="ndmt-toolbar-right">
+              <div class="tool-btn" title="列表视图">▦</div>
+              <div class="tool-btn" title="密度">▦ ▾</div>
+              <div class="tool-btn" title="排序">⇅ ▾</div>
+              <div class="tool-btn" title="搜索">🔍</div>
+            </div>
           </div>
           <div class="table-wrap" style="overflow-x:auto;">
             <table class="data" style="min-width:1600px;">
