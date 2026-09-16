@@ -2883,6 +2883,26 @@ function updateEditPreview(){
           </div>
         </div>
       </div>
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-label"><span class="req">*</span>亿玩赏对账类型</div>
+          <div style="display:flex;gap:16px;padding-top:6px;flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ywsType" value="consume" checked=""> 消耗对账
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ywsType" value="ship"> 发货对账
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ywsType" value="inbound"> 入库对账
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ywsType" value="ship_consume"> 发货(有消耗)对账
+            </label>
+          </div>
+          <div style="margin-top:6px;color:#a0aec0;font-size:12px;">选择对账类型后，系统按该类型自动生成对应的亿玩赏对账单</div>
+        </div>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-primary" onclick="closeModal('modalEditCustomer')">确定</button>

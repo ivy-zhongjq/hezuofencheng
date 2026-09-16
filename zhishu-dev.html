@@ -2,7 +2,7 @@
 <html lang="zh-CN" data-theme="light"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>世宇智数管理系统 - 开发版</title>
+<title>世宇智数管理系统</title>
 <style>
 /* ===== Reset & Base ===== */
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -55,7 +55,6 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 .breadcrumb{font-size:13px;color:#8492a6;}
 .breadcrumb .sep{margin:0 6px;color:#c0ccda;}
 .breadcrumb .cur{color:#2c3e50;font-weight:500;}
-.dev-badge{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:12px;color:#e6a700;background:#fffbe6;border:1px solid #ffe58f;border-radius:4px;padding:4px 12px;white-space:nowrap;}
 .header-right{display:flex;align-items:center;gap:18px;color:#8492a6;font-size:13px;}
 .header-right .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2b6cb0,#38b2ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;}
 
@@ -369,39 +368,43 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
   <aside class="sidebar">
     <div class="logo"><span class="dot">智</span>世宇智数管理系统</div>
     <nav class="nav" id="nav">
+      <div class="nav-item" data-page="dashboard"><span class="icon">▦</span>仪表盘</div>
+
       <div class="nav-group">
         <div class="nav-parent open"><span class="left"><span class="icon">🏟</span>合作机台</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
-          <div class="nav-item" data-page="p1" style="display:none;">亿玩赏门店对账单</div>
-          <div class="nav-item" data-page="p2" style="display:none;">爆玩宇宙门店对账单</div>
-          <div class="nav-item" data-page="p3" style="display:none;">亿玩赏客户对账单</div>
-          <div class="nav-item" data-page="p_bw_cust" style="display:none;">爆玩宇宙客户对账单</div>
+          <div class="nav-item" data-page="p1">亿玩赏门店对账单</div>
+          <div class="nav-item" data-page="p2">爆玩宇宙门店对账单</div>
+          <div class="nav-item" data-page="p3">亿玩赏客户对账单</div>
+          <div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">🥚</span>扭蛋玛特</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
-            <div class="nav-item active" data-page="p_ndmt_machine">机台营收台账</div>
+            <div class="nav-item" data-page="p_ndmt_machine">机台营收台账</div>
             <div class="nav-item" data-page="p_ndmt_store" style="display:none;">门店台账</div>
             <div class="nav-item" data-page="p_ndmt_cust" style="display:none;">客户台账</div>
           </div>
         </div>
       </div>
-      <!-- 以下页面待后续要求展示 -->
-      <div class="nav-group" style="display:none;">
+
+      <div class="nav-group">
         <div class="nav-parent open"><span class="left"><span class="icon">฿</span>分成管理</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
-          <div class="nav-item" data-page="p4">分成账期管理</div>
+          <div class="nav-item active" data-page="p4">分成账期管理</div>
           <div class="nav-item" data-page="p5">合作机台回款管理</div>
         </div>
       </div>
-      <div class="nav-group" style="display:none;">
+
+      <div class="nav-group">
         <div class="nav-parent open"><span class="left"><span class="icon">¥</span>认款管理</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
           <div class="nav-item" data-page="p7">认款列表</div>
           <div class="nav-item" data-page="p7d">已认款明细</div>
         </div>
       </div>
-      <div class="nav-item" data-page="p_chat" style="display:none;"><span class="icon">💬</span>合作客户群聊关联管理</div>
-      <div class="nav-item" data-page="dashboard" style="display:none;"><span class="icon">▦</span>仪表盘</div>
-      <div class="nav-group" style="display:none;">
+
+      <div class="nav-item" data-page="p_chat"><span class="icon">💬</span>合作客户群聊关联管理</div>
+
+      <div class="nav-group">
         <div class="nav-parent open"><span class="left"><span class="icon">⚙</span>基础设置</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
           <div class="nav-item" data-page="base_cust">客户管理</div>
@@ -409,7 +412,6 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
           <div class="nav-item" data-page="base_sn">机台SN管理</div>
         </div>
       </div>
-      <div class="dev-badge">🚧 开发版</div>
     </nav>
   </aside>
 
@@ -417,7 +419,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
   <div class="main">
     <header class="header">
       <div class="header-left">
-        <div class="breadcrumb" id="breadcrumb"><span>合作机台 / 扭蛋玛特</span><span class="sep">/</span><span class="cur">机台营收台账<span class="phase-badge phase-online">二期已上线</span></span></div>
+        <div class="breadcrumb" id="breadcrumb"><span>分成管理</span><span class="sep">/</span><span class="cur">分成账期管理<span class="phase-badge phase-online">二期已上线</span></span></div>
       </div>
       <div class="header-right">
         <span style="color:#a0aec0;font-size:12px;">V2.0 - 2026.09更新</span>
@@ -1157,7 +1159,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       </div>
 
       <!-- ===================== PAGE: 扭蛋玛特-机台营收台账 ===================== -->
-      <div class="page active" id="page-p_ndmt_machine">
+      <div class="page" id="page-p_ndmt_machine">
         <div class="card">
           <div class="filter-bar">
             <div class="filter-item"><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option><option>星际传奇(武汉荟聚店)</option><option>萌朵拉(孝感吾悦广场店)</option></select></div>
@@ -1395,7 +1397,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       </div>
 
       <!-- ===================== PAGE 5: 分成账期管理 ===================== -->
-      <div class="page" id="page-p4">
+      <div class="page active" id="page-p4">
         <div class="tips tips-blue"><span class="ti">ℹ</span><div>账期期限 = 账单月份 + 客户设置的账期天数；逾期天数 = 当前日期 - 账期期限到期日<br>例如：账单月份 2026-07，客户设置账期天数 30，则账期期限到期日为 2026-08-30，当前日期 2026-08-20 计算的逾期天数为正值表示已逾期。</div></div>
 
         <div class="stat-row">
@@ -2879,6 +2881,26 @@ function updateEditPreview(){
               <input type="checkbox" class="cb" checked=""> 消耗
             </label>
           </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-label"><span class="req">*</span>亿玩赏对账类型</div>
+          <div style="display:flex;gap:16px;padding-top:6px;flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ywsType" value="consume" checked=""> 消耗对账
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ywsType" value="ship"> 发货对账
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ywsType" value="inbound"> 入库对账
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ywsType" value="ship_consume"> 发货(有消耗)对账
+            </label>
+          </div>
+          <div style="margin-top:6px;color:#a0aec0;font-size:12px;">选择对账类型后，系统按该类型自动生成对应的亿玩赏对账单</div>
         </div>
       </div>
     </div>
