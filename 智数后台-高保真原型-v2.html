@@ -1232,9 +1232,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             </div>
           </div>
           <div class="table-wrap" style="overflow-x:auto;">
-            <table class="data" style="min-width:1600px;">
+            <table class="data" style="min-width:1680px;">
               <thead><tr>
-                <th style="width:40px;"><input type="checkbox" onclick="ndmtCheckAll(this)"></th>
+                <th style="width:40px;text-align:center;"><input type="checkbox" onclick="ndmtCheckAll(this)"></th>
                 <th>门店名称</th>
                 <th>客户名称</th>
                 <th>机台名称</th>
@@ -1253,6 +1253,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
               </tr></thead>
               <tbody>
                 <tr>
+                  <td style="text-align:center;"><input type="checkbox" class="ndmt-row-check"></td>
                   <td>星际传奇(深圳KKMall店)</td>
                   <td>深圳市乐的文化股份有限公司</td>
                   <td>扭蛋玛特</td>
@@ -1270,6 +1271,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td class="amt amt-blue">¥94.00</td>
                 </tr>
                 <tr>
+                  <td style="text-align:center;"><input type="checkbox" class="ndmt-row-check"></td>
                   <td>星际传奇(深圳KKMall店)</td>
                   <td>深圳市乐的文化股份有限公司</td>
                   <td>扭蛋玛特</td>
@@ -1287,6 +1289,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td class="amt amt-blue">¥74.40</td>
                 </tr>
                 <tr>
+                  <td style="text-align:center;"><input type="checkbox" class="ndmt-row-check"></td>
                   <td>星际传奇(深圳KKMall店)</td>
                   <td>深圳市乐的文化股份有限公司</td>
                   <td>扭蛋玛特</td>
@@ -1304,6 +1307,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td class="amt amt-blue">¥124.80</td>
                 </tr>
                 <tr>
+                  <td style="text-align:center;"><input type="checkbox" class="ndmt-row-check"></td>
                   <td>星际传奇(武汉荟聚店)</td>
                   <td>武汉市星际文娱有限公司</td>
                   <td>扭蛋玛特</td>
@@ -1321,6 +1325,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td class="amt amt-blue">¥61.60</td>
                 </tr>
                 <tr>
+                  <td style="text-align:center;"><input type="checkbox" class="ndmt-row-check"></td>
                   <td>萌朵拉(孝感吾悦广场店)</td>
                   <td>广州萌朵拉文创科技有限公司</td>
                   <td>扭蛋玛特</td>
@@ -1338,6 +1343,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td class="amt amt-blue">¥107.20</td>
                 </tr>
                 <tr>
+                  <td style="text-align:center;"><input type="checkbox" class="ndmt-row-check"></td>
                   <td>萌朵拉(孝感吾悦广场店)</td>
                   <td>广州萌朵拉文创科技有限公司</td>
                   <td>扭蛋玛特</td>
@@ -1983,7 +1989,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
 </style>
 <script>
 function ndmtCheckAll(cb){
-  var checks=document.querySelectorAll('#p_ndmt_machine .ndmt-row-check');
+  var checks=document.querySelectorAll('#page-p_ndmt_machine .ndmt-row-check');
   checks.forEach(function(c){c.checked=cb.checked;});
 }
 function reconTypeSelect(btn){
