@@ -1234,6 +1234,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
           <div class="table-wrap" style="overflow-x:auto;">
             <table class="data" style="min-width:1600px;">
               <thead><tr>
+                <th style="width:40px;"><input type="checkbox" onclick="ndmtCheckAll(this)"></th>
                 <th>门店名称</th>
                 <th>客户名称</th>
                 <th>机台名称</th>
@@ -1981,6 +1982,10 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
 .sel-mode-tab:hover{color:#2b6cb0;}
 </style>
 <script>
+function ndmtCheckAll(cb){
+  var checks=document.querySelectorAll('#p_ndmt_machine .ndmt-row-check');
+  checks.forEach(function(c){c.checked=cb.checked;});
+}
 function reconTypeSelect(btn){
   var siblings=btn.parentNode.querySelectorAll('.recon-type-btn');
   siblings.forEach(function(s){s.style.background='#fff';s.style.color='#2c3e50';s.style.fontWeight='normal';});
