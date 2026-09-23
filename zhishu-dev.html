@@ -373,10 +373,13 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       <div class="nav-group">
         <div class="nav-parent open"><span class="left"><span class="icon">🏟</span>合作机台</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
-          <div class="nav-item" data-page="p1">亿玩赏门店对账单</div>
-          <div class="nav-item" data-page="p2">爆玩宇宙门店对账单</div>
-          <div class="nav-item" data-page="p3">亿玩赏客户对账单</div>
-          <div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
+          <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">📋</span>对账管理</span><span class="arrow">▶</span></div>
+          <div class="nav-sub-sub">
+            <div class="nav-item" data-page="p1">亿玩赏门店对账单</div>
+            <div class="nav-item" data-page="p2">爆玩宇宙门店对账单</div>
+            <div class="nav-item" data-page="p3">亿玩赏客户对账单</div>
+            <div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
+          </div>
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">🥚</span>扭蛋玛特</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
             <div class="nav-item" data-page="p_ndmt_machine">机台营收台账</div>
@@ -2184,11 +2187,6 @@ function bwSelMode(btn,mode){
         <div class="info-item"><span class="lbl">分成比例</span><span class="val" id="detail-ratio">20.00%</span></div>
       </div>
 
-      <!-- 编辑功能优化说明（按钮+弹窗） -->
-      <div style="margin-bottom:14px;">
-        <button class="btn-edit-note" onclick="openModal('modalEditNote')">📋 编辑优化说明</button>
-      </div>
-
       <!-- 统计卡片：各游戏(币数/金额) + 世宇分成 + 合计金额（动态渲染） -->
       <div class="detail-stat-row" id="detail-stat-cards" style="flex-wrap:wrap;gap:10px;margin-bottom:12px;"></div>
 
@@ -2400,9 +2398,9 @@ function bwSelMode(btn,mode){
 const pages = document.querySelectorAll('.page');
 const navItems = document.querySelectorAll('.nav-item');
 const crumbs = {
-  p1:['合作机台','亿玩赏门店对账单'],
-  p2:['合作机台','爆玩宇宙门店对账单'],
-  p3:['合作机台','亿玩赏客户对账单'],
+  p1:['合作机台 / 对账管理','亿玩赏门店对账单'],
+  p2:['合作机台 / 对账管理','爆玩宇宙门店对账单'],
+  p3:['合作机台 / 对账管理','亿玩赏客户对账单'],
   p4:['分成管理','分成账期管理'],
   p5:['分成管理','合作机台回款管理'],
   p7:['认款管理','认款列表'],
@@ -2411,7 +2409,7 @@ const crumbs = {
   base_cust:['基础设置','客户管理'],
   base_store:['基础设置','门店管理'],
   base_sn:['基础设置','机台SN管理'],
-  p_bw_cust:['合作机台','爆玩宇宙客户对账单'],
+  p_bw_cust:['合作机台 / 对账管理','爆玩宇宙客户对账单'],
   p_ndmt_store:['合作机台 / 扭蛋玛特','门店台账'],
   p_ndmt_cust:['合作机台 / 扭蛋玛特','客户台账'],
   p_ndmt_machine:['合作机台 / 扭蛋玛特','机台营收台账'],
