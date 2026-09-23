@@ -376,9 +376,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">📋</span>对账管理</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
             <div class="nav-item" data-page="p1">亿玩赏门店对账单</div>
-            <div class="nav-item" data-page="p2">爆玩宇宙门店对账单</div>
-            <div class="nav-item" data-page="p3">亿玩赏客户对账单</div>
-            <div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
+            
+            <div class="nav-item" data-page="p3" style="">亿玩赏客户对账单</div>
+            <div class="nav-item active" data-page="p2" style="">爆玩宇宙门店对账单</div><div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
           </div>
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">🥚</span>扭蛋玛特</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
@@ -392,7 +392,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       <div class="nav-group">
         <div class="nav-parent open"><span class="left"><span class="icon">฿</span>分成管理</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
-          <div class="nav-item active" data-page="p4">分成账期管理</div>
+          <div class="nav-item" data-page="p4">分成账期管理</div>
           <div class="nav-item" data-page="p5">合作机台回款管理</div>
         </div>
       </div>
@@ -422,7 +422,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
   <div class="main">
     <header class="header">
       <div class="header-left">
-        <div class="breadcrumb" id="breadcrumb"><span>分成管理</span><span class="sep">/</span><span class="cur">分成账期管理<span class="phase-badge phase-online">二期已上线</span></span></div>
+        <div class="breadcrumb" id="breadcrumb"><span>合作机台 / 对账管理</span><span class="sep">/</span><span class="cur">爆玩宇宙门店对账单<span class="phase-badge phase-opt">三期新增</span></span></div>
       </div>
       <div class="header-right">
         <span style="color:#a0aec0;font-size:12px;">V2.0 - 2026.09更新</span>
@@ -436,7 +436,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         <span class="lg-item"><span class="phase-badge phase-opt">三期</span>本期优化项</span>
         <span class="lg-item"><span class="phase-badge phase-new">三期新增</span>规划新增项</span>
       </div>
-      <div class="lg-right" id="optBtnArea"></div>
+      <div class="lg-right" id="optBtnArea"><button class="btn-opt-note" onclick="openModal('modalOptimize')"><span class="opt-dot"></span>📋 优化调整说明<span class="opt-tag">三期</span></button></div>
     </div>
     <div class="content" id="content">
 
@@ -943,7 +943,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         </div>
       </div>
 <!-- ===================== PAGE 2: 爆玩宇宙门店对账单 (三期) ===================== -->
-      <div class="page" id="page-p2">
+      <div class="page active" id="page-p2">
         <div class="card">
           <div class="filter-bar">
             <div class="filter-item" style=""><label>账期</label><input type="month" class="input" value="2026-07"></div>
@@ -962,7 +962,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <button class="btn btn-success">一键生成图片</button>
           </div>
           <div class="table-wrap">
-            <table class="data">
+            <table class="data" style="">
               <thead><tr>
                 <th class="center"><input type="checkbox" class="cb"></th>
                 <th>账期</th>
@@ -976,7 +976,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                 <th>已认款金额</th>
                 <th>已开票金额</th>
                 <th>机台数量</th>
-                <th>识别码</th>
+                <th style="">识别码</th>
                 <th>备注</th>
                 <th>核对员</th>
                 <th class="center">业务员已核对</th>
@@ -994,7 +994,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td class="amt amt-blue">¥3,083.40</td>
                   <td><div style="width:40px;height:40px;border:1px solid #e0e0e0;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5f5f5;" onclick="alert('查看大图，可复制发送客户')" title="点击查看大图">🖼</div></td>
                   <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥616.68</span></td>
-                  <td>¥616.68 <span class="btn-link" style="font-size:12px;margin-left:4px;" title="下载发票">⬇</span></td>
+                  <td>¥616.68 </td>
                   <td class="center">4台</td>
                   <td>BW-XJ-KKMall-07</td>
                   <td>—</td>
@@ -1032,7 +1032,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td class="amt amt-blue">¥1,790.00</td>
                   <td><div style="width:40px;height:40px;border:1px solid #e0e0e0;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5f5f5;" onclick="alert('查看大图，可复制发送客户')" title="点击查看大图">🖼</div></td>
                   <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥358.00</span></td>
-                  <td>¥1,200.00 <span class="btn-link" style="font-size:12px;margin-left:4px;" title="下载发票">⬇</span></td>
+                  <td>¥1,200.00 </td>
                   <td class="center">3台</td>
                   <td>BW-XJ-WHHJ-07</td>
                   <td>—</td>
@@ -1060,13 +1060,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
               </tbody>
-              <tfoot><tr>
-                <td colspan="6">合计</td>
-                <td class="amt">¥8,969.40</td>
-                <td class="amt amt-blue">¥8,969.40</td>
-                <td colspan="2"></td>
-                <td colspan="7"></td>
-              </tr></tfoot>
+              <tfoot></tfoot>
             </table>
           </div>
           <div class="pagination"><span class="info">共 84 条记录</span><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">›</button><select class="select" style="height:30px;width:90px"><option>20条/页</option></select></div>
@@ -1400,7 +1394,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       </div>
 
       <!-- ===================== PAGE 5: 分成账期管理 ===================== -->
-      <div class="page active" id="page-p4">
+      <div class="page" id="page-p4">
         <div class="tips tips-blue"><span class="ti">ℹ</span><div>账期期限 = 账单月份 + 客户设置的账期天数；逾期天数 = 当前日期 - 账期期限到期日<br>例如：账单月份 2026-07，客户设置账期天数 30，则账期期限到期日为 2026-08-30，当前日期 2026-08-20 计算的逾期天数为正值表示已逾期。</div></div>
 
         <div class="stat-row">
@@ -2231,7 +2225,7 @@ function bwSelMode(btn,mode){
       <div class="form-row">
         <div class="form-col" style="flex:0 0 100%;">
           <div class="form-label">日期</div>
-          <input type="text" class="input readonly-fill" id="edit-date" value="2026-07-01" readonly>
+          <input type="text" class="input readonly-fill" id="edit-date" value="2026-07-01" readonly="">
         </div>
       </div>
       <div id="edit-game-fields">
@@ -2377,25 +2371,34 @@ function renderOptButton(pg){
 }
 navItems.forEach(item=>{
   item.addEventListener('click',()=>{
-    navItems.forEach(i=>i.classList.remove('active'));
-    item.classList.add('active');
     const pg=item.dataset.page;
-    pages.forEach(p=>p.classList.remove('active'));
-    const target=document.getElementById('page-'+pg);
-    if(target){target.classList.add('active');}
-    renderBreadcrumb(pg);
-    renderOptButton(pg);
-    document.getElementById('content').scrollTop=0;
+    location.hash=pg;
   });
+});
+function navigateToPage(pg){
+  navItems.forEach(i=>i.classList.remove('active'));
+  const navItem=document.querySelector('.nav-item[data-page="'+pg+'"]');
+  if(navItem)navItem.classList.add('active');
+  pages.forEach(p=>p.classList.remove('active'));
+  const target=document.getElementById('page-'+pg);
+  if(target){target.classList.add('active');}
+  renderBreadcrumb(pg);
+  renderOptButton(pg);
+  const content=document.getElementById('content');
+  if(content)content.scrollTop=0;
+}
+window.addEventListener('hashchange',()=>{
+  const pg=location.hash.replace('#','');
+  if(pg)navigateToPage(pg);
 });
 // expand/collapse
 document.querySelectorAll('.nav-parent').forEach(p=>{
   p.addEventListener('click',()=>p.classList.toggle('open'));
 });
-// init breadcrumb phase badge for the initially active page
-const initPage=document.querySelector('.page.active');
-renderBreadcrumb(initPage?initPage.id.replace('page-',''):'p1');
-renderOptButton(initPage?initPage.id.replace('page-',''):'p1');
+// init: check URL hash for direct page access
+const hashPage=location.hash.replace('#','');
+const initPage=hashPage||'p2';
+navigateToPage(initPage);
 
 // ===== Modal =====
 function openModal(id){document.getElementById(id).classList.add('open');}
