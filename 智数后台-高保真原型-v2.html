@@ -283,8 +283,8 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
 .detail-info-bar .info-item{display:flex;flex-direction:column;gap:4px;}
 .detail-info-bar .info-item .lbl{font-size:12px;opacity:.8;}
 .detail-info-bar .info-item .val{font-size:15px;font-weight:600;}
-.detail-stat-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
-.detail-stat-card{flex:1;min-width:140px;background:#fff;border:1px solid #e8e8e8;border-radius:6px;padding:14px 16px;}
+.detail-stat-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:stretch;}
+.detail-stat-card{flex:1 1 calc(14.28% - 8px);min-width:130px;max-width:200px;background:#fff;border:1px solid #e8e8e8;border-radius:6px;padding:10px 12px;}
 .detail-stat-card .ds-label{font-size:12px;color:#8492a6;margin-bottom:6px;}
 .detail-stat-card .ds-value{font-size:20px;font-weight:700;color:#2c3e50;}
 .detail-stat-card .ds-value .unit{font-size:12px;font-weight:400;color:#8492a6;margin-left:3px;}
@@ -1001,7 +1001,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modal2')">发票详情</span></td>
                   <td><div style="width:40px;height:40px;border:1px solid #e0e0e0;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5f5f5;" onclick="alert('查看大图，可复制发送客户')" title="点击查看大图">🖼</div></td>
                   <td>2026-08-03 14:30</td>
-                  <td class="center">4台</td>
+                  <td class="center">7台</td>
                   <td>—</td>
                   <td><span class="tag tag-green">已确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
@@ -2548,14 +2548,17 @@ const gameColors = [
 // 合作几款机台就配几款，前端自动渲染对应列数
 const storeGameConfigs = {
   '星际传奇(深圳KKMall店)': {
-    games: ['摸鱼达人','乖巧派对','勇者大陆','向阳而生'],
+    games: ['摸鱼达人','乖巧派对','勇者大陆','向阳而生','甩币狂潮','英雄大陆','欢乐钓鱼'],
     dailyData: {
       '摸鱼达人': [0,150,85,435,1098,131,242,268,278],
       '乖巧派对': [0,0,240,745,2953,967,407,819,115],
       '勇者大陆': [0,323,151,463,1154,16,221,147,334],
-      '向阳而生': [253,0,303,103,408,77,435,263,366]
+      '向阳而生': [253,0,303,103,408,77,435,263,366],
+      '甩币狂潮': [120,200,180,350,500,150,280,200,220],
+      '英雄大陆': [80,150,120,280,420,100,200,160,180],
+      '欢乐钓鱼': [60,90,75,200,320,80,150,120,140]
     },
-    testCoins: {}
+    testCoins: {'摸鱼达人':30,'勇者大陆':20}
   },
   '萌朵拉(孝感吾悦广场店)': {
     games: ['摸鱼达人','乖巧派对','勇者大陆','向阳而生','甩币狂潮','英雄大陆'],
@@ -2657,9 +2660,9 @@ function renderDetailStatCards(config){
     grandTotalCoins += total;
     grandTotalAmount += amount;
     grandTotalTestCoins += tc;
-    html += '<div class="detail-stat-card" style="border-left:4px solid '+c.border+';flex:1;min-width:150px;">';
+    html += '<div class="detail-stat-card" style="border-left:4px solid '+c.border+';">';
     html += '<div class="ds-label" style="color:'+c.text+';font-weight:600;">'+game+'</div>';
-    html += '<div style="font-size:12px;color:#718096;line-height:1.8;">';
+    html += '<div style="font-size:11px;color:#718096;line-height:1.7;">';
     html += '<div>分成数：<span style="color:#3182ce;font-weight:600;">¥'+shiyuShare.toFixed(2)+'</span></div>';
     html += '<div>收币数：<span style="color:#4a5568;">'+fmtNum(total)+'币</span></div>';
     if(tc>0){
@@ -2671,15 +2674,15 @@ function renderDetailStatCards(config){
   });
 
   var shiyuAmount = grandTotalAmount * RATIO;
-  html += '<div class="detail-stat-card" style="flex:1;min-width:150px;border-left:4px solid #3182ce;">';
+  html += '<div class="detail-stat-card" style="border-left:4px solid #3182ce;">';
   html += '<div class="ds-label">初始对账金额</div>';
   html += '<div class="ds-value">¥'+grandTotalAmount.toFixed(2)+'</div>';
   html += '</div>';
-  html += '<div class="detail-stat-card" style="flex:1;min-width:150px;border-left:4px solid #38a169;">';
+  html += '<div class="detail-stat-card" style="border-left:4px solid #38a169;">';
   html += '<div class="ds-label">最终核算金额</div>';
   html += '<div class="ds-value" style="color:#38a169;">¥'+grandTotalAmount.toFixed(2)+'</div>';
   html += '</div>';
-  html += '<div class="detail-stat-card" style="flex:1;min-width:150px;border-left:4px solid #d69e2e;">';
+  html += '<div class="detail-stat-card" style="border-left:4px solid #d69e2e;">';
   html += '<div class="ds-label">总测试币</div>';
   html += '<div class="ds-value" style="color:#d69e2e;">'+grandTotalTestCoins+'币</div>';
   html += '</div>';
