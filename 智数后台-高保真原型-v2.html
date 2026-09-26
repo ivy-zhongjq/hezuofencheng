@@ -949,7 +949,6 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <div class="filter-item" style=""><label>账期</label><input type="month" class="input" value="2026-07"></div>
             <div class="filter-item" style=""><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option></select></div>
             <div class="filter-item" style=""><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option></select></div>
-            <div class="filter-item" style=""><label>数据来源</label><select class="select"><option>全部</option><option>游艺宝</option><option>世宇后台</option></select></div>
             <div class="filter-item" style=""><label>是否对账</label><select class="select"><option>全部</option><option>已对账</option><option>未对账</option></select></div>
             <div class="filter-item" style=""><label>业务员已核对</label><select class="select"><option>全部</option><option>已核对</option></select></div>
             <button class="btn btn-primary" style="">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left: 8px;">重 置</button></div>
@@ -962,23 +961,26 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <button class="btn btn-success">一键生成图片</button>
           </div>
           <div class="table-wrap">
-            <table class="data" style="">
+            <table class="data" style="min-width:2200px;">
               <thead><tr>
                 <th class="center"><input type="checkbox" class="cb"></th>
                 <th>账期</th>
                 <th>门店名称</th>
                 <th>客户名称</th>
-                <th>数据来源</th>
+                <th>核对员</th>
+                <th>识别码</th>
                 <th>机台分成明细</th>
                 <th>初始对账金额</th>
                 <th>最终核算金额</th>
-                <th>图片</th>
                 <th>已认款金额</th>
+                <th>认款详情</th>
                 <th>已开票金额</th>
+                <th>开票详情</th>
+                <th>图片</th>
+                <th>更新时间</th>
                 <th>机台数量</th>
-                <th style="">识别码</th>
                 <th>备注</th>
-                <th>核对员</th>
+                <th>确认状态</th>
                 <th class="center">业务员已核对</th>
                 <th>操作</th>
               </tr></thead>
@@ -988,17 +990,20 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-07</td>
                   <td>星际传奇(深圳KKMall店)</td>
                   <td>深圳市乐的文化股份有限公司</td>
-                  <td><span class="tag tag-blue">游艺宝</span></td>
+                  <td>张三</td>
+                  <td>BW-XJ-KKMall-07</td>
                   <td><span class="btn-link" onclick="openDetailModal('星际传奇(深圳KKMall店)','深圳市乐的文化股份有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥3,083.40</td>
                   <td class="amt amt-blue">¥3,083.40</td>
+                  <td class="amt">¥616.68</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">认款详情</span></td>
+                  <td class="amt">¥616.68</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modal2')">发票详情</span></td>
                   <td><div style="width:40px;height:40px;border:1px solid #e0e0e0;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5f5f5;" onclick="alert('查看大图，可复制发送客户')" title="点击查看大图">🖼</div></td>
-                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥616.68</span></td>
-                  <td>¥616.68 </td>
+                  <td>2026-08-03 14:30</td>
                   <td class="center">4台</td>
-                  <td>BW-XJ-KKMall-07</td>
                   <td>—</td>
-                  <td>张三</td>
+                  <td><span class="tag tag-green">已确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
@@ -1007,17 +1012,20 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-07</td>
                   <td>萌朵拉(孝感吾悦广场店)</td>
                   <td>广州萌朵拉文创科技有限公司</td>
-                  <td><span class="tag tag-blue">游艺宝</span></td>
+                  <td>李四</td>
+                  <td>BW-MD-XGWY-07</td>
                   <td><span class="btn-link" onclick="openDetailModal('萌朵拉(孝感吾悦广场店)','广州萌朵拉文创科技有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥2,840.00</td>
                   <td class="amt amt-blue">¥2,840.00</td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;" onclick="openModal('modal2')">去认款</span></td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;" onclick="openModal('modal2')">去开票</span></td>
                   <td>—</td>
-                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥0.00</span></td>
-                  <td>¥0.00</td>
-                  <td class="center">4台</td>
-                  <td>BW-MD-XGWY-07</td>
+                  <td>2026-08-03 10:15</td>
+                  <td class="center">6台</td>
                   <td>待确认</td>
-                  <td>李四</td>
+                  <td><span class="tag tag-gray">待确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox"><span class="slider"></span></label></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
@@ -1026,17 +1034,20 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-07</td>
                   <td>星际传奇(武汉荟聚店)</td>
                   <td>武汉市星际文娱有限公司</td>
-                  <td><span class="tag tag-purple">世宇后台</span></td>
+                  <td>王五</td>
+                  <td>BW-XJ-WHHJ-07</td>
                   <td><span class="btn-link" onclick="openDetailModal('星际传奇(武汉荟聚店)','武汉市星际文娱有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥1,790.00</td>
                   <td class="amt amt-blue">¥1,790.00</td>
+                  <td class="amt">¥358.00</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">认款详情</span></td>
+                  <td class="amt">¥1,200.00</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modal2')">发票详情</span></td>
                   <td><div style="width:40px;height:40px;border:1px solid #e0e0e0;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5f5f5;" onclick="alert('查看大图，可复制发送客户')" title="点击查看大图">🖼</div></td>
-                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥358.00</span></td>
-                  <td>¥1,200.00 </td>
+                  <td>2026-08-04 09:20</td>
                   <td class="center">3台</td>
-                  <td>BW-XJ-WHHJ-07</td>
                   <td>—</td>
-                  <td>王五</td>
+                  <td><span class="tag tag-orange">有异议</span></td>
                   <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
@@ -1045,18 +1056,43 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-07</td>
                   <td>大玩家(长沙悦方店)</td>
                   <td>长沙市大玩家文娱有限公司</td>
-                  <td><span class="tag tag-purple">世宇后台</span></td>
+                  <td>赵六</td>
+                  <td>BW-DWJ-CSYF-07</td>
                   <td><span class="btn-link" onclick="openDetailModal('大玩家(长沙悦方店)','长沙市大玩家文娱有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥1,256.00</td>
                   <td class="amt amt-blue">¥1,256.00</td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;" onclick="openModal('modal2')">去认款</span></td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;" onclick="openModal('modal2')">去开票</span></td>
                   <td>—</td>
-                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥0.00</span></td>
-                  <td>¥0.00</td>
-                  <td class="center">2台</td>
-                  <td>BW-DWJ-CSYF-07</td>
+                  <td>2026-08-03 16:00</td>
+                  <td class="center">3台</td>
                   <td>—</td>
-                  <td>赵六</td>
+                  <td><span class="tag tag-gray">待确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox"><span class="slider"></span></label></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                </tr>
+                <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
+                  <td>2026-07</td>
+                  <td>星际传奇(广州太古汇店)</td>
+                  <td>广州星际文娱有限公司</td>
+                  <td>张三</td>
+                  <td>BW-XJ-GZTGH-07</td>
+                  <td><span class="btn-link" onclick="openDetailModal('星际传奇(广州太古汇店)','广州星际文娱有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
+                  <td class="amt">¥4,521.00</td>
+                  <td class="amt amt-blue">¥4,521.00</td>
+                  <td class="amt">¥904.20</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">认款详情</span></td>
+                  <td class="amt">¥904.20</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modal2')">发票详情</span></td>
+                  <td><div style="width:40px;height:40px;border:1px solid #e0e0e0;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5f5f5;" onclick="alert('查看大图，可复制发送客户')" title="点击查看大图">🖼</div></td>
+                  <td>2026-08-05 10:00</td>
+                  <td class="center">7台</td>
+                  <td>—</td>
+                  <td><span class="tag tag-green">已确认</span></td>
+                  <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
               </tbody>
@@ -2168,10 +2204,15 @@ function bwSelMode(btn,mode){
 <div class="modal-mask" id="modalDetail">
   <div class="modal" style="width:1500px;max-width:96vw;">
     <div class="modal-header">
-      <span class="modal-title">明细列表</span>
+      <span class="modal-title">机台分成明细</span>
       <button class="modal-close" onclick="closeModal('modalDetail')">×</button>
     </div>
+    <div class="detail-tabs" style="display:flex;gap:0;border-bottom:2px solid #e0e0e0;margin-bottom:0;">
+      <button class="detail-tab active" data-tab="tab-detail" onclick="switchDetailTab('tab-detail')" style="padding:10px 24px;border:none;background:none;cursor:pointer;font-size:14px;font-weight:600;color:#3182ce;border-bottom:2px solid #3182ce;margin-bottom:-2px;">明细列表</button>
+      <button class="detail-tab" data-tab="tab-record" onclick="switchDetailTab('tab-record')" style="padding:10px 24px;border:none;background:none;cursor:pointer;font-size:14px;font-weight:500;color:#718096;">修改记录</button>
+    </div>
     <div class="modal-body">
+      <div id="tab-detail" class="detail-tab-content" style="display:block;">
       <!-- 蓝色信息栏 -->
       <div class="detail-info-bar">
         <div class="info-item"><span class="lbl">门店名称</span><span class="val" id="detail-store">星际传奇(深圳KKMall店)</span></div>
@@ -2209,6 +2250,55 @@ function bwSelMode(btn,mode){
       <!-- 每日明细表格（每款游戏单列收币数，动态渲染） -->
       <div class="table-wrap" style="overflow-x:auto;">
         <table class="data" id="detail-table" style="min-width:700px;"></table>
+      </div>
+      </div>
+      <div id="tab-record" class="detail-tab-content" style="display:none;padding:20px;">
+        <div style="margin-bottom:16px;font-size:13px;color:#718096;">展示金额调整记录与客户异议反馈</div>
+        <!-- Timeline -->
+        <div class="record-timeline" style="position:relative;padding-left:24px;">
+          <!-- Record 1 -->
+          <div class="record-item" style="position:relative;padding-bottom:24px;padding-left:20px;border-left:2px solid #e2e8f0;">
+            <div style="position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#3182ce;"></div>
+            <div style="font-size:13px;color:#718096;margin-bottom:6px;">2026-08-03 14:30</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+              <span style="font-weight:600;font-size:14px;">张三</span>
+              <span style="font-size:13px;color:#718096;">修改 摸鱼达人</span>
+              <span style="font-size:13px;"><span style="color:#e53e3e;">¥537.40</span> → <span style="color:#38a169;font-weight:600;">¥537.40</span></span>
+              <span style="font-size:13px;background:#edf2f7;padding:2px 8px;border-radius:4px;color:#4a5568;">原因：核对游艺宝数据后修正</span>
+            </div>
+          </div>
+          <!-- Record 2 -->
+          <div class="record-item" style="position:relative;padding-bottom:24px;padding-left:20px;border-left:2px solid #e2e8f0;">
+            <div style="position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#3182ce;"></div>
+            <div style="font-size:13px;color:#718096;margin-bottom:6px;">2026-08-03 11:20</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+              <span style="font-weight:600;font-size:14px;">张三</span>
+              <span style="font-size:13px;color:#718096;">修改 乖巧派对</span>
+              <span style="font-size:13px;"><span style="color:#e53e3e;">¥1,249.20</span> → <span style="color:#38a169;font-weight:600;">¥1,249.20</span></span>
+              <span style="font-size:13px;background:#edf2f7;padding:2px 8px;border-radius:4px;color:#4a5568;">原因：补录遗漏数据</span>
+            </div>
+          </div>
+          <!-- Record 3: Customer dispute -->
+          <div class="record-item" style="position:relative;padding-bottom:24px;padding-left:20px;border-left:2px solid #ed8936;">
+            <div style="position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#ed8936;"></div>
+            <div style="font-size:13px;color:#718096;margin-bottom:6px;">2026-08-04 09:20 · 客户异议</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+              <span style="font-weight:600;font-size:14px;color:#ed8936;">深圳市乐的文化股份有限公司</span>
+              <span style="font-size:13px;background:#feebc8;padding:2px 8px;border-radius:4px;color:#9c4221;">备注：7月5日收币数与门店实际记录不符，请核实</span>
+            </div>
+          </div>
+          <!-- Record 4 -->
+          <div class="record-item" style="position:relative;padding-bottom:0;padding-left:20px;border-left:2px solid #e2e8f0;">
+            <div style="position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#38a169;"></div>
+            <div style="font-size:13px;color:#718096;margin-bottom:6px;">2026-08-04 15:00</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+              <span style="font-weight:600;font-size:14px;">张三</span>
+              <span style="font-size:13px;color:#718096;">修改 摸鱼达人</span>
+              <span style="font-size:13px;"><span style="color:#e53e3e;">¥537.40</span> → <span style="color:#38a169;font-weight:600;">¥537.40</span></span>
+              <span style="font-size:13px;background:#f0fff4;padding:2px 8px;border-radius:4px;color:#276749;">原因：已与客户确认，修正完成</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2495,6 +2585,19 @@ const storeGameConfigs = {
       '甩币狂潮': [120,200,180,350,500,150,280,200,220]
     },
     testCoins: {}
+  },
+  '星际传奇(广州太古汇店)': {
+    games: ['摸鱼达人','乖巧派对','勇者大陆','向阳而生','甩币狂潮','英雄大陆','欢乐钓鱼'],
+    dailyData: {
+      '摸鱼达人': [0,150,85,435,1098,131,242,268,278],
+      '乖巧派对': [0,0,240,745,2953,967,407,819,115],
+      '勇者大陆': [0,323,151,463,1154,16,221,147,334],
+      '向阳而生': [253,0,303,103,408,77,435,263,366],
+      '甩币狂潮': [120,200,180,350,500,150,280,200,220],
+      '英雄大陆': [80,150,120,280,420,100,200,160,180],
+      '欢乐钓鱼': [60,90,75,200,320,80,150,120,140]
+    },
+    testCoins: {'摸鱼达人':30,'勇者大陆':20,'欢乐钓鱼':15}
   }
 };
 
@@ -2534,36 +2637,52 @@ function openDetailModal(store, customer, month, coinval, ratio){
   openModal('modalDetail');
 }
 
-// 动态渲染统计卡片：每个机台一张卡片 + 世宇分成 + 合计金额
+// 动态渲染统计卡片：每个机台一张卡片 + 初始对账金额 + 最终核算金额 + 总测试币
 function renderDetailStatCards(config){
-  const container = document.getElementById('detail-stat-cards');
-  const games = config.games;
-  let html = '';
-  let grandTotalCoins = 0;
-  let grandTotalAmount = 0;
+  var container = document.getElementById('detail-stat-cards');
+  var games = config.games;
+  var testCoins = config.testCoins || {};
+  var html = '';
+  var grandTotalCoins = 0;
+  var grandTotalAmount = 0;
+  var grandTotalTestCoins = 0;
 
-  games.forEach((game, i) => {
-    const c = gameColors[i % gameColors.length];
-    const data = config.dailyData[game] || [];
-    const total = data.reduce((a,b)=>a+b,0);
-    const amount = total * COIN_VALUE;
+  games.forEach(function(game, i){
+    var c = gameColors[i % gameColors.length];
+    var data = config.dailyData[game] || [];
+    var total = data.reduce(function(a,b){return a+b;},0);
+    var amount = total * COIN_VALUE;
+    var shiyuShare = amount * RATIO;
+    var tc = testCoins[game] || 0;
     grandTotalCoins += total;
     grandTotalAmount += amount;
-    html += `<div class="detail-stat-card" style="border-left:4px solid ${c.border};flex:1;min-width:140px;">
-      <div class="ds-label" style="color:${c.text};font-weight:600;">${game}</div>
-      <div class="ds-value" style="font-size:14px;">${fmtNum(total)}币 / ¥${amount.toFixed(2)}</div>
-    </div>`;
+    grandTotalTestCoins += tc;
+    html += '<div class="detail-stat-card" style="border-left:4px solid '+c.border+';flex:1;min-width:150px;">';
+    html += '<div class="ds-label" style="color:'+c.text+';font-weight:600;">'+game+'</div>';
+    html += '<div style="font-size:12px;color:#718096;line-height:1.8;">';
+    html += '<div>分成数：<span style="color:#3182ce;font-weight:600;">¥'+shiyuShare.toFixed(2)+'</span></div>';
+    html += '<div>收币数：<span style="color:#4a5568;">'+fmtNum(total)+'币</span></div>';
+    if(tc>0){
+      html += '<div>测试币：<span style="color:#d69e2e;">'+tc+'币</span></div>';
+    } else {
+      html += '<div>测试币：<span style="color:#cbd5e0;">0</span></div>';
+    }
+    html += '</div></div>';
   });
 
-  const shiyuAmount = grandTotalAmount * RATIO;
-  html += `<div class="detail-stat-card success" style="flex:1;min-width:140px;">
-    <div class="ds-label">世宇分成</div>
-    <div class="ds-value">¥${shiyuAmount.toFixed(2)}</div>
-  </div>`;
-  html += `<div class="detail-stat-card" style="flex:1;min-width:140px;">
-    <div class="ds-label">合计金额</div>
-    <div class="ds-value">¥${grandTotalAmount.toFixed(2)}</div>
-  </div>`;
+  var shiyuAmount = grandTotalAmount * RATIO;
+  html += '<div class="detail-stat-card" style="flex:1;min-width:150px;border-left:4px solid #3182ce;">';
+  html += '<div class="ds-label">初始对账金额</div>';
+  html += '<div class="ds-value">¥'+grandTotalAmount.toFixed(2)+'</div>';
+  html += '</div>';
+  html += '<div class="detail-stat-card" style="flex:1;min-width:150px;border-left:4px solid #38a169;">';
+  html += '<div class="ds-label">最终核算金额</div>';
+  html += '<div class="ds-value" style="color:#38a169;">¥'+grandTotalAmount.toFixed(2)+'</div>';
+  html += '</div>';
+  html += '<div class="detail-stat-card" style="flex:1;min-width:150px;border-left:4px solid #d69e2e;">';
+  html += '<div class="ds-label">总测试币</div>';
+  html += '<div class="ds-value" style="color:#d69e2e;">'+grandTotalTestCoins+'币</div>';
+  html += '</div>';
 
   container.innerHTML = html;
 }
@@ -2683,6 +2802,24 @@ function openEditModal(date, dayIndex){
   container.innerHTML = html;
 
   openModal('modalEdit');
+}
+
+function switchDetailTab(tabId){
+  document.querySelectorAll('.detail-tab-content').forEach(function(c){c.style.display='none';});
+  document.getElementById(tabId).style.display='block';
+  document.querySelectorAll('.detail-tab').forEach(function(t){
+    t.classList.remove('active');
+    t.style.color='#718096';
+    t.style.borderBottom='none';
+    t.style.fontWeight='500';
+  });
+  var activeTab=document.querySelector('.detail-tab[data-tab="'+tabId+'"]');
+  if(activeTab){
+    activeTab.classList.add('active');
+    activeTab.style.color='#3182ce';
+    activeTab.style.borderBottom='2px solid #3182ce';
+    activeTab.style.fontWeight='600';
+  }
 }
 </script>
 
