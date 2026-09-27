@@ -375,10 +375,12 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         <div class="nav-sub">
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">📋</span>对账管理</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
+            <div class="nav-item" data-page="p_recon_summary">对账单汇总</div>
             <div class="nav-item" data-page="p1">亿玩赏门店对账单</div>
             
             <div class="nav-item" data-page="p3" style="">亿玩赏客户对账单</div>
             <div class="nav-item active" data-page="p2" style="">爆玩宇宙门店对账单</div><div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
+            <div class="nav-item" data-page="p_coin_recon">收币对账单</div>
           </div>
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">🥚</span>扭蛋玛特</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
@@ -1247,6 +1249,229 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <span class="info">共 42 条记录</span>
             <button class="page-btn">‹</button>
             <button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button>
+            <button class="page-btn">›</button>
+            <select class="select" style="height:30px;width:90px"><option>20条/页</option></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== PAGE: 对账单汇总 ===================== -->
+      <div class="page" id="page-p_recon_summary">
+        <div class="card">
+          <div class="filter-bar">
+            <div class="filter-item"><label>账期</label><input type="month" class="input" value="2026-08"></div>
+            <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option><option>长沙市大玩家文娱有限公司</option></select></div>
+            <button class="btn btn-primary">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data" style="min-width:1200px;">
+              <thead><tr>
+                <th>账期</th><th>客户名称</th><th>对账单号</th><th>识别码</th>
+                <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>已开票金额</th>
+                <th>备注</th><th>操作</th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td>2026-08</td>
+                  <td>深圳市乐的文化股份有限公司</td>
+                  <td>DZD-202608-LE-001</td>
+                  <td>BW-LE-2026-08</td>
+                  <td class="amt">¥2,117.02</td><td class="amt amt-blue">¥2,117.02</td>
+                  <td class="amt">¥2,117.02</td><td class="amt">¥2,117.02</td>
+                  <td>—</td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                </tr>
+                <tr>
+                  <td>2026-08</td>
+                  <td>广州萌朵拉文创科技有限公司</td>
+                  <td>DZD-202608-MD-001</td>
+                  <td>BW-MD-2026-08</td>
+                  <td class="amt">¥1,164.50</td><td class="amt amt-blue">¥1,164.50</td>
+                  <td class="amt">¥0.00</td><td class="amt">¥0.00</td>
+                  <td>待确认</td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                </tr>
+                <tr>
+                  <td>2026-08</td>
+                  <td>武汉市星际文娱有限公司</td>
+                  <td>DZD-202608-XJ-001</td>
+                  <td>BW-XJ-2026-08</td>
+                  <td class="amt">¥790.00</td><td class="amt amt-blue">¥790.00</td>
+                  <td class="amt">¥790.00</td><td class="amt">¥790.00</td>
+                  <td>—</td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                </tr>
+                <tr>
+                  <td>2026-08</td>
+                  <td>长沙市大玩家文娱有限公司</td>
+                  <td>DZD-202608-DWJ-001</td>
+                  <td>BW-DWJ-2026-08</td>
+                  <td class="amt">¥728.00</td><td class="amt amt-blue">¥728.00</td>
+                  <td class="amt">¥0.00</td><td class="amt">¥0.00</td>
+                  <td>—</td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span class="info">共 42 条记录</span>
+            <button class="page-btn">‹</button>
+            <button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button>
+            <button class="page-btn">›</button>
+            <select class="select" style="height:30px;width:90px"><option>20条/页</option></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== PAGE: 收币对账单 ===================== -->
+      <div class="page" id="page-p_coin_recon">
+        <div class="card">
+          <div class="filter-bar">
+            <div class="filter-item"><label>账期</label><input type="month" class="input" value="2026-08"></div>
+            <div class="filter-item"><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option><option>星际传奇(武汉荟聚店)</option><option>萌朵拉(孝感吾悦广场店)</option></select></div>
+            <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option></select></div>
+            <div class="filter-item"><label>机台名称</label><select class="select"><option>全部</option><option>扭蛋玛特</option><option>盲盒宇宙</option><option>次元星球</option><option>飞球宇宙</option></select></div>
+            <div class="filter-item"><label>分成类型</label><select class="select"><option>全部</option><option>其他分成</option><option>扭蛋玛特</option><option>盲盒宇宙</option></select></div>
+            <div class="filter-item"><label>核对员</label><select class="select"><option>全部</option><option>张三</option><option>李四</option><option>王五</option></select></div>
+            <div class="filter-item"><label>是否已认款</label><select class="select"><option>全部</option><option>已认款</option><option>未认款</option></select></div>
+            <div class="filter-item"><label>是否已开票</label><select class="select"><option>全部</option><option>已开票</option><option>未开票</option></select></div>
+            <div class="filter-item"><label>业务员已核对</label><select class="select"><option>全部</option><option>已核对</option><option>未核对</option></select></div>
+            <button class="btn btn-primary">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="btn-group">
+            <button class="btn btn">🔄 刷新</button>
+            <button class="btn btn-primary">生成对账单</button>
+            <button class="btn btn-success">批量下载</button>
+            <button class="btn btn-success">导入对账单</button>
+          </div>
+          <div class="table-wrap">
+            <table class="data" style="min-width:1920px;">
+              <thead><tr>
+                <th style="width:40px;" class="center"><input type="checkbox" class="cb"></th>
+                <th>账期</th><th>门店名称</th><th>客户名称</th><th>机台名称</th><th>分成类型</th>
+                <th>核对员</th><th>识别码</th><th>月初码表数</th><th>月末码表数</th><th>实际收币</th>
+                <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>认款详情</th>
+                <th>已开票金额</th><th>开票详情</th><th>更新时间</th><th>机台数量</th>
+                <th>备注</th><th>业务员已核对</th><th>操作</th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
+                  <td>2026-08</td>
+                  <td>星际传奇(深圳KKMall店)</td>
+                  <td>深圳市乐的文化股份有限公司</td>
+                  <td><span class="tag tag-blue">扭蛋玛特</span></td>
+                  <td><span class="tag tag-green">扭蛋玛特</span></td>
+                  <td>张三</td>
+                  <td>SB-YWS-KKM-08</td>
+                  <td>12,500</td><td>15,187</td><td class="amt">2,687</td>
+                  <td class="amt">¥107.48</td><td class="amt amt-blue">¥107.48</td>
+                  <td class="amt">¥107.48</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
+                  <td class="amt">¥107.48</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;">发票详情</span></td>
+                  <td>2026-09-03 14:30</td>
+                  <td>1台</td>
+                  <td>—</td>
+                  <td class="center"><span class="tag tag-green">已核对</span></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                </tr>
+                <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
+                  <td>2026-08</td>
+                  <td>星际传奇(深圳KKMall店)</td>
+                  <td>深圳市乐的文化股份有限公司</td>
+                  <td><span class="tag tag-blue">扭蛋玛特</span></td>
+                  <td><span class="tag tag-green">扭蛋玛特</span></td>
+                  <td>张三</td>
+                  <td>SB-YWS-KKM-08</td>
+                  <td>28,000</td><td>34,246</td><td class="amt">6,246</td>
+                  <td class="amt">¥249.84</td><td class="amt amt-blue">¥249.84</td>
+                  <td class="amt">¥249.84</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
+                  <td class="amt">¥249.84</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;">发票详情</span></td>
+                  <td>2026-09-03 14:30</td>
+                  <td>1台</td>
+                  <td>—</td>
+                  <td class="center"><span class="tag tag-green">已核对</span></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                </tr>
+                <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
+                  <td>2026-08</td>
+                  <td>萌朵拉(孝感吾悦广场店)</td>
+                  <td>广州萌朵拉文创科技有限公司</td>
+                  <td><span class="tag tag-purple">盲盒宇宙</span></td>
+                  <td><span class="tag tag-purple">盲盒宇宙</span></td>
+                  <td>李四</td>
+                  <td>SB-YWS-XG-08</td>
+                  <td>8,000</td><td>9,500</td><td class="amt">1,500</td>
+                  <td class="amt">¥60.00</td><td class="amt amt-blue">¥60.00</td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去认款</span></td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去开票</span></td>
+                  <td>2026-09-05 10:15</td>
+                  <td>1台</td>
+                  <td>待确认</td>
+                  <td class="center"><span class="tag tag-gray">未核对</span></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                </tr>
+                <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
+                  <td>2026-08</td>
+                  <td>星际传奇(武汉荟聚店)</td>
+                  <td>深圳市乐的文化股份有限公司</td>
+                  <td><span class="tag tag-blue">扭蛋玛特</span></td>
+                  <td><span class="tag tag-orange">其他分成</span></td>
+                  <td>王五</td>
+                  <td>SB-YWS-WH-08</td>
+                  <td>15,000</td><td>17,809</td><td class="amt">2,809</td>
+                  <td class="amt">¥112.36</td><td class="amt amt-blue">¥112.36</td>
+                  <td class="amt">¥112.36</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
+                  <td class="amt">¥112.36</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;">发票详情</span></td>
+                  <td>2026-09-04 16:45</td>
+                  <td>1台</td>
+                  <td>—</td>
+                  <td class="center"><span class="tag tag-green">已核对</span></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                </tr>
+                <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
+                  <td>2026-08</td>
+                  <td>星际传奇(深圳KKMall店)</td>
+                  <td>深圳市乐的文化股份有限公司</td>
+                  <td><span class="tag tag-orange">飞球宇宙</span></td>
+                  <td><span class="tag tag-orange">其他分成</span></td>
+                  <td>张三</td>
+                  <td>SB-YWS-KKM-08</td>
+                  <td>5,000</td><td>5,900</td><td class="amt">900</td>
+                  <td class="amt">¥36.00</td><td class="amt amt-blue">¥36.00</td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去认款</span></td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去开票</span></td>
+                  <td>2026-09-03 14:30</td>
+                  <td>1台</td>
+                  <td>—</td>
+                  <td class="center"><span class="tag tag-gray">未核对</span></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span class="info">共 128 条记录</span>
+            <button class="page-btn">‹</button>
+            <button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">4</button><button class="page-btn">5</button>
             <button class="page-btn">›</button>
             <select class="select" style="height:30px;width:90px"><option>20条/页</option></select>
           </div>
@@ -2479,6 +2704,8 @@ const crumbs = {
   base_store:['基础设置','门店管理'],
   base_sn:['基础设置','机台SN管理'],
   p_bw_cust:['合作机台 / 对账管理','爆玩宇宙客户对账单'],
+  p_recon_summary:['合作机台 / 对账管理','对账单汇总'],
+  p_coin_recon:['合作机台 / 对账管理','收币对账单'],
   p_ndmt_store:['合作机台 / 扭蛋玛特','门店台账'],
   p_ndmt_cust:['合作机台 / 扭蛋玛特','客户台账'],
   p_ndmt_machine:['合作机台 / 扭蛋玛特','机台营收台账'],
@@ -2490,6 +2717,8 @@ const phases = {
   p7:'online', p7d:'online', p_chat:'online',
   base_cust:'online', base_store:'online', base_sn:'online',
   p_bw_cust:'online',
+  p_recon_summary:'new',
+  p_coin_recon:'new',
   p_ndmt_store:'online',
   p_ndmt_cust:'online',
   p_ndmt_machine:'online',
