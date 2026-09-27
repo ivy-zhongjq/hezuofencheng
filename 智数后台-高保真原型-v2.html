@@ -1107,12 +1107,11 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       <div class="page" id="page-p_bw_cust">
         <div class="card">
           <div class="filter-bar">
-            <div class="filter-item" style=""><label>账期</label><input type="month" class="input" value="2026-08"></div>
-            <div class="filter-item" style=""><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option></select></div>
-            <div class="filter-item" style=""><label>数据来源</label><select class="select"><option>全部</option><option>游艺宝</option><option>世宇后台</option></select></div>
-            <div class="filter-item" style=""><label>是否已推送</label><select class="select"><option>全部</option><option>已推送</option><option>未推送</option></select></div>
-            <div class="filter-item" style=""><label>业务员已核对</label><select class="select"><option>全部</option><option>已核对</option></select></div>
-            <button class="btn btn-primary" style="">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
+            <div class="filter-item"><label>账期</label><input type="month" class="input" value="2026-08"></div>
+            <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option><option>长沙市大玩家文娱有限公司</option></select></div>
+            <div class="filter-item"><label>核对员</label><select class="select"><option>全部</option><option>张三</option><option>李四</option><option>王五</option><option>赵六</option></select></div>
+            <div class="filter-item"><label>是否已推送</label><select class="select"><option>全部</option><option>已推送</option><option>未推送</option></select></div>
+            <button class="btn btn-primary">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
           </div>
         </div>
         <div class="card">
@@ -1122,61 +1121,120 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <button class="btn btn-success">一键生成图片</button>
           </div>
           <div class="table-wrap">
-            <table class="data">
+            <table class="data" style="min-width:1920px;">
               <thead><tr>
-                <th class="center"><input type="checkbox" class="cb"></th>
-                <th>账期</th><th>客户名称</th><th>数据来源</th><th>合作机台数量</th>
-                <th>初始对账金额</th><th>最终核算金额</th><th>图片</th>
-                <th>已认款金额</th><th>已开票金额</th><th>识别码</th><th>备注</th><th>核对员</th><th>业务员已核对</th><th>是否已推送</th><th>操作</th>
+                <th style="width:40px;" class="center"><input type="checkbox" class="cb"></th>
+                <th>账期</th><th>客户名称</th><th>核对员</th><th>识别码</th>
+                <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>已开票金额</th>
+                <th>约定币值</th><th>分成比例</th><th>图片</th><th>是否已推送</th>
+                <th>业务员核对状态</th><th>客户确认状态</th><th>操作</th>
               </tr></thead>
               <tbody>
+                <!-- Row 1: 乐的文化 - 全部已核对已确认 -->
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
-                  <td>2026-08</td><td>深圳市乐的文化股份有限公司</td><td><span class="tag tag-blue">游艺宝</span></td><td>13台</td>
+                  <td>2026-08</td>
+                  <td>深圳市乐的文化股份有限公司</td>
+                  <td>张三</td>
+                  <td>BW-LE-2026-08</td>
                   <td class="amt">¥2,117.02</td><td class="amt amt-blue">¥2,117.02</td>
+                  <td class="amt">¥2,117.02</td><td class="amt">¥2,117.02</td>
+                  <td>1币=¥1.00</td><td>50%</td>
                   <td><div style="width:40px;height:40px;border:1px solid #e0e0e0;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5f5f5;" onclick="alert('查看大图，可复制发送客户')" title="点击查看大图">🖼</div></td>
-                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥2,117.02</span></td>
-                  <td>¥2,117.02 <span class="btn-link" style="font-size:12px;margin-left:4px;" title="下载发票">⬇</span></td>
-                  <td>BW-LE-2026-08</td><td>—</td><td>张三</td>
-                  <td class="center"><span class="tag tag-green">已核对</span></td>
                   <td><span class="tag tag-green">已推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>推送到客户群</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="font-size:12px;"><span style="color:#718096;">星际传奇(KKMall)：</span><span class="tag tag-green" style="font-size:11px;">已审核</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">星际传奇(武汉荟聚)：</span><span class="tag tag-green" style="font-size:11px;">已审核</span></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="font-size:12px;"><span style="color:#718096;">星际传奇(KKMall)：</span><span class="tag tag-green" style="font-size:11px;">已确认</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">星际传奇(武汉荟聚)：</span><span class="tag tag-green" style="font-size:11px;">已确认</span></div>
+                    </div>
+                  </td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
+                <!-- Row 2: 萌朵拉 - 混合状态 -->
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
-                  <td>2026-08</td><td>广州萌朵拉文创科技有限公司</td><td><span class="tag tag-blue">游艺宝</span></td><td>4台</td>
+                  <td>2026-08</td>
+                  <td>广州萌朵拉文创科技有限公司</td>
+                  <td>李四</td>
+                  <td>BW-MD-2026-08</td>
                   <td class="amt">¥1,164.50</td><td class="amt amt-blue">¥1,164.50</td>
+                  <td class="amt">¥0.00</td><td class="amt">¥0.00</td>
+                  <td>1币=¥1.00</td><td>45%</td>
                   <td>—</td>
-                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥0.00</span></td>
-                  <td>¥0.00</td>
-                  <td>BW-MD-2026-08</td><td>待确认</td><td>李四</td>
-                  <td class="center"><span class="tag tag-gray">未核对</span></td>
                   <td><span class="tag tag-gray">未推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>推送到客户群</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="font-size:12px;"><span style="color:#718096;">萌朵拉(孝感吾悦)：</span><span class="tag tag-green" style="font-size:11px;">已审核</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">萌朵拉(广州正佳)：</span><span class="tag tag-gray" style="font-size:11px;">未审核</span></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="font-size:12px;"><span style="color:#718096;">萌朵拉(孝感吾悦)：</span><span class="tag tag-green" style="font-size:11px;">已确认</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">萌朵拉(广州正佳)：</span><span class="tag tag-orange" style="font-size:11px;">有异议</span></div>
+                    </div>
+                  </td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
+                <!-- Row 3: 星际文娱 -->
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
-                  <td>2026-08</td><td>武汉市星际文娱有限公司</td><td><span class="tag tag-purple">世宇后台</span></td><td>3台</td>
+                  <td>2026-08</td>
+                  <td>武汉市星际文娱有限公司</td>
+                  <td>王五</td>
+                  <td>BW-XJ-2026-08</td>
                   <td class="amt">¥790.00</td><td class="amt amt-blue">¥790.00</td>
+                  <td class="amt">¥790.00</td><td class="amt">¥790.00</td>
+                  <td>1币=¥1.00</td><td>50%</td>
                   <td><div style="width:40px;height:40px;border:1px solid #e0e0e0;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5f5f5;" onclick="alert('查看大图，可复制发送客户')" title="点击查看大图">🖼</div></td>
-                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥790.00</span></td>
-                  <td>¥790.00 <span class="btn-link" style="font-size:12px;margin-left:4px;" title="下载发票">⬇</span></td>
-                  <td>BW-XJ-2026-08</td><td>—</td><td>王五</td>
-                  <td class="center"><span class="tag tag-green">已核对</span></td>
                   <td><span class="tag tag-green">已推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>推送到客户群</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="font-size:12px;"><span style="color:#718096;">星际文娱(武汉天地)：</span><span class="tag tag-green" style="font-size:11px;">已审核</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">星际文娱(光谷步行街)：</span><span class="tag tag-green" style="font-size:11px;">已审核</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">星际文娱(楚河汉街)：</span><span class="tag tag-green" style="font-size:11px;">已审核</span></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="font-size:12px;"><span style="color:#718096;">星际文娱(武汉天地)：</span><span class="tag tag-green" style="font-size:11px;">已确认</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">星际文娱(光谷步行街)：</span><span class="tag tag-gray" style="font-size:11px;">待确认</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">星际文娱(楚河汉街)：</span><span class="tag tag-green" style="font-size:11px;">已确认</span></div>
+                    </div>
+                  </td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
+                <!-- Row 4: 大玩家 -->
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
-                  <td>2026-08</td><td>长沙市大玩家文娱有限公司</td><td><span class="tag tag-purple">世宇后台</span></td><td>2台</td>
+                  <td>2026-08</td>
+                  <td>长沙市大玩家文娱有限公司</td>
+                  <td>赵六</td>
+                  <td>BW-DWJ-2026-08</td>
                   <td class="amt">¥728.00</td><td class="amt amt-blue">¥728.00</td>
+                  <td class="amt">¥0.00</td><td class="amt">¥0.00</td>
+                  <td>1币=¥1.00</td><td>50%</td>
                   <td>—</td>
-                  <td><span class="btn-link" style="color:#38a169;font-weight:600;" onclick="openModal('modal2')">¥0.00</span></td>
-                  <td>¥0.00</td>
-                  <td>BW-DWJ-2026-08</td><td>—</td><td>赵六</td>
-                  <td class="center"><span class="tag tag-gray">未核对</span></td>
                   <td><span class="tag tag-gray">未推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>推送到客户群</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="font-size:12px;"><span style="color:#718096;">大玩家(五一广场)：</span><span class="tag tag-gray" style="font-size:11px;">未审核</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">大玩家(悦荟广场)：</span><span class="tag tag-gray" style="font-size:11px;">未审核</span></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="font-size:12px;"><span style="color:#718096;">大玩家(五一广场)：</span><span class="tag tag-gray" style="font-size:11px;">待确认</span></div>
+                      <div style="font-size:12px;"><span style="color:#718096;">大玩家(悦荟广场)：</span><span class="tag tag-gray" style="font-size:11px;">待确认</span></div>
+                    </div>
+                  </td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
               </tbody>
             </table>
