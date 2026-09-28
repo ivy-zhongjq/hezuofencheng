@@ -146,6 +146,21 @@ table.data{width:100%;border-collapse:collapse;background:#fff;font-size:13px;mi
 table.data th{background:#fafbfc;color:#5a6c7d;font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid #e8e8e8;white-space:nowrap;font-size:12px;position:sticky;top:0;z-index:1;}
 table.data td{padding:10px 12px;border-bottom:1px solid #f0f0f0;color:#2c3e50;white-space:nowrap;}
 table.data tr:hover td{background:#f7fafc;}
+/* 爆玩宇宙门店对账单 - 固定列 */
+#page-p2 .data td:nth-child(1){position:sticky;left:0;background:#fff;z-index:1;}
+#page-p2 .data td:nth-child(2){position:sticky;left:40px;background:#fff;z-index:1;}
+#page-p2 .data td:nth-child(3){position:sticky;left:100px;background:#fff;z-index:1;}
+#page-p2 .data td:nth-child(4){position:sticky;left:280px;background:#fff;z-index:1;}
+#page-p2 .data td:nth-child(18){position:sticky;right:144px;background:#fff;z-index:1;width:90px;}
+#page-p2 .data td:nth-child(19){position:sticky;right:54px;background:#fff;z-index:1;width:90px;}
+#page-p2 .data td:nth-child(20){position:sticky;right:0;background:#fff;z-index:1;width:54px;}
+#page-p2 .data tr:hover td:nth-child(1),
+#page-p2 .data tr:hover td:nth-child(2),
+#page-p2 .data tr:hover td:nth-child(3),
+#page-p2 .data tr:hover td:nth-child(4),
+#page-p2 .data tr:hover td:nth-child(18),
+#page-p2 .data tr:hover td:nth-child(19),
+#page-p2 .data tr:hover td:nth-child(20){background:#f7fafc;}
 table.data th.center,table.data td.center{text-align:center;}
 table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e8e8;}
 .group-row td{background:#edf2f7 !important;font-weight:600;color:#2b6cb0;}
@@ -366,7 +381,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
 <div class="app">
   <!-- ============ SIDEBAR ============ -->
   <aside class="sidebar">
-    <div class="logo"><span class="dot">智</span>世宇智数管理系统<span style="margin-left:6px;font-size:11px;background:#ed8936;color:#fff;padding:1px 6px;border-radius:4px;">🚧 开发版</span></div>
+    <div class="logo"><span class="dot">智</span>世宇智数管理系统</div>
     <nav class="nav" id="nav">
       <div class="nav-item" data-page="dashboard" style="display:none;"><span class="icon">▦</span>仪表盘</div>
 
@@ -946,27 +961,31 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       <div class="page active" id="page-p2">
         <div class="card">
           <div class="filter-bar">
-            <div class="filter-item" style=""><label>账期</label><input type="month" class="input" value="2026-07"></div>
-            <div class="filter-item" style=""><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option></select></div>
-            <div class="filter-item" style=""><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option></select></div>
-            <div class="filter-item" style=""><label>是否对账</label><select class="select"><option>全部</option><option>已对账</option><option>未对账</option></select></div>
-            <div class="filter-item" style=""><label>业务员已核对</label><select class="select"><option>全部</option><option>已核对</option></select></div>
-            <button class="btn btn-primary" style="">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left: 8px;">重 置</button></div>
+            <div class="filter-item"><label>账期</label><input type="month" class="input" value="2026-07"></div>
+            <div class="filter-item"><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option><option>萌朵拉(孝感吾悦广场店)</option><option>星际传奇(武汉荟聚店)</option><option>大玩家(长沙悦方店)</option><option>星际传奇(广州太古汇店)</option></select></div>
+            <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option><option>长沙市大玩家文娱有限公司</option><option>广州星际文娱有限公司</option></select></div>
+            <div class="filter-item"><label>核对员</label><select class="select"><option>全部</option><option>张三</option><option>李四</option><option>王五</option><option>赵六</option></select></div>
+            <div class="filter-item"><label>是否已核对</label><select class="select"><option>全部</option><option>已核对</option><option>未核对</option></select></div>
+            <div class="filter-item"><label>客户确认状态</label><select class="select"><option>全部</option><option>已确认</option><option>自动确认</option><option>待确认</option><option>有异议</option></select></div>
+            <div class="filter-item"><label>是否已认款</label><select class="select"><option>全部</option><option>已认款</option><option>未认款</option></select></div>
+            <div class="filter-item"><label>是否已开票</label><select class="select"><option>全部</option><option>已开票</option><option>未开票</option></select></div>
+            <button class="btn btn-primary">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left: 8px;">重 置</button></div>
           </div>
         </div>
 
         <div class="card">
           <div class="btn-group">
+            <button class="btn">🔄 刷新</button>
             <button class="btn btn-primary" onclick="openModal('modalBWGen')">＋ 生成对账单</button>
-            <button class="btn btn-success">一键生成图片</button>
+            <button class="btn btn-success">批量下载</button>
           </div>
           <div class="table-wrap">
             <table class="data" style="min-width:2200px;">
               <thead><tr>
-                <th class="center"><input type="checkbox" class="cb"></th>
-                <th>账期</th>
-                <th>门店名称</th>
-                <th>客户名称</th>
+                <th class="center" style="position:sticky;left:0;z-index:2;background:#f5f7fa;"><input type="checkbox" class="cb"></th>
+                <th style="width:60px;position:sticky;left:40px;z-index:2;background:#f5f7fa;">账期</th>
+                <th style="width:180px;position:sticky;left:100px;z-index:2;background:#f5f7fa;">门店名称</th>
+                <th style="width:180px;position:sticky;left:280px;z-index:2;background:#f5f7fa;">客户名称</th>
                 <th>核对员</th>
                 <th>识别码</th>
                 <th>机台分成明细</th>
@@ -980,9 +999,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                 <th>更新时间</th>
                 <th>机台数量</th>
                 <th>备注</th>
-                <th>确认状态</th>
-                <th class="center">业务员已核对</th>
-                <th>操作</th>
+                <th style="width:90px;position:sticky;right:144px;z-index:2;background:#f5f7fa;">客户确认状态</th>
+                <th class="center" style="width:90px;position:sticky;right:54px;z-index:2;background:#f5f7fa;">业务员已核对</th>
+                <th style="width:54px;position:sticky;right:0;z-index:2;background:#f5f7fa;">操作</th>
               </tr></thead>
               <tbody>
                 <tr>
@@ -991,7 +1010,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>星际传奇(深圳KKMall店)</td>
                   <td>深圳市乐的文化股份有限公司</td>
                   <td>张三</td>
-                  <td>BW-XJ-KKMall-07</td>
+                  <td>ca5761778650</td>
                   <td><span class="btn-link" onclick="openDetailModal('星际传奇(深圳KKMall店)','深圳市乐的文化股份有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥3,083.40</td>
                   <td class="amt amt-blue">¥3,083.40</td>
@@ -1013,7 +1032,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>萌朵拉(孝感吾悦广场店)</td>
                   <td>广州萌朵拉文创科技有限公司</td>
                   <td>李四</td>
-                  <td>BW-MD-XGWY-07</td>
+                  <td>ca8392015476</td>
                   <td><span class="btn-link" onclick="openDetailModal('萌朵拉(孝感吾悦广场店)','广州萌朵拉文创科技有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥2,840.00</td>
                   <td class="amt amt-blue">¥2,840.00</td>
@@ -1035,7 +1054,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>星际传奇(武汉荟聚店)</td>
                   <td>武汉市星际文娱有限公司</td>
                   <td>王五</td>
-                  <td>BW-XJ-WHHJ-07</td>
+                  <td>ca4521980763</td>
                   <td><span class="btn-link" onclick="openDetailModal('星际传奇(武汉荟聚店)','武汉市星际文娱有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥1,790.00</td>
                   <td class="amt amt-blue">¥1,790.00</td>
@@ -1057,7 +1076,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>大玩家(长沙悦方店)</td>
                   <td>长沙市大玩家文娱有限公司</td>
                   <td>赵六</td>
-                  <td>BW-DWJ-CSYF-07</td>
+                  <td>ca1038295647</td>
                   <td><span class="btn-link" onclick="openDetailModal('大玩家(长沙悦方店)','长沙市大玩家文娱有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥1,256.00</td>
                   <td class="amt amt-blue">¥1,256.00</td>
@@ -1079,7 +1098,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>星际传奇(广州太古汇店)</td>
                   <td>广州星际文娱有限公司</td>
                   <td>张三</td>
-                  <td>BW-XJ-GZTGH-07</td>
+                  <td>ca9275610483</td>
                   <td><span class="btn-link" onclick="openDetailModal('星际传奇(广州太古汇店)','广州星际文娱有限公司','2026-07','0.2000','20.00%')">查看明细</span></td>
                   <td class="amt">¥4,521.00</td>
                   <td class="amt amt-blue">¥4,521.00</td>
@@ -1091,7 +1110,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-08-05 10:00</td>
                   <td class="center">7台</td>
                   <td>—</td>
-                  <td><span class="tag tag-green">已确认</span></td>
+                  <td><span class="tag tag-blue">自动确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
@@ -2121,15 +2140,6 @@ function selModeTab(el,mode){
   <div class="modal" style="width:560px;">
     <div class="modal-header"><span class="modal-title">生成对账单</span><button class="modal-close" onclick="closeModal('modalBWGen')">×</button></div>
     <div class="modal-body">
-      <div class="form-row">
-        <div class="form-col"><div class="form-label">数据来源:</div>
-          <select class="select" style="flex:1;">
-            <option value="">请选择</option>
-            <option value="yyb" selected="">游艺宝</option>
-            <option value="syht">世宇后台</option>
-          </select>
-        </div>
-      </div>
       <div class="form-row">
         <div class="form-col"><div class="form-label">选择方式:</div>
           <div style="display:flex;gap:0;border-radius:4px;overflow:hidden;border:1px solid #d9d9d9;width:fit-content;">
