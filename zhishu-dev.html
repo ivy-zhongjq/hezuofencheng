@@ -384,30 +384,30 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
   <aside class="sidebar">
     <div class="logo"><span class="dot">智</span>世宇智数管理系统</div>
     <nav class="nav" id="nav">
-      <div class="nav-item" data-page="dashboard"><span class="icon">▦</span>仪表盘</div>
+      <div class="nav-item" data-page="dashboard" style="display:none;"><span class="icon">▦</span>仪表盘</div>
 
       <div class="nav-group">
         <div class="nav-parent open"><span class="left"><span class="icon">🏟</span>合作机台</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">📋</span>对账管理</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
-            <div class="nav-item" data-page="p_recon_summary">总对账单</div>
-            <div class="nav-item" data-page="p1">亿玩赏门店对账单</div>
-            
-            <div class="nav-item" data-page="p3" style="">亿玩赏客户对账单</div>
-            <div class="nav-item" data-page="p2" style="">爆玩宇宙门店对账单</div><div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
-            <div class="nav-item active" data-page="p_coin_recon">收币对账单</div>
+            <div class="nav-item active" data-page="p_recon_summary">总对账单</div>
+            <div class="nav-item" data-page="p1" style="display:none;">亿玩赏门店对账单</div>
+            <div class="nav-item" data-page="p3" style="display:none;">亿玩赏客户对账单</div>
+            <div class="nav-item" data-page="p2">爆玩宇宙门店对账单</div>
+            <div class="nav-item" data-page="p_bw_cust">爆玩宇宙客户对账单</div>
+            <div class="nav-item" data-page="p_coin_recon">收币对账单</div>
           </div>
-          <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">🥚</span>扭蛋玛特</span><span class="arrow">▶</span></div>
-          <div class="nav-sub-sub">
-            <div class="nav-item" data-page="p_ndmt_machine">机台营收台账</div>
+          <div class="nav-sub-parent" onclick="this.classList.toggle('open')" style="display:none;"><span class="left"><span class="icon">🥚</span>扭蛋玛特</span><span class="arrow">▶</span></div>
+          <div class="nav-sub-sub" style="display:none;">
+            <div class="nav-item" data-page="p_ndmt_machine" style="display:none;">机台营收台账</div>
             <div class="nav-item" data-page="p_ndmt_store" style="display:none;">门店台账</div>
             <div class="nav-item" data-page="p_ndmt_cust" style="display:none;">客户台账</div>
           </div>
         </div>
       </div>
 
-      <div class="nav-group">
+      <div class="nav-group" style="display:none;">
         <div class="nav-parent open"><span class="left"><span class="icon">฿</span>分成管理</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
           <div class="nav-item" data-page="p4">分成账期管理</div>
@@ -415,7 +415,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         </div>
       </div>
 
-      <div class="nav-group">
+      <div class="nav-group" style="display:none;">
         <div class="nav-parent open"><span class="left"><span class="icon">¥</span>认款管理</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
           <div class="nav-item" data-page="p7">认款列表</div>
@@ -423,9 +423,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         </div>
       </div>
 
-      <div class="nav-item" data-page="p_chat"><span class="icon">💬</span>合作客户群聊关联管理</div>
+      <div class="nav-item" data-page="p_chat" style="display:none;"><span class="icon">💬</span>合作客户群聊关联管理</div>
 
-      <div class="nav-group">
+      <div class="nav-group" style="display:none;">
         <div class="nav-parent open"><span class="left"><span class="icon">⚙</span>基础设置</span><span class="arrow">▶</span></div>
         <div class="nav-sub">
           <div class="nav-item" data-page="base_cust">客户管理</div>
