@@ -1458,8 +1458,8 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>3台</td>
                   <td>—</td>
                   <td><span class="tag tag-green">已确认</span></td>
-                  <td class="center"><span class="tag tag-green">已核对</span></td>
-                  <td style=""><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu" style=""><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalCoinPrt')">查看打印页</a><a onclick="openModal('modalCoinReconDetail')">明细列表</a></div></div></td>
+                  <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
+                  <td style=""><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu" style=""><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalCoinPrt')">查看打印页</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1479,8 +1479,8 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>1台</td>
                   <td>—</td>
                   <td><span class="tag tag-gray">待确认</span></td>
-                  <td class="center"><span class="tag tag-gray">未核对</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalCoinPrt')">查看打印页</a><a onclick="openModal('modalCoinReconDetail')">明细列表</a></div></div></td>
+                  <td class="center"><label class="switch"><input type="checkbox"><span class="slider"></span></label></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalCoinPrt')">查看打印页</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1500,8 +1500,8 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2台</td>
                   <td>—</td>
                   <td><span class="tag tag-green">已确认</span></td>
-                  <td class="center"><span class="tag tag-green">已核对</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalCoinPrt')">查看打印页</a><a onclick="openModal('modalCoinReconDetail')">明细列表</a></div></div></td>
+                  <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalCoinPrt')">查看打印页</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1521,8 +1521,8 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2台</td>
                   <td>—</td>
                   <td><span class="tag tag-orange">有异议</span></td>
-                  <td class="center"><span class="tag tag-gray">未核对</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalCoinPrt')">查看打印页</a><a onclick="openModal('modalCoinReconDetail')">明细列表</a></div></div></td>
+                  <td class="center"><label class="switch"><input type="checkbox"><span class="slider"></span></label></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalCoinPrt')">查看打印页</a></div></div></td>
                 </tr>
               </tbody>
             </table>
@@ -3155,28 +3155,28 @@ function calcCoinFnl(el){
     <div class="modal-body">
       <!-- Info Banner -->
       <div class="detail-info-bar">
-        <div class="info-item"><span class="lbl">门店名称</span><span class="val">星际传奇(深圳KKMall店)</span></div>
-        <div class="info-item"><span class="lbl">客户名称</span><span class="val">深圳市乐的文化股份有限公司</span></div>
-        <div class="info-item"><span class="lbl">对账月份</span><span class="val">2026-08</span></div>
+        <div class="info-item"><span class="lbl">门店名称</span><span class="val">星际传奇(武汉荟聚店)</span></div>
+        <div class="info-item"><span class="lbl">客户名称</span><span class="val">武汉市星际文娱有限公司</span></div>
+        <div class="info-item"><span class="lbl">对账月份</span><span class="val">2026-07</span></div>
       </div>
       <!-- Data Cards -->
       <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;">
         <div style="flex:1;min-width:160px;border:1px solid #e8e8e8;border-left:4px solid #2b6cb0;border-radius:6px;padding:12px;">
           <div style="font-size:13px;font-weight:600;color:#8492a6;margin-bottom:8px;">初始对账金额</div>
-          <div style="font-size:20px;font-weight:700;color:#2c3e50;">¥23,150.00</div>
+          <div style="font-size:20px;font-weight:700;color:#2c3e50;">¥19,810.79</div>
         </div>
         <div style="flex:1;min-width:160px;border:1px solid #e8e8e8;border-left:4px solid #38a169;border-radius:6px;padding:12px;">
           <div style="font-size:13px;font-weight:600;color:#8492a6;margin-bottom:8px;">最终核算金额</div>
-          <div style="font-size:20px;font-weight:700;color:#38a169;">¥23,150.00</div>
+          <div style="font-size:20px;font-weight:700;color:#38a169;">¥19,810.79</div>
         </div>
         <div style="flex:1;min-width:160px;border:1px solid #e8e8e8;border-left:4px solid #dd6b20;border-radius:6px;padding:12px;">
           <div style="font-size:13px;font-weight:600;color:#8492a6;margin-bottom:8px;">总测试币</div>
-          <div style="font-size:20px;font-weight:700;color:#dd6b20;">35币</div>
+          <div style="font-size:20px;font-weight:700;color:#dd6b20;">50币</div>
         </div>
       </div>
       <!-- Test Coin Banner -->
       <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;margin-bottom:12px;font-size:13px;color:#8c7a3d;">
-        <strong>测试币明细：</strong>盲盒宇宙测试币20，夺宝奇航测试币15，合计测试币35
+        <strong>测试币明细：</strong>盲盒宇宙测试币20，夺宝奇航测试币15，壮志凌云测试币15，合计测试币50
       </div>
       <!-- Toolbar -->
       <div class="detail-toolbar">
@@ -3234,7 +3234,7 @@ function calcCoinFnl(el){
           </tr>
           <tr>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">2</td>
-            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;" rowspan="2"><span class="tag tag-gray" style="font-size:11px;">其他分成</span></td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;" rowspan="3"><span class="tag tag-gray" style="font-size:11px;">其他分成</span></td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;">夺宝奇航</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">游艺宝</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
@@ -3256,23 +3256,73 @@ function calcCoinFnl(el){
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">85,000</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">116,421</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">15</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">31,406</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.37</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">11,620.22</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">5,810.11</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">5,810.11</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">4</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;"><span class="tag tag-blue" style="font-size:11px;">扭蛋玛特</span></td>
+            <td style="padding:6px 8px;border:1px solid #e8e8e8;">扭蛋玛特</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">游艺宝</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">15,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">19,875</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">31,421</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.67</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">21,233.24</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">4,875</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.26</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">1,267.50</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">70%</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">30%</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">887.25</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">380.25</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">5</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;" rowspan="2"><span class="tag tag-gray" style="font-size:11px;">其他分成</span></td>
+            <td style="padding:6px 8px;border:1px solid #e8e8e8;">次元星球</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">游艺宝</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">8,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">8,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.42</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.00</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">10,616.62</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">10,616.62</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">0.00</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.00</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">6</td>
+            <td style="padding:6px 8px;border:1px solid #e8e8e8;">飞球宇宙</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">世宇后台</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">35,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">48,353</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">13,353</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.31</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">4,139.43</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">2,069.72</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">2,069.72</td>
           </tr>
           <tr style="background:#f7fafc;font-weight:600;">
             <td colspan="8" style="padding:6px 8px;border:1px solid #e8e8e8;text-align:right;">合计</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">40,997</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">59,210</td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;"></td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">24,150.00</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">19,943.91</td>
             <td colspan="2" style="padding:6px 8px;border:1px solid #e8e8e8;"></td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;">12,075.00</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">12,075.00</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;">10,225.46</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">9,718.45</td>
           </tr>
         </tbody>
       </table>
