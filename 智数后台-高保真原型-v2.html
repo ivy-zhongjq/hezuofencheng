@@ -142,7 +142,6 @@ input,select,textarea{font-family:inherit;font-size:14px;outline:none;}
 
 /* ===== Table ===== */
 .table-wrap{overflow-x:auto;border:1px solid #e8e8e8;border-radius:6px;}
-#page-p2 .table-wrap{overflow:visible;}
 table.data{width:100%;border-collapse:collapse;background:#fff;font-size:13px;min-width:max-content;}
 table.data th{background:#fafbfc;color:#5a6c7d;font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid #e8e8e8;white-space:nowrap;font-size:12px;position:sticky;top:0;z-index:1;}
 table.data td{padding:10px 12px;border-bottom:1px solid #f0f0f0;color:#2c3e50;white-space:nowrap;}
@@ -197,6 +196,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
 /* ===== Dropdown Menu ===== */
 .dropdown{position:relative;display:inline-block;}
 .dropdown-menu{display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #e8e8e8;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,.12);min-width:120px;z-index:9999;}
+.dropdown-menu.dropdown-fixed{position:fixed;}
 .dropdown.open .dropdown-menu{display:block;}
 .dropdown-menu a{display:block;padding:7px 14px;font-size:13px;color:#2c3e50;white-space:nowrap;}
 .dropdown-menu a:hover{background:#f7fafc;color:#2b6cb0;}
@@ -1027,7 +1027,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>—</td>
                   <td><span class="tag tag-green">已确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1049,7 +1049,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>待确认</td>
                   <td><span class="tag tag-gray">待确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox"><span class="slider"></span></label></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1071,7 +1071,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>—</td>
                   <td><span class="tag tag-orange">有异议</span></td>
                   <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1093,7 +1093,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>—</td>
                   <td><span class="tag tag-gray">待确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox"><span class="slider"></span></label></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1115,7 +1115,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>—</td>
                   <td><span class="tag tag-blue">自动确认</span></td>
                   <td class="center"><label class="switch"><input type="checkbox" checked=""><span class="slider"></span></label></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a>查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>修改测试币</a><a>重新生成对账单</a><a>编辑备注</a><a onclick="openModal('modalBWFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
               </tbody>
               <tfoot></tfoot>
@@ -1177,7 +1177,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                       <div style="font-size:12px;"><span style="color:#718096;">星际传奇(武汉荟聚)：</span><span class="tag tag-blue" style="font-size:11px;">自动确认</span></div>
                     </div>
                   </td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a onclick="openModal('modalBWPrt')">查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
                 <!-- Row 2: 萌朵拉 - 混合状态 -->
                 <tr>
@@ -1204,7 +1204,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                       <div style="font-size:12px;"><span style="color:#718096;">萌朵拉(广州正佳)：</span><span class="tag tag-orange" style="font-size:11px;">有异议</span></div>
                     </div>
                   </td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a onclick="openModal('modalBWPrt')">查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
                 <!-- Row 3: 星际文娱 -->
                 <tr>
@@ -1233,7 +1233,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                       <div style="font-size:12px;"><span style="color:#718096;">星际文娱(楚河汉街)：</span><span class="tag tag-green" style="font-size:11px;">已确认</span></div>
                     </div>
                   </td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a onclick="openModal('modalBWPrt')">查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
                 <!-- Row 4: 大玩家 -->
                 <tr>
@@ -1260,7 +1260,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                       <div style="font-size:12px;"><span style="color:#718096;">大玩家(悦荟广场)：</span><span class="tag tag-gray" style="font-size:11px;">待确认</span></div>
                     </div>
                   </td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a onclick="openModal('modalBWPrt')">查看打印页</a><a>编辑备注</a><a onclick="openModal('modalImgView')">生成图片</a></div></div></td>
                 </tr>
               </tbody>
             </table>
@@ -1356,28 +1356,29 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <div class="filter-item"><label>机台名称</label><select class="select"><option>全部</option><option>扭蛋玛特</option><option>盲盒宇宙</option><option>次元星球</option><option>飞球宇宙</option></select></div>
             <div class="filter-item"><label>分成类型</label><select class="select"><option>全部</option><option>其他分成</option><option>扭蛋玛特</option><option>盲盒宇宙</option></select></div>
             <div class="filter-item"><label>核对员</label><select class="select"><option>全部</option><option>张三</option><option>李四</option><option>王五</option></select></div>
+            <div class="filter-item"><label>是否已核对</label><select class="select"><option>全部</option><option>已核对</option><option>未核对</option></select></div>
+            <div class="filter-item"><label>客户确认状态</label><select class="select"><option>全部</option><option>已确认</option><option>自动确认</option><option>待确认</option><option>有异议</option></select></div>
             <div class="filter-item"><label>是否已认款</label><select class="select"><option>全部</option><option>已认款</option><option>未认款</option></select></div>
             <div class="filter-item"><label>是否已开票</label><select class="select"><option>全部</option><option>已开票</option><option>未开票</option></select></div>
-            <div class="filter-item"><label>业务员已核对</label><select class="select"><option>全部</option><option>已核对</option><option>未核对</option></select></div>
             <button class="btn btn-primary">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
           </div>
         </div>
         <div class="card">
           <div class="btn-group">
             <button class="btn btn">🔄 刷新</button>
-            <button class="btn btn-primary">生成对账单</button>
+            <button class="btn btn-primary" onclick="openModal('modalCoinGen')">＋ 生成对账单</button>
             <button class="btn btn-success">批量下载</button>
             <button class="btn btn-success">导入对账单</button>
           </div>
           <div class="table-wrap">
-            <table class="data" style="min-width:1920px;">
+            <table class="data" style="min-width:2020px;">
               <thead><tr>
                 <th style="width:40px;" class="center"><input type="checkbox" class="cb"></th>
                 <th>账期</th><th>门店名称</th><th>客户名称</th><th>机台名称</th><th>分成类型</th>
                 <th>核对员</th><th>识别码</th><th>月初码表数</th><th>月末码表数</th><th>实际收币</th>
                 <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>认款详情</th>
                 <th>已开票金额</th><th>开票详情</th><th>更新时间</th><th>机台数量</th>
-                <th>备注</th><th>业务员已核对</th><th>操作</th>
+                <th>备注</th><th>客户确认状态</th><th>业务员已核对</th><th>操作</th>
               </tr></thead>
               <tbody>
                 <tr>
@@ -1398,8 +1399,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-09-03 14:30</td>
                   <td>1台</td>
                   <td>—</td>
+                  <td><span class="tag tag-green">已确认</span></td>
                   <td class="center"><span class="tag tag-green">已核对</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a>明细列表</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1419,8 +1421,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-09-03 14:30</td>
                   <td>1台</td>
                   <td>—</td>
+                  <td><span class="tag tag-blue">自动确认</span></td>
                   <td class="center"><span class="tag tag-green">已核对</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a>明细列表</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1439,9 +1442,10 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去开票</span></td>
                   <td>2026-09-05 10:15</td>
                   <td>1台</td>
-                  <td>待确认</td>
+                  <td>—</td>
+                  <td><span class="tag tag-gray">待确认</span></td>
                   <td class="center"><span class="tag tag-gray">未核对</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a>明细列表</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1461,8 +1465,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-09-04 16:45</td>
                   <td>1台</td>
                   <td>—</td>
+                  <td><span class="tag tag-green">已确认</span></td>
                   <td class="center"><span class="tag tag-green">已核对</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a>明细列表</a></div></div></td>
                 </tr>
                 <tr>
                   <td class="center"><input type="checkbox" class="cb"></td>
@@ -1482,8 +1487,9 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>2026-09-03 14:30</td>
                   <td>1台</td>
                   <td>—</td>
+                  <td><span class="tag tag-orange">有异议</span></td>
                   <td class="center"><span class="tag tag-gray">未核对</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a>修改最终核算金额</a><a>查看打印页</a><a>明细列表</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>修改币值</a><a>重新生成对账单</a><a onclick="openModal('modalCoinFnlAmt')">修改最终核算金额</a><a onclick="openModal('modalBWPrt')">查看打印页</a><a>明细列表</a></div></div></td>
                 </tr>
               </tbody>
             </table>
@@ -2466,7 +2472,7 @@ function selModeTab(el,mode){
 </div>
 <!-- ============ MODAL BW-FNL-AMT: 修改最终核算金额 ============ -->
 <div class="modal-mask" id="modalBWFnlAmt">
-  <div class="modal" style="width:520px;">
+  <div class="modal" style="width:620px;">
     <div class="modal-header"><span class="modal-title">修改最终核算金额</span><button class="modal-close" onclick="closeModal('modalBWFnlAmt')">×</button></div>
     <div class="modal-body">
       <div class="form-row"><div class="form-col"><div class="form-label">门店名称:</div><input type="text" class="input" value="终极梦想（大连西岗恒隆店）" style="flex:1;background:#f0f0f0;" readonly></div></div>
@@ -2474,18 +2480,22 @@ function selModeTab(el,mode){
       <div class="form-row"><div class="form-col"><div class="form-label">对账月份:</div><input type="text" class="input" value="2026-08" style="flex:1;background:#f0f0f0;" readonly></div></div>
       <div class="form-row"><div class="form-col"><div class="form-label">分成对账金额:</div><input type="text" class="input" value="5273.47" style="flex:1;background:#f0f0f0;" readonly></div></div>
 
-      <div style="margin:16px 0 8px;font-size:13px;font-weight:600;color:#2c3e50;border-left:3px solid #2b6cb0;padding-left:8px;">机台收币数</div>
+      <div class="form-row" style="margin-top:16px;"><div class="form-col"><div class="form-label">约定币值:</div><input type="number" class="input" value="0.2000" step="0.0001" style="flex:1;font-weight:600;color:#2b6cb0;"></div></div>
+      <div style="font-size:12px;color:#e53e3e;margin:-8px 0 4px 0;">保存后，此币值将同步更新为该门店爆玩宇宙的当前币值</div>
+
+      <div style="margin:12px 0 8px;font-size:13px;font-weight:600;color:#2c3e50;border-left:3px solid #2b6cb0;padding-left:8px;">机台收币数</div>
       <table class="data" style="width:100%;font-size:13px;">
         <thead><tr>
           <th style="text-align:left;padding:8px 10px;">机台名称</th>
-          <th style="text-align:left;padding:8px 10px;">机台编号</th>
-          <th style="text-align:right;padding:8px 10px;">收币数</th>
+          <th style="text-align:right;padding:8px 10px;">当月收币数</th>
+          <th style="text-align:right;padding:8px 10px;">测试币</th>
+          <th style="text-align:right;padding:8px 10px;">最终收币数</th>
         </tr></thead>
         <tbody>
-          <tr><td style="padding:8px 10px;">舞力特区</td><td style="padding:8px 10px;">BW-A001</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input" value="1245" style="width:100px;text-align:right;"></td></tr>
-          <tr><td style="padding:8px 10px;">太鼓达人</td><td style="padding:8px 10px;">BW-A002</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input" value="980" style="width:100px;text-align:right;"></td></tr>
-          <tr><td style="padding:8px 10px;">maimai</td><td style="padding:8px 10px;">BW-A003</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input" value="1560" style="width:100px;text-align:right;"></td></tr>
-          <tr><td style="padding:8px 10px;">CHUNITHM</td><td style="padding:8px 10px;">BW-A004</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input" value="720" style="width:100px;text-align:right;"></td></tr>
+          <tr><td style="padding:8px 10px;">舞力特区</td><td style="padding:8px 10px;text-align:right;background:#f0f0f0;">1245</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input fnlTest" value="0" style="width:90px;text-align:right;" oninput="calcFnl(this)"></td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input fnlRecv" value="1245" style="width:90px;text-align:right;font-weight:600;color:#2b6cb0;"></td></tr>
+          <tr><td style="padding:8px 10px;">太鼓达人</td><td style="padding:8px 10px;text-align:right;background:#f0f0f0;">980</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input fnlTest" value="0" style="width:90px;text-align:right;" oninput="calcFnl(this)"></td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input fnlRecv" value="980" style="width:90px;text-align:right;font-weight:600;color:#2b6cb0;"></td></tr>
+          <tr><td style="padding:8px 10px;">maimai</td><td style="padding:8px 10px;text-align:right;background:#f0f0f0;">1560</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input fnlTest" value="0" style="width:90px;text-align:right;" oninput="calcFnl(this)"></td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input fnlRecv" value="1560" style="width:90px;text-align:right;font-weight:600;color:#2b6cb0;"></td></tr>
+          <tr><td style="padding:8px 10px;">CHUNITHM</td><td style="padding:8px 10px;text-align:right;background:#f0f0f0;">720</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input fnlTest" value="0" style="width:90px;text-align:right;" oninput="calcFnl(this)"></td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input fnlRecv" value="720" style="width:90px;text-align:right;font-weight:600;color:#2b6cb0;"></td></tr>
         </tbody>
       </table>
 
@@ -2495,6 +2505,221 @@ function selModeTab(el,mode){
     <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('modalBWFnlAmt')">确定</button><button class="btn" onclick="closeModal('modalBWFnlAmt')">重置</button></div>
   </div>
 </div>
+<script>
+function calcFnl(el){
+  var row=el.closest('tr');
+  var orig=parseInt(row.querySelector('td:nth-child(2)').textContent)||0;
+  var test=parseInt(el.value)||0;
+  var fnl=row.querySelector('.fnlRecv');
+  fnl.value=Math.max(0,orig-test);
+}
+</script>
+<!-- ============ MODAL BW-PRT: 查看打印页 ============ -->
+<div class="modal-mask" id="modalBWPrt">
+  <div class="modal" style="width:900px;">
+    <div class="modal-header"><span class="modal-title">查看打印页</span><button class="modal-close" onclick="closeModal('modalBWPrt')">×</button></div>
+    <div class="modal-body" style="padding:24px;">
+      <div style="text-align:center;margin-bottom:12px;">
+        <button class="btn btn-success" onclick="window.print()">🖨 打印</button>
+        <button class="btn" onclick="closeModal('modalBWPrt')">关闭</button>
+      </div>
+      <div style="border:1px solid #333;padding:32px;background:#fff;">
+        <h2 style="text-align:center;font-size:18px;margin:0 0 4px;">合作对账单（2026.8月）</h2>
+        <div style="text-align:center;font-size:13px;color:#666;margin-bottom:8px;">运营时间 8月1日 - 8月31日</div>
+        <div style="font-size:13px;margin-bottom:12px;">门店：终极梦想（大连西岗恒隆店）</div>
+
+        <div style="font-size:14px;font-weight:600;text-align:center;margin:12px 0 6px;">合作机台收币明细</div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead><tr style="background:#f5f5f5;">
+            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">日期</th>
+            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">乖巧宝宝之摸鱼达人</th>
+            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">乖巧派对</th>
+            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">勇者大陆</th>
+            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">向阳而生乖巧版</th>
+            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">合计币数</th>
+          </tr></thead>
+          <tbody id="prtDailyRows"></tbody>
+          <tfoot>
+            <tr style="background:#fafafa;font-weight:600;">
+              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">合计收币</td>
+              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">26,350</td>
+              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">18,720</td>
+              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">31,800</td>
+              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">15,640</td>
+              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">92,510</td>
+            </tr>
+            <tr><td style="border:1px solid #333;padding:5px 8px;text-align:center;">测试币</td><td colspan="4" style="border:1px solid #333;padding:5px 8px;text-align:center;">—</td><td style="border:1px solid #333;padding:5px 8px;text-align:center;">500</td></tr>
+            <tr style="font-weight:600;"><td style="border:1px solid #333;padding:5px 8px;text-align:center;">实际收币</td><td colspan="4" style="border:1px solid #333;padding:5px 8px;text-align:center;">—</td><td style="border:1px solid #333;padding:5px 8px;text-align:center;">92,010</td></tr>
+            <tr><td style="border:1px solid #333;padding:5px 8px;text-align:center;">约定币值</td><td colspan="4" style="border:1px solid #333;padding:5px 8px;text-align:center;">—</td><td style="border:1px solid #333;padding:5px 8px;text-align:center;">0.2000</td></tr>
+            <tr style="font-weight:600;color:#c0392b;"><td style="border:1px solid #333;padding:5px 8px;text-align:center;">合计金额</td><td colspan="4" style="border:1px solid #333;padding:5px 8px;text-align:center;">—</td><td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥18,402.00</td></tr>
+            <tr><td style="border:1px solid #333;padding:5px 8px;text-align:center;">世宇分成比例</td><td colspan="4" style="border:1px solid #333;padding:5px 8px;text-align:center;">—</td><td style="border:1px solid #333;padding:5px 8px;text-align:center;">70%</td></tr>
+            <tr><td style="border:1px solid #333;padding:5px 8px;text-align:center;">乐园分成比例</td><td colspan="4" style="border:1px solid #333;padding:5px 8px;text-align:center;">—</td><td style="border:1px solid #333;padding:5px 8px;text-align:center;">30%</td></tr>
+            <tr style="font-weight:600;"><td style="border:1px solid #333;padding:5px 8px;text-align:center;">世宇分成金额</td><td colspan="4" style="border:1px solid #333;padding:5px 8px;text-align:center;">—</td><td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥12,881.40</td></tr>
+            <tr style="font-weight:600;"><td style="border:1px solid #333;padding:5px 8px;text-align:center;">乐园分成金额</td><td colspan="4" style="border:1px solid #333;padding:5px 8px;text-align:center;">—</td><td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥5,520.60</td></tr>
+            <tr style="background:#fffde7;font-weight:600;font-size:13px;">
+              <td style="border:1px solid #333;padding:6px 8px;text-align:center;">分成金额</td>
+              <td style="border:1px solid #333;padding:6px 8px;text-align:center;">世宇</td>
+              <td style="border:1px solid #333;padding:6px 8px;text-align:center;">¥12,881.40</td>
+              <td style="border:1px solid #333;padding:6px 8px;text-align:center;">合作客户名称</td>
+              <td colspan="2" style="border:1px solid #333;padding:6px 8px;text-align:center;">大连电悦梦想娱乐科技有限公司</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div style="display:flex;justify-content:space-between;margin-top:20px;">
+          <div style="font-size:12px;flex:1;">
+            <div style="margin-bottom:4px;">1. 总收币数据来源于游艺宝。</div>
+            <div style="margin-bottom:4px;">2. 运营日期: 2026-08-01至2026-08-31（31天）。</div>
+            <div style="margin-bottom:4px;">3. 收款账户：</div>
+            <div style="margin-left:16px;margin-bottom:2px;">账户名称：大连电悦梦想娱乐科技有限公司</div>
+            <div style="margin-left:16px;margin-bottom:2px;">账号：6222 **** **** 1234</div>
+            <div style="margin-left:16px;margin-bottom:2px;">开户行：中国工商银行大连西岗支行</div>
+            <div style="color:#c0392b;font-weight:600;margin-top:6px;">付款识别码：ca3367368641</div>
+          </div>
+          <div style="text-align:center;width:140px;">
+            <div style="width:120px;height:120px;background:#f5f5f5;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:24px;color:#999;">▣</div>
+            <div style="font-size:12px;color:#c0392b;font-weight:600;">微信扫码付款</div>
+            <div style="font-size:12px;color:#c0392b;font-weight:600;">识别码：ca3367368641</div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid #e0e0e0;">
+          <div style="text-align:center;flex:1;">
+            <div style="height:60px;"></div>
+            <div style="font-size:13px;">经手人：</div>
+            <div style="font-size:12px;color:#999;margin-top:2px;">日期：2026年10月7日</div>
+          </div>
+          <div style="text-align:center;flex:1;">
+            <div style="height:60px;"></div>
+            <div style="font-size:13px;">复核人：</div>
+            <div style="font-size:12px;color:#999;margin-top:2px;">日期：2026年10月7日</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var rows='';
+  var games=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[820,560,980,440],[850,580,1020,450],[890,600,1050,470],[910,620,1080,480],[930,640,1100,490],[950,650,1130,500],[970,660,1150,510],[880,600,1000,460],[900,610,1020,470],[920,630,1040,480],[940,640,1060,490],[960,650,1080,500],[980,660,1100,510],[850,580,980,440],[870,590,1000,450],[890,600,1020,460],[910,610,1040,470],[930,620,1060,480],[950,630,1080,490],[970,640,1100,500],[890,600,980,440],[910,610,1000,450],[930,620,1020,460],[950,630,1040,470]];
+  for(var i=0;i<31;i++){
+    var d='2026-08-'+String(i+1).padStart(2,'0');
+    var g=games[i];
+    var tot=g[0]+g[1]+g[2]+g[3];
+    rows+='<tr><td style="border:1px solid #333;padding:4px 8px;text-align:center;">'+d+'</td>';
+    for(var j=0;j<4;j++)rows+='<td style="border:1px solid #333;padding:4px 8px;text-align:center;">'+g[j]+'</td>';
+    rows+='<td style="border:1px solid #333;padding:4px 8px;text-align:center;font-weight:600;">'+tot+'</td></tr>';
+  }
+  var c=document.getElementById('prtDailyRows');
+  if(c)c.innerHTML=rows;
+})();
+</script>
+<!-- ============ MODAL COIN-GEN: 收币对账单生成对账单 ============ -->
+<div class="modal-mask" id="modalCoinGen">
+  <div class="modal" style="width:560px;">
+    <div class="modal-header"><span class="modal-title">生成对账单</span><button class="modal-close" onclick="closeModal('modalCoinGen')">×</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-col"><div class="form-label">数据来源:</div>
+          <select class="select" style="flex:1;">
+            <option value="main" selected>按主要数据来源</option>
+            <option value="yyb">游艺宝</option>
+            <option value="syh">世宇后台</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col"><div class="form-label">选择方式:</div>
+          <div style="display:flex;gap:0;border-radius:4px;overflow:hidden;border:1px solid #d9d9d9;width:fit-content;">
+            <button type="button" class="coin-sel-mode-btn active" onclick="coinSelMode(this,'all')" style="padding:6px 14px;font-size:13px;border:none;background:#2b6cb0;color:#fff;cursor:pointer;">全部</button>
+            <button type="button" class="coin-sel-mode-btn" onclick="coinSelMode(this,'store')" style="padding:6px 14px;font-size:13px;border:none;border-left:1px solid #d9d9d9;background:#fff;color:#2c3e50;cursor:pointer;">按门店</button>
+            <button type="button" class="coin-sel-mode-btn" onclick="coinSelMode(this,'customer')" style="padding:6px 14px;font-size:13px;border:none;border-left:1px solid #d9d9d9;background:#fff;color:#2c3e50;cursor:pointer;">按客户</button>
+            <button type="button" class="coin-sel-mode-btn" onclick="coinSelMode(this,'checker')" style="padding:6px 14px;font-size:13px;border:none;border-left:1px solid #d9d9d9;background:#fff;color:#2c3e50;cursor:pointer;">按核对专员</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-row" id="coinSelField" style="display:none;">
+        <div class="form-col"><div class="form-label" id="coinSelLabel">选择门店</div>
+          <select class="select" style="flex:1;"><option>请选择</option><option>示例数据1</option><option>示例数据2</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-col"><div class="form-label">对账月份:</div><input type="month" class="input" value="2026-09" style="flex:1;"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-col"><div class="form-label">开始日期:</div><input type="date" class="input" value="2026-09-01" style="flex:1;"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-col"><div class="form-label">结束日期:</div><input type="date" class="input" value="2026-09-30" style="flex:1;"></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('modalCoinGen')">生成</button><button class="btn" onclick="closeModal('modalCoinGen')">关闭</button></div>
+  </div>
+</div>
+<script>
+function coinSelMode(btn,mode){
+  var siblings=btn.parentNode.querySelectorAll('.coin-sel-mode-btn');
+  siblings.forEach(function(s){s.style.background='#fff';s.style.color='#2c3e50';});
+  btn.style.background='#2b6cb0';btn.style.color='#fff';
+  var field=document.getElementById('coinSelField');
+  var label=document.getElementById('coinSelLabel');
+  var sel=field.querySelector('select');
+  if(mode==='all'){field.style.display='none';}
+  else{
+    field.style.display='';
+    if(mode==='store'){label.textContent='选择门店';sel.innerHTML='<option>请选择</option><option>星际传奇(深圳KKMall店)</option><option>星际传奇(武汉荟聚店)</option><option>萌朵拉(孝感吾悦广场店)</option>';}
+    else if(mode==='customer'){label.textContent='选择客户';sel.innerHTML='<option>请选择</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option>';}
+    else if(mode==='checker'){label.textContent='选择核对专员';sel.innerHTML='<option>请选择</option><option>张三</option><option>李四</option><option>王五</option>';}
+  }
+}
+</script>
+<!-- ============ MODAL COIN-FNL-AMT: 收币对账单修改最终核算金额 ============ -->
+<div class="modal-mask" id="modalCoinFnlAmt">
+  <div class="modal" style="width:680px;">
+    <div class="modal-header"><span class="modal-title">修改最终核算金额</span><button class="modal-close" onclick="closeModal('modalCoinFnlAmt')">×</button></div>
+    <div class="modal-body">
+      <div class="form-row"><div class="form-col"><div class="form-label">门店名称:</div><input type="text" class="input" value="星际传奇(深圳KKMall店)" style="flex:1;background:#f0f0f0;" readonly></div></div>
+      <div class="form-row"><div class="form-col"><div class="form-label">客户名称:</div><input type="text" class="input" value="深圳市乐的文化股份有限公司" style="flex:1;background:#f0f0f0;" readonly></div></div>
+      <div class="form-row"><div class="form-col"><div class="form-label">对账月份:</div><input type="text" class="input" value="2026-08" style="flex:1;background:#f0f0f0;" readonly></div></div>
+      <div class="form-row"><div class="form-col"><div class="form-label">分成对账金额:</div><input type="text" class="input" value="107.48" style="flex:1;background:#f0f0f0;" readonly></div></div>
+
+      <div class="form-row" style="margin-top:16px;"><div class="form-col"><div class="form-label">约定币值:</div><input type="number" class="input" value="0.0400" step="0.0001" style="flex:1;font-weight:600;color:#2b6cb0;"></div></div>
+      <div style="font-size:12px;color:#e53e3e;margin:-8px 0 4px 0;">保存后，此币值将同步更新为该门店的当前币值</div>
+
+      <div style="margin:12px 0 8px;font-size:13px;font-weight:600;color:#2c3e50;border-left:3px solid #2b6cb0;padding-left:8px;">机台收币数</div>
+      <table class="data" style="width:100%;font-size:13px;">
+        <thead><tr>
+          <th style="text-align:left;padding:8px 10px;">机台名称</th>
+          <th style="text-align:right;padding:8px 10px;">当月收币数</th>
+          <th style="text-align:right;padding:8px 10px;">月初码表数</th>
+          <th style="text-align:right;padding:8px 10px;">月末码表数</th>
+          <th style="text-align:right;padding:8px 10px;">测试币</th>
+          <th style="text-align:right;padding:8px 10px;">最终收币数</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:8px 10px;">扭蛋玛特</td><td style="padding:8px 10px;text-align:right;background:#f0f0f0;">2,687</td><td style="padding:8px 10px;text-align:right;background:#f0f0f0;">12,500</td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input cFnlMonth" value="15187" style="width:80px;text-align:right;" oninput="calcCoinFnl(this)"></td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input cFnlTest" value="0" style="width:80px;text-align:right;" oninput="calcCoinFnl(this)"></td><td style="padding:8px 10px;text-align:right;"><input type="number" class="input cFnlRecv" value="2687" style="width:80px;text-align:right;font-weight:600;color:#2b6cb0;"></td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:11px;color:#999;margin-top:4px;">公式：最终收币数 = 月末码表数 - 月初码表数 - 测试币</div>
+
+      <div class="form-row" style="margin-top:16px;"><div class="form-col"><div class="form-label">最终核算金额:</div><input type="number" class="input" value="107.48" step="0.01" style="flex:1;font-weight:600;color:#2b6cb0;"></div></div>
+      <div class="form-row"><div class="form-col"><div class="form-label">备注:</div><input type="text" class="input" placeholder="修改核算金额的原因，如：客户对账后调整" style="flex:1;"></div></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('modalCoinFnlAmt')">确定</button><button class="btn" onclick="closeModal('modalCoinFnlAmt')">重置</button></div>
+  </div>
+</div>
+<script>
+function calcCoinFnl(el){
+  var row=el.closest('tr');
+  var orig=parseInt(row.querySelector('td:nth-child(2)').textContent.replace(/,/g,''))||0;
+  var monthStart=parseInt(row.querySelector('td:nth-child(3)').textContent.replace(/,/g,''))||0;
+  var monthEnd=parseInt(row.querySelector('.cFnlMonth').value)||0;
+  var test=parseInt(row.querySelector('.cFnlTest').value)||0;
+  var fnl=row.querySelector('.cFnlRecv');
+  fnl.value=Math.max(0,monthEnd-monthStart-test);
+}
+</script>
 <script>
 function bwSelMode(btn,mode){
   var siblings=btn.parentNode.querySelectorAll('.bw-sel-mode-btn');
@@ -2833,10 +3058,38 @@ document.querySelectorAll('.modal-mask').forEach(m=>{
 document.querySelectorAll('.dropdown-toggle').forEach(t=>{
   t.addEventListener('click',e=>{
     e.stopPropagation();
-    t.closest('.dropdown').classList.toggle('open');
+    var dd=t.closest('.dropdown');
+    var menu=dd.querySelector('.dropdown-menu');
+    var isOpen=dd.classList.contains('open');
+    document.querySelectorAll('.dropdown.open').forEach(d=>d.classList.remove('open'));
+    if(!isOpen){
+      dd.classList.add('open');
+      var rect=t.getBoundingClientRect();
+      var menuWidth=menu.offsetWidth||140;
+      var menuHeight=menu.offsetHeight||200;
+      var left=rect.right-menuWidth;
+      var top=rect.bottom+4;
+      if(top+menuHeight>window.innerHeight)top=rect.top-menuHeight-4;
+      if(left<0)left=0;
+      menu.classList.add('dropdown-fixed');
+      menu.style.left=left+'px';
+      menu.style.top=top+'px';
+      menu.style.right='auto';
+    }else{
+      menu.classList.remove('dropdown-fixed');
+      menu.style.left='';
+      menu.style.top='';
+      menu.style.right='';
+    }
   });
 });
-document.addEventListener('click',()=>document.querySelectorAll('.dropdown.open').forEach(d=>d.classList.remove('open')));
+document.addEventListener('click',()=>{
+  document.querySelectorAll('.dropdown.open').forEach(d=>{
+    d.classList.remove('open');
+    var m=d.querySelector('.dropdown-menu');
+    if(m){m.classList.remove('dropdown-fixed');m.style.left='';m.style.top='';m.style.right='';}
+  });
+});
 
 
 // ===== 入库明细弹窗 =====
