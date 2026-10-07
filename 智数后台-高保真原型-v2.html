@@ -964,7 +964,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       <div class="page active" id="page-p2">
         <div class="card">
           <div class="filter-bar">
-            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:60px;"><option>全部</option><option selected>2026-07</option><option>2026-06</option><option>2026-05</option><option>2026-04</option></select></div>
+            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:32px;overflow:auto;"><option>全部</option><option selected>2026-07</option><option>2026-06</option><option>2026-05</option><option>2026-04</option></select></div>
             <div class="filter-item"><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option><option>萌朵拉(孝感吾悦广场店)</option><option>星际传奇(武汉荟聚店)</option><option>大玩家(长沙悦方店)</option><option>星际传奇(广州太古汇店)</option></select></div>
             <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option><option>长沙市大玩家文娱有限公司</option><option>广州星际文娱有限公司</option></select></div>
             <div class="filter-item"><label>核对员</label><select class="select"><option>全部</option><option>张三</option><option>李四</option><option>王五</option><option>赵六</option></select></div>
@@ -1129,7 +1129,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       <div class="page" id="page-p_bw_cust">
         <div class="card">
           <div class="filter-bar">
-            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:60px;"><option>全部</option><option selected>2026-08</option><option>2026-07</option><option>2026-06</option><option>2026-05</option></select></div>
+            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:32px;overflow:auto;"><option>全部</option><option selected>2026-08</option><option>2026-07</option><option>2026-06</option><option>2026-05</option></select></div>
             <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option><option>长沙市大玩家文娱有限公司</option></select></div>
             <div class="filter-item"><label>核对员</label><select class="select"><option>全部</option><option>张三</option><option>李四</option><option>王五</option><option>赵六</option></select></div>
             <div class="filter-item"><label>是否已推送</label><select class="select"><option>全部</option><option>已推送</option><option>未推送</option></select></div>
@@ -1279,7 +1279,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       <div class="page" id="page-p_recon_summary">
         <div class="card">
           <div class="filter-bar">
-            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:60px;"><option selected>全部</option><option>2026-09</option><option>2026-08</option><option>2026-07</option><option>2026-06</option></select></div>
+            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:32px;overflow:auto;"><option selected>全部</option><option>2026-09</option><option>2026-08</option><option>2026-07</option><option>2026-06</option></select></div>
             <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option><option>长沙市大玩家文娱有限公司</option></select></div>
             <div class="filter-item"><label>核对员</label><select class="select"><option>全部</option><option>张三</option><option>李四</option><option>王五</option></select></div>
             <div class="filter-item"><label>是否已核对</label><select class="select"><option>全部</option><option>已核对</option><option>未核对</option><option>部分核对</option></select></div>
@@ -1290,10 +1290,14 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
           </div>
         </div>
         <div class="card">
+          <div style="display:flex;gap:8px;margin-bottom:12px;">
+            <button class="btn btn-primary" style="padding:4px 12px;">🔄 刷新</button>
+            <button class="btn" style="padding:4px 12px;">导出</button>
+          </div>
           <div class="table-wrap">
-            <table class="data" style="min-width:2000px;">
+            <table class="data" style="min-width:2100px;">
               <thead><tr>
-                <th>账期</th><th>客户名称</th><th>对账单号</th><th>识别码</th>
+                <th>账期</th><th>客户名称</th><th>对账单号</th><th>识别码</th><th>机台分成明细</th>
                 <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>认款详情</th>
                 <th>已开票金额</th><th>开票详情</th>
                 <th>备注</th><th>客户确认状态</th><th>分成类型</th><th>核对专员</th><th>推送状态</th><th>操作</th>
@@ -1304,6 +1308,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>深圳市乐的文化股份有限公司</td>
                   <td>DZD-202608-LE-001</td>
                   <td>BW-LE-2026-08</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modalCoinDetail')">查看明细</span></td>
                   <td class="amt">¥2,117.02</td><td class="amt amt-blue">¥2,117.02</td>
                   <td class="amt">¥2,117.02</td>
                   <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
@@ -1312,7 +1317,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>—</td>
                   <td><span class="tag tag-green">已确认</span> <span class="btn-link" style="font-size:12px;" onclick="openSummaryConfirm(0)">📋</span></td>
                   <td><span class="tag tag-blue" style="margin-right:2px;">扭蛋玛特</span><span class="tag tag-blue">盲盒宇宙</span></td>
-                  <td>张三、王五 <span class="tag tag-green">已核对</span></td>
+                  <td>张三 <span class="tag tag-green">已核对</span><br>王五 <span class="tag tag-green">已核对</span></td>
                   <td><span class="tag tag-green">已推送</span></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
                 </tr>
@@ -1321,6 +1326,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>广州萌朵拉文创科技有限公司</td>
                   <td>DZD-202608-MD-001</td>
                   <td>BW-MD-2026-08</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modalCoinDetail')">查看明细</span></td>
                   <td class="amt">¥1,164.50</td><td class="amt amt-blue">¥1,164.50</td>
                   <td class="amt">¥0.00</td>
                   <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去认款</span></td>
@@ -1338,6 +1344,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>武汉市星际文娱有限公司</td>
                   <td>DZD-202608-XJ-001</td>
                   <td>BW-XJ-2026-08</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modalCoinDetail')">查看明细</span></td>
                   <td class="amt">¥790.00</td><td class="amt amt-blue">¥790.00</td>
                   <td class="amt">¥790.00</td>
                   <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
@@ -1355,6 +1362,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>长沙市大玩家文娱有限公司</td>
                   <td>DZD-202608-DWJ-001</td>
                   <td>BW-DWJ-2026-08</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modalCoinDetail')">查看明细</span></td>
                   <td class="amt">¥728.00</td><td class="amt amt-blue">¥728.00</td>
                   <td class="amt">¥400.00</td>
                   <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">部分认款</span></td>
@@ -1363,7 +1371,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>—</td>
                   <td><span class="tag tag-orange">部分确认</span> <span class="btn-link" style="font-size:12px;" onclick="openSummaryConfirm(3)">📋</span></td>
                   <td><span class="tag tag-gray">其他分成</span></td>
-                  <td>张三、李四 <span class="tag tag-orange">部分核对</span></td>
+                  <td>张三 <span class="tag tag-green">已核对</span><br>李四 <span class="tag tag-gray">未核对</span></td>
                   <td><span class="tag tag-gray">未推送</span></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
                 </tr>
@@ -1372,6 +1380,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>深圳市乐的文化股份有限公司</td>
                   <td>DZD-202607-LE-001</td>
                   <td>BW-LE-2026-07</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;" onclick="openModal('modalCoinDetail')">查看明细</span></td>
                   <td class="amt">¥1,890.00</td><td class="amt amt-blue">¥1,890.00</td>
                   <td class="amt">¥1,890.00</td>
                   <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
@@ -1380,7 +1389,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>—</td>
                   <td><span class="tag tag-orange">部分有异议</span> <span class="btn-link" style="font-size:12px;" onclick="openSummaryConfirm(4)">📋</span></td>
                   <td><span class="tag tag-blue" style="margin-right:2px;">扭蛋玛特</span><span class="tag tag-blue">盲盒宇宙</span></td>
-                  <td>张三、王五 <span class="tag tag-green">已核对</span></td>
+                  <td>张三 <span class="tag tag-green">已核对</span><br>王五 <span class="tag tag-green">已核对</span></td>
                   <td><span class="tag tag-green">已推送</span></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
                 </tr>
@@ -1392,7 +1401,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <button class="page-btn">‹</button>
             <button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button>
             <button class="page-btn">›</button>
-            <select class="select" style="height:30px;width:90px"><option>20条/页</option></select>
+            <select class="select" style="height:30px;width:90px"><option>10条/页</option></select>
           </div>
         </div>
       </div>
@@ -1401,7 +1410,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
       <div class="page" id="page-p_coin_recon">
         <div class="card">
           <div class="filter-bar">
-            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:60px;"><option>全部</option><option selected>2026-08</option><option>2026-07</option><option>2026-06</option><option>2026-05</option></select></div>
+            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:32px;overflow:auto;"><option>全部</option><option selected>2026-08</option><option>2026-07</option><option>2026-06</option><option>2026-05</option></select></div>
             <div class="filter-item"><label>门店名称</label><select class="select"><option>全部</option><option>星际传奇(深圳KKMall店)</option><option>星际传奇(武汉荟聚店)</option><option>萌朵拉(孝感吾悦广场店)</option></select></div>
             <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option></select></div>
             <div class="filter-item"><label>机台名称</label><select class="select"><option>全部</option><option>扭蛋玛特</option><option>盲盒宇宙</option><option>次元星球</option><option>飞球宇宙</option></select></div>
