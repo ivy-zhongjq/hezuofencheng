@@ -1286,6 +1286,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
             <div class="filter-item"><label>客户确认状态</label><select class="select"><option>全部</option><option>已确认</option><option>自动确认</option><option>待确认</option><option>部分确认</option><option>有异议</option><option>部分有异议</option></select></div>
             <div class="filter-item"><label>是否已认款</label><select class="select"><option>全部</option><option>已认款</option><option>部分认款</option><option>未认款</option></select></div>
             <div class="filter-item"><label>是否已开票</label><select class="select"><option>全部</option><option>已开票</option><option>部分开票</option><option>未开票</option></select></div>
+            <div class="filter-item"><label>分成类型</label><select class="select"><option>全部</option><option>扭蛋玛特</option><option>盲盒宇宙</option><option>其他分成</option><option>爆玩宇宙</option></select></div>
             <button class="btn btn-primary">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
           </div>
         </div>
@@ -1293,10 +1294,12 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
           <div style="display:flex;gap:8px;margin-bottom:12px;">
             <button class="btn btn-primary" style="padding:4px 12px;">🔄 刷新</button>
             <button class="btn" style="padding:4px 12px;">导出</button>
+            <button class="btn btn-success" style="padding:4px 12px;">📢 推送</button>
           </div>
           <div class="table-wrap">
             <table class="data" style="min-width:2100px;">
               <thead><tr>
+                <th style="width:40px;" class="center"><input type="checkbox" class="cb"></th>
                 <th>账期</th><th>客户名称</th><th>对账单号</th><th>识别码</th><th>机台分成明细</th>
                 <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>认款详情</th>
                 <th>已开票金额</th><th>开票详情</th>
@@ -1304,6 +1307,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
               </tr></thead>
               <tbody>
                 <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
                   <td>2026-08</td>
                   <td>深圳市乐的文化股份有限公司</td>
                   <td>DZD-202608-LE-001</td>
@@ -1319,9 +1323,10 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td><span class="tag tag-blue" style="margin-right:2px;">扭蛋玛特</span><span class="tag tag-blue">盲盒宇宙</span></td>
                   <td>张三 <span class="tag tag-green">已核对</span><br>王五 <span class="tag tag-green">已核对</span></td>
                   <td><span class="tag tag-green">已推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>导出</a></div></div></td>
                 </tr>
                 <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
                   <td>2026-08</td>
                   <td>广州萌朵拉文创科技有限公司</td>
                   <td>DZD-202608-MD-001</td>
@@ -1337,9 +1342,10 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td><span class="tag tag-blue">盲盒宇宙</span></td>
                   <td>李四 <span class="tag tag-gray">未核对</span></td>
                   <td><span class="tag tag-gray">未推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>导出</a></div></div></td>
                 </tr>
                 <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
                   <td>2026-08</td>
                   <td>武汉市星际文娱有限公司</td>
                   <td>DZD-202608-XJ-001</td>
@@ -1355,9 +1361,10 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td><span class="tag tag-blue">扭蛋玛特</span></td>
                   <td>王五 <span class="tag tag-green">已核对</span></td>
                   <td><span class="tag tag-green">已推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>导出</a></div></div></td>
                 </tr>
                 <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
                   <td>2026-08</td>
                   <td>长沙市大玩家文娱有限公司</td>
                   <td>DZD-202608-DWJ-001</td>
@@ -1373,9 +1380,10 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td><span class="tag tag-gray">其他分成</span></td>
                   <td>张三 <span class="tag tag-green">已核对</span><br>李四 <span class="tag tag-gray">未核对</span></td>
                   <td><span class="tag tag-gray">未推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>导出</a></div></div></td>
                 </tr>
                 <tr>
+                  <td class="center"><input type="checkbox" class="cb"></td>
                   <td>2026-07</td>
                   <td>深圳市乐的文化股份有限公司</td>
                   <td>DZD-202607-LE-001</td>
@@ -1391,7 +1399,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td><span class="tag tag-blue" style="margin-right:2px;">扭蛋玛特</span><span class="tag tag-blue">盲盒宇宙</span></td>
                   <td>张三 <span class="tag tag-green">已核对</span><br>王五 <span class="tag tag-green">已核对</span></td>
                   <td><span class="tag tag-green">已推送</span></td>
-                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>导出</a></div></div></td>
                 </tr>
               </tbody>
             </table>
@@ -1434,7 +1442,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
               <thead><tr>
                 <th style="width:40px;" class="center"><input type="checkbox" class="cb"></th>
                 <th>账期</th><th>门店名称</th><th>客户名称</th>
-                <th>核对员</th><th>识别码</th><th>机台分成明细</th><th>月初码表数</th><th>月末码表数</th><th>实际收币</th>
+                <th>核对员</th><th>识别码</th><th>机台分成明细</th>
                 <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>认款详情</th>
                 <th>已开票金额</th><th>开票详情</th><th>更新时间</th><th>机台数量</th>
                 <th>备注</th><th>客户确认状态</th><th>业务员已核对</th><th>操作</th>
@@ -1448,7 +1456,6 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>张三</td>
                   <td>SB-YWS-KKM-08</td>
                   <td><span class="btn-link" onclick="openModal('modalCoinReconDetail')">查看明细</span></td>
-                  <td>45,500</td><td>55,333</td><td class="amt">8,933</td>
                   <td class="amt">¥357.32</td><td class="amt amt-blue">¥357.32</td>
                   <td class="amt">¥357.32</td>
                   <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
@@ -1469,7 +1476,6 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>李四</td>
                   <td>SB-YWS-XG-08</td>
                   <td><span class="btn-link" onclick="openModal('modalCoinReconDetail')">查看明细</span></td>
-                  <td>8,000</td><td>9,500</td><td class="amt">1,500</td>
                   <td class="amt">¥60.00</td><td class="amt amt-blue">¥60.00</td>
                   <td class="amt">¥0.00</td>
                   <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去认款</span></td>
@@ -1490,7 +1496,6 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>王五</td>
                   <td>SB-YWS-WH-08</td>
                   <td><span class="btn-link" onclick="openModal('modalCoinReconDetail')">查看明细</span></td>
-                  <td>15,000</td><td>17,809</td><td class="amt">2,809</td>
                   <td class="amt">¥112.36</td><td class="amt amt-blue">¥112.36</td>
                   <td class="amt">¥112.36</td>
                   <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
@@ -1511,7 +1516,6 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>张三</td>
                   <td>SB-YWS-KKM-08</td>
                   <td><span class="btn-link" onclick="openModal('modalCoinReconDetail')">查看明细</span></td>
-                  <td>5,000</td><td>5,900</td><td class="amt">900</td>
                   <td class="amt">¥36.00</td><td class="amt amt-blue">¥36.00</td>
                   <td class="amt">¥0.00</td>
                   <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去认款</span></td>
