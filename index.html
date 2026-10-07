@@ -391,7 +391,7 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         <div class="nav-sub">
           <div class="nav-sub-parent open" onclick="this.classList.toggle('open')"><span class="left"><span class="icon">📋</span>对账管理</span><span class="arrow">▶</span></div>
           <div class="nav-sub-sub">
-            <div class="nav-item" data-page="p_recon_summary">对账单汇总</div>
+            <div class="nav-item" data-page="p_recon_summary">总对账单</div>
             <div class="nav-item" data-page="p1">亿玩赏门店对账单</div>
             
             <div class="nav-item" data-page="p3" style="">亿玩赏客户对账单</div>
@@ -1275,22 +1275,28 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
         </div>
       </div>
 
-      <!-- ===================== PAGE: 对账单汇总 ===================== -->
+      <!-- ===================== PAGE: 总对账单 ===================== -->
       <div class="page" id="page-p_recon_summary">
         <div class="card">
           <div class="filter-bar">
-            <div class="filter-item"><label>账期</label><input type="month" class="input" value="2026-08"></div>
+            <div class="filter-item"><label>账期</label><select class="select" multiple style="height:60px;"><option selected>全部</option><option>2026-09</option><option>2026-08</option><option>2026-07</option><option>2026-06</option></select></div>
             <div class="filter-item"><label>客户名称</label><select class="select"><option>全部</option><option>深圳市乐的文化股份有限公司</option><option>广州萌朵拉文创科技有限公司</option><option>武汉市星际文娱有限公司</option><option>长沙市大玩家文娱有限公司</option></select></div>
+            <div class="filter-item"><label>核对员</label><select class="select"><option>全部</option><option>张三</option><option>李四</option><option>王五</option></select></div>
+            <div class="filter-item"><label>是否已核对</label><select class="select"><option>全部</option><option>已核对</option><option>未核对</option><option>部分核对</option></select></div>
+            <div class="filter-item"><label>客户确认状态</label><select class="select"><option>全部</option><option>已确认</option><option>自动确认</option><option>待确认</option><option>部分确认</option><option>有异议</option><option>部分有异议</option></select></div>
+            <div class="filter-item"><label>是否已认款</label><select class="select"><option>全部</option><option>已认款</option><option>部分认款</option><option>未认款</option></select></div>
+            <div class="filter-item"><label>是否已开票</label><select class="select"><option>全部</option><option>已开票</option><option>部分开票</option><option>未开票</option></select></div>
             <button class="btn btn-primary">查 询</button><div class="filter-item" style="justify-content: flex-end;"><button class="btn" style="margin-left:8px">重 置</button></div>
           </div>
         </div>
         <div class="card">
           <div class="table-wrap">
-            <table class="data" style="min-width:1200px;">
+            <table class="data" style="min-width:1900px;">
               <thead><tr>
                 <th>账期</th><th>客户名称</th><th>对账单号</th><th>识别码</th>
-                <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>已开票金额</th>
-                <th>备注</th><th>操作</th>
+                <th>初始对账金额</th><th>最终核算金额</th><th>已认款金额</th><th>认款详情</th>
+                <th>已开票金额</th><th>开票详情</th>
+                <th>备注</th><th>客户确认状态</th><th>业务员</th><th>推送状态</th><th>操作</th>
               </tr></thead>
               <tbody>
                 <tr>
@@ -1299,8 +1305,14 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>DZD-202608-LE-001</td>
                   <td>BW-LE-2026-08</td>
                   <td class="amt">¥2,117.02</td><td class="amt amt-blue">¥2,117.02</td>
-                  <td class="amt">¥2,117.02</td><td class="amt">¥2,117.02</td>
+                  <td class="amt">¥2,117.02</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
+                  <td class="amt">¥2,117.02</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;">发票详情</span></td>
                   <td>—</td>
+                  <td><span class="tag tag-green">已确认</span> <span class="btn-link" style="font-size:12px;" onclick="openModal('modalSummaryConfirm')">📋</span></td>
+                  <td>张三 <span class="tag tag-green">已核对</span></td>
+                  <td><span class="tag tag-green">已推送</span></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
                 </tr>
                 <tr>
@@ -1309,8 +1321,14 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>DZD-202608-MD-001</td>
                   <td>BW-MD-2026-08</td>
                   <td class="amt">¥1,164.50</td><td class="amt amt-blue">¥1,164.50</td>
-                  <td class="amt">¥0.00</td><td class="amt">¥0.00</td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去认款</span></td>
+                  <td class="amt">¥0.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">去开票</span></td>
                   <td>待确认</td>
+                  <td><span class="tag tag-gray">待确认</span> <span class="btn-link" style="font-size:12px;" onclick="openModal('modalSummaryConfirm')">📋</span></td>
+                  <td>李四 <span class="tag tag-gray">未核对</span></td>
+                  <td><span class="tag tag-gray">未推送</span></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
                 </tr>
                 <tr>
@@ -1319,8 +1337,14 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>DZD-202608-XJ-001</td>
                   <td>BW-XJ-2026-08</td>
                   <td class="amt">¥790.00</td><td class="amt amt-blue">¥790.00</td>
-                  <td class="amt">¥790.00</td><td class="amt">¥790.00</td>
+                  <td class="amt">¥790.00</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
+                  <td class="amt">¥790.00</td>
+                  <td><span class="btn-link" style="color:#3182ce;font-weight:600;">发票详情</span></td>
                   <td>—</td>
+                  <td><span class="tag tag-blue">自动确认</span> <span class="btn-link" style="font-size:12px;" onclick="openModal('modalSummaryConfirm')">📋</span></td>
+                  <td>王五 <span class="tag tag-green">已核对</span></td>
+                  <td><span class="tag tag-green">已推送</span></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
                 </tr>
                 <tr>
@@ -1329,8 +1353,30 @@ table.data tfoot td{background:#f7fafc;font-weight:600;border-top:2px solid #e8e
                   <td>DZD-202608-DWJ-001</td>
                   <td>BW-DWJ-2026-08</td>
                   <td class="amt">¥728.00</td><td class="amt amt-blue">¥728.00</td>
-                  <td class="amt">¥0.00</td><td class="amt">¥0.00</td>
+                  <td class="amt">¥400.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">部分认款</span></td>
+                  <td class="amt">¥300.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">部分开票</span></td>
                   <td>—</td>
+                  <td><span class="tag tag-orange">部分确认</span> <span class="btn-link" style="font-size:12px;" onclick="openModal('modalSummaryConfirm')">📋</span></td>
+                  <td>张三 <span class="tag tag-orange">部分核对</span></td>
+                  <td><span class="tag tag-gray">未推送</span></td>
+                  <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
+                </tr>
+                <tr>
+                  <td>2026-07</td>
+                  <td>深圳市乐的文化股份有限公司</td>
+                  <td>DZD-202607-LE-001</td>
+                  <td>BW-LE-2026-07</td>
+                  <td class="amt">¥1,890.00</td><td class="amt amt-blue">¥1,890.00</td>
+                  <td class="amt">¥1,890.00</td>
+                  <td><span class="btn-link" style="color:#38a169;font-weight:600;">认款详情</span></td>
+                  <td class="amt">¥1,200.00</td>
+                  <td><span class="btn-link" style="color:#dd6b20;font-weight:600;">部分开票</span></td>
+                  <td>—</td>
+                  <td><span class="tag tag-orange">部分有异议</span> <span class="btn-link" style="font-size:12px;" onclick="openModal('modalSummaryConfirm')">📋</span></td>
+                  <td>王五 <span class="tag tag-green">已核对</span></td>
+                  <td><span class="tag tag-green">已推送</span></td>
                   <td><div class="dropdown"><span class="dropdown-toggle">操作 ▾</span><div class="dropdown-menu"><a>查看明细</a><a>导出</a></div></div></td>
                 </tr>
               </tbody>
@@ -2503,98 +2549,137 @@ function calcFnl(el){
         <div style="font-size:13px;margin-bottom:12px;">门店：终极梦想（大连西岗恒隆店）</div>
 
         <div style="font-size:14px;font-weight:600;text-align:center;margin:12px 0 6px;">合作机台收币明细</div>
-        <table style="width:100%;border-collapse:collapse;font-size:12px;">
-          <thead><tr style="background:#f5f5f5;">
-            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">日期</th>
-            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">乖巧宝宝之摸鱼达人</th>
-            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">乖巧派对</th>
-            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">勇者大陆</th>
-            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">向阳而生乖巧版</th>
-            <th style="border:1px solid #333;padding:5px 8px;text-align:center;">合计币数</th>
-          </tr></thead>
-          <tbody id="prtDailyRows"></tbody>
-          <tfoot>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+          <thead>
+          <tr style="background:#f5f5f5;">
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">序号</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">机台名称</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">机台数量</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">月初码表数</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">月末码表数</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">测试币</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">实际收币</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">约定币值</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;">实收金额</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;" colspan="2">分成比例</th>
+            <th style="border:1px solid #333;padding:5px 6px;text-align:center;" colspan="2">分成金额</th>
+          </tr>
+          <tr style="background:#f5f5f5;">
+            <th colspan="9"></th>
+            <th style="border:1px solid #333;padding:3px 6px;text-align:center;font-size:10px;">世宇</th>
+            <th style="border:1px solid #333;padding:3px 6px;text-align:center;font-size:10px;">乐园</th>
+            <th style="border:1px solid #333;padding:3px 6px;text-align:center;font-size:10px;">世宇</th>
+            <th style="border:1px solid #333;padding:3px 6px;text-align:center;font-size:10px;">乐园</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">1</td>
+              <td style="border:1px solid #333;padding:4px 6px;">盲盒宇宙</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">1</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">12,500</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">17,700</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;color:#c05621;">20</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">5,180</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0.30</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">1,554.00</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;background:#fffde7;font-weight:600;">777.00</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">777.00</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">2</td>
+              <td style="border:1px solid #333;padding:4px 6px;">夺宝奇航</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">1</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">10,200</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">14,611</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;color:#c05621;">15</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">4,396</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0.31</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">1,362.76</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;background:#fffde7;font-weight:600;">681.38</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">681.38</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">3</td>
+              <td style="border:1px solid #333;padding:4px 6px;color:#e53e3e;font-weight:600;">壮志凌云</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">1</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">85,000</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">116,421</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;color:#c05621;">15</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">31,406</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0.37</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">11,620.22</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;background:#fffde7;font-weight:600;">5,810.11</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">5,810.11</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">4</td>
+              <td style="border:1px solid #333;padding:4px 6px;">扭蛋玛特</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">1</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">15,000</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">19,875</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;color:#999;">0</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">4,875</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0.26</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">1,267.50</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;font-weight:600;">70%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;font-weight:600;">30%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;background:#fffde7;font-weight:600;">887.25</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">380.25</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">5</td>
+              <td style="border:1px solid #333;padding:4px 6px;">次元星球</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">1</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">8,000</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">8,000</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;color:#999;">0</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0.42</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0.00</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;background:#fffde7;font-weight:600;">0.00</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0.00</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">6</td>
+              <td style="border:1px solid #333;padding:4px 6px;">飞球宇宙</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">1</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">35,000</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">48,353</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;color:#999;">0</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">13,353</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">0.31</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">4,139.43</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:center;">50%</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;background:#fffde7;font-weight:600;">2,069.72</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">2,069.72</td>
+            </tr>
             <tr style="background:#fafafa;font-weight:600;">
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">合计收币</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">26,350</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">18,720</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">31,800</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">15,640</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">92,510</td>
+              <td colspan="6" style="border:1px solid #333;padding:4px 6px;text-align:right;">合计</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">59,210</td>
+              <td style="border:1px solid #333;padding:4px 6px;"></td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">19,943.91</td>
+              <td colspan="2" style="border:1px solid #333;padding:4px 6px;"></td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;background:#fffde7;">10,225.46</td>
+              <td style="border:1px solid #333;padding:4px 6px;text-align:right;">9,718.45</td>
             </tr>
-            <tr>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">测试币</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">142</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">101</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">172</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">85</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">500</td>
-            </tr>
-            <tr style="font-weight:600;">
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">实际收币</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">26,208</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">18,619</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">31,628</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">15,555</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">92,010</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">约定币值</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">0.2000</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">0.2000</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">0.2000</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">0.2000</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">0.2000</td>
-            </tr>
-            <tr style="font-weight:600;color:#c0392b;">
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">合计金额</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥5,241.60</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥3,723.80</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥6,325.60</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥3,111.00</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥18,402.00</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">世宇分成比例</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">70%</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">70%</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">70%</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">70%</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">70%</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">乐园分成比例</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">30%</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">30%</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">30%</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">30%</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">30%</td>
-            </tr>
-            <tr style="font-weight:600;">
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">世宇分成金额</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥3,669.12</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥2,606.66</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥4,427.92</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥2,177.70</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥12,881.40</td>
-            </tr>
-            <tr style="font-weight:600;">
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">乐园分成金额</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥1,572.48</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥1,117.14</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥1,897.68</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥933.30</td>
-              <td style="border:1px solid #333;padding:5px 8px;text-align:center;">¥5,520.60</td>
-            </tr>
-            <tr style="background:#fffde7;font-weight:600;font-size:13px;">
-              <td style="border:1px solid #333;padding:6px 8px;text-align:center;">分成金额</td>
-              <td style="border:1px solid #333;padding:6px 8px;text-align:center;">世宇</td>
-              <td style="border:1px solid #333;padding:6px 8px;text-align:center;">¥12,881.40</td>
-              <td style="border:1px solid #333;padding:6px 8px;text-align:center;">合作客户名称</td>
-              <td colspan="2" style="border:1px solid #333;padding:6px 8px;text-align:center;">大连电悦梦想娱乐科技有限公司</td>
-            </tr>
-          </tfoot>
+          </tbody>
         </table>
+        <div style="background:#fffde6;border:1px solid #ffe58f;padding:6px 10px;margin-top:8px;font-size:11px;color:#8c7a3d;">
+          <strong>测试币明细：</strong>盲盒宇宙20，夺宝奇航15，壮志凌云15，合计50
+        </div>
+        <div style="background:#fffde7;font-weight:600;font-size:13px;text-align:center;padding:6px;margin-top:8px;border:1px solid #333;">
+          世宇分成金额：¥10,225.46　|　乐园分成金额：¥9,718.45
+        </div>
 
         <div style="display:flex;justify-content:space-between;margin-top:20px;">
           <div style="font-size:12px;flex:1;">
@@ -2631,22 +2716,6 @@ function calcFnl(el){
     </div>
   </div>
 </div>
-<script>
-(function(){
-  var rows='';
-  var games=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[820,560,980,440],[850,580,1020,450],[890,600,1050,470],[910,620,1080,480],[930,640,1100,490],[950,650,1130,500],[970,660,1150,510],[880,600,1000,460],[900,610,1020,470],[920,630,1040,480],[940,640,1060,490],[960,650,1080,500],[980,660,1100,510],[850,580,980,440],[870,590,1000,450],[890,600,1020,460],[910,610,1040,470],[930,620,1060,480],[950,630,1080,490],[970,640,1100,500],[890,600,980,440],[910,610,1000,450],[930,620,1020,460],[950,630,1040,470]];
-  for(var i=0;i<31;i++){
-    var d='2026-08-'+String(i+1).padStart(2,'0');
-    var g=games[i];
-    var tot=g[0]+g[1]+g[2]+g[3];
-    rows+='<tr><td style="border:1px solid #333;padding:4px 8px;text-align:center;">'+d+'</td>';
-    for(var j=0;j<4;j++)rows+='<td style="border:1px solid #333;padding:4px 8px;text-align:center;">'+g[j]+'</td>';
-    rows+='<td style="border:1px solid #333;padding:4px 8px;text-align:center;font-weight:600;">'+tot+'</td></tr>';
-  }
-  var c=document.getElementById('prtDailyRows');
-  if(c)c.innerHTML=rows;
-})();
-</script>
 <!-- ============ MODAL COIN-GEN: 收币对账单生成对账单 ============ -->
 <div class="modal-mask" id="modalCoinGen">
   <div class="modal" style="width:560px;">
@@ -2779,41 +2848,29 @@ function calcCoinFnl(el){
 </div>
 <!-- ============ MODAL COIN-DETAIL: 机台分成明细 ============ -->
 <div class="modal-mask" id="modalCoinDetail">
-  <div class="modal" style="width:900px;">
+  <div class="modal" style="width:1500px;max-width:96vw;">
     <div class="modal-header"><span class="modal-title">机台分成明细</span><button class="modal-close" onclick="closeModal('modalCoinDetail')">×</button></div>
-    <div class="modal-body" style="padding:16px;">
-      <!-- Tabs -->
-      <div style="display:flex;gap:24px;border-bottom:2px solid #e8e8e8;margin-bottom:16px;">
-        <span style="font-size:14px;font-weight:600;color:#2b6cb0;border-bottom:2px solid #2b6cb0;padding-bottom:8px;margin-bottom:-2px;cursor:pointer;">明细列表</span>
-        <span style="font-size:14px;color:#8492a6;padding-bottom:8px;cursor:pointer;">修改记录</span>
-      </div>
+    <div class="detail-tabs" style="display:flex;gap:0;border-bottom:2px solid #e0e0e0;margin-bottom:0;">
+      <button class="detail-tab active" onclick="switchCoinDetailTab('tab-coin-detail')" style="padding:10px 24px;border:none;background:none;cursor:pointer;font-size:14px;font-weight:600;color:#3182ce;border-bottom:2px solid #3182ce;margin-bottom:-2px;">明细列表</button>
+      <button class="detail-tab" onclick="switchCoinDetailTab('tab-coin-record')" style="padding:10px 24px;border:none;background:none;cursor:pointer;font-size:14px;font-weight:500;color:#718096;">修改记录</button>
+    </div>
+    <div class="modal-body">
+      <div id="tab-coin-detail" class="detail-tab-content" style="display:block;">
       <!-- Info Banner -->
-      <div style="background:linear-gradient(135deg,#ebf5fb,#e6f0fa);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;gap:32px;align-items:center;">
-        <div><span style="font-size:12px;color:#7a8a9a;">门店名称</span><div style="font-size:14px;font-weight:600;color:#2c3e50;">星际传奇(武汉荟聚店)</div></div>
-        <div><span style="font-size:12px;color:#7a8a9a;">客户名称</span><div style="font-size:14px;font-weight:600;color:#2c3e50;">武汉市星际文娱有限公司</div></div>
-        <div><span style="font-size:12px;color:#7a8a9a;">对账月份</span><div style="font-size:14px;font-weight:600;color:#2c3e50;">2026-07</div></div>
+      <div class="detail-info-bar">
+        <div class="info-item"><span class="lbl">门店名称</span><span class="val">星际传奇(武汉荟聚店)</span></div>
+        <div class="info-item"><span class="lbl">客户名称</span><span class="val">武汉市星际文娱有限公司</span></div>
+        <div class="info-item"><span class="lbl">对账月份</span><span class="val">2026-07</span></div>
       </div>
       <!-- Data Cards -->
-      <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-        <div style="flex:1;min-width:160px;border:1px solid #e8e8e8;border-left:4px solid #38a169;border-radius:6px;padding:12px;">
-          <div style="font-size:13px;font-weight:600;color:#2c3e50;margin-bottom:8px;">摸鱼达人</div>
-          <div style="font-size:12px;color:#8492a6;">分成数: <span style="color:#2c3e50;font-weight:600;">¥107.48</span></div>
-          <div style="font-size:12px;color:#8492a6;">收币数: <span style="color:#2c3e50;font-weight:600;">2,637币</span></div>
-          <div style="font-size:12px;color:#8492a6;">测试币: <span style="color:#c05621;font-weight:600;">30币</span></div>
-        </div>
-        <div style="flex:1;min-width:160px;border:1px solid #e8e8e8;border-left:4px solid #38a169;border-radius:6px;padding:12px;">
-          <div style="font-size:13px;font-weight:600;color:#2c3e50;margin-bottom:8px;">勇者大陆</div>
-          <div style="font-size:12px;color:#8492a6;">分成数: <span style="color:#2c3e50;font-weight:600;">¥112.36</span></div>
-          <div style="font-size:12px;color:#8492a6;">收币数: <span style="color:#2c3e50;font-weight:600;">2,509币</span></div>
-          <div style="font-size:12px;color:#8492a6;">测试币: <span style="color:#c05621;font-weight:600;">20币</span></div>
-        </div>
+      <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;">
         <div style="flex:1;min-width:160px;border:1px solid #e8e8e8;border-left:4px solid #2b6cb0;border-radius:6px;padding:12px;">
           <div style="font-size:13px;font-weight:600;color:#8492a6;margin-bottom:8px;">初始对账金额</div>
-          <div style="font-size:20px;font-weight:700;color:#2c3e50;">¥1,099.20</div>
+          <div style="font-size:20px;font-weight:700;color:#2c3e50;">¥19,810.79</div>
         </div>
         <div style="flex:1;min-width:160px;border:1px solid #e8e8e8;border-left:4px solid #38a169;border-radius:6px;padding:12px;">
           <div style="font-size:13px;font-weight:600;color:#8492a6;margin-bottom:8px;">最终核算金额</div>
-          <div style="font-size:20px;font-weight:700;color:#38a169;">¥1,099.20</div>
+          <div style="font-size:20px;font-weight:700;color:#38a169;">¥19,810.79</div>
         </div>
         <div style="flex:1;min-width:160px;border:1px solid #e8e8e8;border-left:4px solid #dd6b20;border-radius:6px;padding:12px;">
           <div style="font-size:13px;font-weight:600;color:#8492a6;margin-bottom:8px;">总测试币</div>
@@ -2821,11 +2878,27 @@ function calcCoinFnl(el){
         </div>
       </div>
       <!-- Test Coin Banner -->
-      <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;margin-bottom:16px;font-size:13px;color:#8c7a3d;">
-        <strong>测试币明细：</strong>摸鱼达人测试币30，勇者大陆测试币20，合计测试币50
+      <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;margin-bottom:12px;font-size:13px;color:#8c7a3d;">
+        <strong>测试币明细：</strong>盲盒宇宙测试币20，夺宝奇航测试币15，壮志凌云测试币15，合计测试币50
+      </div>
+      <!-- Toolbar (above table, same as 爆玩宇宙) -->
+      <div class="detail-toolbar">
+        <div class="left">
+          <button class="btn btn-refresh btn-icon" title="刷新">⟳</button>
+        </div>
+        <div class="right">
+          <input type="text" class="input search-input" placeholder="搜索日期/游戏">
+          <div class="view-toggle">
+            <button class="active" title="表格视图">▦</button>
+            <button title="卡片视图">▤</button>
+          </div>
+          <button class="btn">导出</button>
+          <button class="btn btn-primary">搜索</button>
+        </div>
       </div>
       <!-- Detail Table -->
-      <table class="data" style="width:100%;font-size:13px;border:1px solid #e8e8e8;">
+      <div class="table-wrap" style="overflow-x:auto;">
+      <table class="data" style="width:100%;font-size:13px;min-width:1100px;">
         <thead><tr style="background:#fafbfc;">
           <th style="text-align:center;padding:8px 10px;border:1px solid #e8e8e8;">序号</th>
           <th style="text-align:left;padding:8px 10px;border:1px solid #e8e8e8;">机台名称</th>
@@ -2851,69 +2924,69 @@ function calcCoinFnl(el){
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;">盲盒宇宙</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">5,217</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">12,500</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">17,700</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;color:#c05621;">20</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">5,180</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.30</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">1,565.47</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">1,554.00</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">782.73</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">782.73</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">777.00</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">777.00</td>
           </tr>
           <tr>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">2</td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;">夺宝奇航</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">4,426</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">10,200</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">14,611</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;color:#c05621;">15</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">4,396</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.31</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">1,356.00</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">1,362.76</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">678.00</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">678.00</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">681.38</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">681.38</td>
           </tr>
           <tr>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">3</td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;color:#e53e3e;font-weight:600;">壮志凌云</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">31,436</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">85,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">116,421</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;color:#c05621;">15</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">31,406</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.37</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">11,529.50</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">11,620.22</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">5,764.75</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">5,764.75</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">5,810.11</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">5,810.11</td>
           </tr>
           <tr>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">4</td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;">扭蛋玛特</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">15,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">19,875</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;color:#999;">0</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">4,875</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.26</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">1,280.21</td>
-            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
-            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">640.11</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">640.11</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">1,267.50</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;color:#2b6cb0;font-weight:600;">70%</td>
+            <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;color:#38a169;font-weight:600;">30%</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">887.25</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">380.25</td>
           </tr>
           <tr>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">5</td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;">次元星球</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">8,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">8,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;color:#999;">0</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.42</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.00</td>
@@ -2926,40 +2999,103 @@ function calcCoinFnl(el){
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">6</td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;">飞球宇宙</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">1</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">—</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">35,000</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">48,353</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;color:#999;">0</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">13,353</td>
             <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">0.31</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">4,079.61</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">4,139.43</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
             <td style="text-align:center;padding:6px 8px;border:1px solid #e8e8e8;">50%</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">2,039.81</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">2,039.81</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;font-weight:600;">2,069.72</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">2,069.72</td>
           </tr>
           <tr style="background:#f7fafc;font-weight:600;">
             <td colspan="6" style="padding:6px 8px;border:1px solid #e8e8e8;text-align:right;">合计</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">59,307</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">59,210</td>
             <td style="padding:6px 8px;border:1px solid #e8e8e8;"></td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">19,810.79</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">19,943.91</td>
             <td colspan="2" style="padding:6px 8px;border:1px solid #e8e8e8;"></td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;">9,905.40</td>
-            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">9,905.39</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;background:#fffde7;">10,225.46</td>
+            <td style="text-align:right;padding:6px 8px;border:1px solid #e8e8e8;">9,718.45</td>
           </tr>
         </tbody>
       </table>
-      <!-- Bottom Toolbar -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
-        <button class="btn" style="padding:4px 10px;">🔄</button>
-        <div style="display:flex;gap:6px;align-items:center;">
-          <input type="text" class="input" placeholder="搜索日期/游戏" style="width:180px;height:30px;">
-          <button class="btn" style="padding:4px 8px;">📅</button>
-          <button class="btn" style="padding:4px 10px;">日</button>
-          <button class="btn" style="padding:4px 10px;">导出</button>
-          <button class="btn btn-primary" style="padding:4px 14px;">搜索</button>
+      </div>
+      </div>
+      <!-- 修改记录 Tab -->
+      <div id="tab-coin-record" class="detail-tab-content" style="display:none;padding:20px;">
+        <div style="margin-bottom:16px;font-size:13px;color:#718096;">展示金额调整记录与客户异议反馈</div>
+        <div class="record-timeline" style="position:relative;padding-left:24px;">
+          <div class="record-item" style="position:relative;padding-bottom:24px;padding-left:20px;border-left:2px solid #e2e8f0;">
+            <div style="position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#3182ce;"></div>
+            <div style="font-size:12px;color:#718096;margin-bottom:4px;">2026-08-03 14:30</div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px;">张三</div>
+            <div style="font-size:13px;color:#4a5568;margin-bottom:4px;">修改 <strong style="color:#2b6cb0;">壮志凌云</strong>：¥11,631.32 → <span style="color:#38a169;font-weight:600;">¥11,620.22</span></div>
+            <div style="font-size:12px;background:#edf2f7;padding:3px 8px;border-radius:4px;color:#4a5568;display:inline-block;">原因：核对游艺宝数据后修正</div>
+          </div>
+          <div class="record-item" style="position:relative;padding-bottom:24px;padding-left:20px;border-left:2px solid #e2e8f0;">
+            <div style="position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#3182ce;"></div>
+            <div style="font-size:12px;color:#718096;margin-bottom:4px;">2026-08-03 11:20</div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px;">张三</div>
+            <div style="font-size:13px;color:#4a5568;margin-bottom:4px;">修改 <strong style="color:#2b6cb0;">盲盒宇宙</strong>：¥1,565.47 → <span style="color:#38a169;font-weight:600;">¥1,554.00</span></div>
+            <div style="font-size:12px;background:#edf2f7;padding:3px 8px;border-radius:4px;color:#4a5568;display:inline-block;">原因：补录遗漏数据</div>
+          </div>
+          <div class="record-item" style="position:relative;padding-bottom:24px;padding-left:20px;border-left:2px solid #ed8936;">
+            <div style="position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#ed8936;"></div>
+            <div style="font-size:12px;color:#718096;margin-bottom:4px;">2026-08-04 09:20 · 客户异议</div>
+            <div style="font-weight:600;font-size:14px;color:#ed8936;margin-bottom:4px;">武汉市星际文娱有限公司</div>
+            <div style="font-size:13px;color:#4a5568;margin-bottom:4px;">反馈：<strong style="color:#2b6cb0;">壮志凌云</strong> 7月5日收币数与门店实际记录不符</div>
+            <div style="font-size:12px;background:#feebc8;padding:3px 8px;border-radius:4px;color:#9c4221;display:inline-block;">备注：请核实</div>
+          </div>
+          <div class="record-item" style="position:relative;padding-bottom:0;padding-left:20px;border-left:2px solid #e2e8f0;">
+            <div style="position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#38a169;"></div>
+            <div style="font-size:12px;color:#718096;margin-bottom:4px;">2026-08-04 15:00</div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px;">张三</div>
+            <div style="font-size:13px;color:#4a5568;margin-bottom:4px;">修改 <strong style="color:#2b6cb0;">壮志凌云</strong>：已修正完成</div>
+            <div style="font-size:12px;background:#f0fff4;padding:3px 8px;border-radius:4px;color:#276749;display:inline-block;">原因：已与客户确认，修正完成</div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+<script>
+function switchCoinDetailTab(tabId){
+  document.querySelectorAll('#modalCoinDetail .detail-tab-content').forEach(function(c){c.style.display='none';});
+  document.querySelectorAll('#modalCoinDetail .detail-tab').forEach(function(t){t.style.color='#718096';t.style.borderBottom='none';t.style.fontWeight='500';});
+  var tab=document.getElementById(tabId);
+  if(tab)tab.style.display='block';
+  var btn=document.querySelector('#modalCoinDetail .detail-tab[onclick*="'+tabId+'"]');
+  if(btn){btn.style.color='#3182ce';btn.style.borderBottom='2px solid #3182ce';btn.style.fontWeight='600';btn.style.marginBottom='-2px';}
+}
+</script>
+<!-- ============ MODAL SUMMARY-CONFIRM: 客户确认状态查看 ============ -->
+<div class="modal-mask" id="modalSummaryConfirm">
+  <div class="modal" style="width:800px;">
+    <div class="modal-header"><span class="modal-title">客户确认状态 - 门店对账情况</span><button class="modal-close" onclick="closeModal('modalSummaryConfirm')">×</button></div>
+    <div class="modal-body">
+      <div style="background:linear-gradient(135deg,#ebf5fb,#e6f0fa);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;gap:32px;align-items:center;">
+        <div><span style="font-size:12px;color:#7a8a9a;">客户名称</span><div style="font-size:14px;font-weight:600;color:#2c3e50;">深圳市乐的文化股份有限公司</div></div>
+        <div><span style="font-size:12px;color:#7a8a9a;">账期</span><div style="font-size:14px;font-weight:600;color:#2c3e50;">2026-08</div></div>
+        <div><span style="font-size:12px;color:#7a8a9a;">总状态</span><div style="font-size:14px;font-weight:600;color:#38a169;">部分确认</div></div>
+      </div>
+      <table class="data" style="width:100%;font-size:13px;">
+        <thead><tr>
+          <th style="text-align:left;padding:8px 10px;">门店名称</th>
+          <th style="text-align:right;padding:8px 10px;">最终核算金额</th>
+          <th style="text-align:center;padding:8px 10px;">确认状态</th>
+          <th style="text-align:center;padding:8px 10px;">业务员</th>
+          <th style="text-align:center;padding:8px 10px;">确认时间</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:6px 10px;">星际传奇(深圳KKMall店)</td><td style="text-align:right;padding:6px 10px;">¥1,057.02</td><td style="text-align:center;padding:6px 10px;"><span class="tag tag-green">已确认</span></td><td style="text-align:center;padding:6px 10px;">张三</td><td style="text-align:center;padding:6px 10px;">2026-09-03 14:30</td></tr>
+          <tr><td style="padding:6px 10px;">星际传奇(武汉荟聚店)</td><td style="text-align:right;padding:6px 10px;">¥790.00</td><td style="text-align:center;padding:6px 10px;"><span class="tag tag-green">已确认</span></td><td style="text-align:center;padding:6px 10px;">王五</td><td style="text-align:center;padding:6px 10px;">2026-09-04 16:45</td></tr>
+          <tr><td style="padding:6px 10px;">星际传奇(广州正佳店)</td><td style="text-align:right;padding:6px 10px;">¥270.00</td><td style="text-align:center;padding:6px 10px;"><span class="tag tag-gray">待确认</span></td><td style="text-align:center;padding:6px 10px;">张三</td><td style="text-align:center;padding:6px 10px;">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('modalSummaryConfirm')">关闭</button></div>
   </div>
 </div>
 <script>
@@ -3222,7 +3358,7 @@ const crumbs = {
   base_store:['基础设置','门店管理'],
   base_sn:['基础设置','机台SN管理'],
   p_bw_cust:['合作机台 / 对账管理','爆玩宇宙客户对账单'],
-  p_recon_summary:['合作机台 / 对账管理','对账单汇总'],
+  p_recon_summary:['合作机台 / 对账管理','总对账单'],
   p_coin_recon:['合作机台 / 对账管理','收币对账单'],
   p_ndmt_store:['合作机台 / 扭蛋玛特','门店台账'],
   p_ndmt_cust:['合作机台 / 扭蛋玛特','客户台账'],
