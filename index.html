@@ -151,6 +151,8 @@
 
       <!-- 内容区 -->
       <main class="content">
+        <!-- ===== 页面一：抖店认款订单 ===== -->
+        <div class="page-view active" id="page-renkuan">
         <!-- 页面说明 -->
         <div class="page-header">
           <div class="page-title">抖店认款订单</div>
@@ -204,13 +206,22 @@
                 <input type="date" id="filterDateEnd" placeholder="结束日期">
               </div>
             </div>
+            <div class="filter-item">
+              <button class="btn btn-default" onclick="resetRenkuanFilters()">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                  <path d="M3 3v5h5"></path>
+                </svg>
+                重置
+              </button>
+            </div>
           </div>
         </div>
 
         <!-- 操作按钮区 -->
         <div class="action-bar">
           <div class="action-buttons">
-            <button class="btn btn-primary" onclick="handleImportRenkuan()">
+            <button class="btn btn-primary" onclick="openImportModal('renkuan')">
               <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="17 8 12 3 7 8"></polyline>
@@ -218,7 +229,7 @@
               </svg>
               导入认款
             </button>
-            <button class="btn btn-success" onclick="handleImportInvoice()">
+            <button class="btn btn-success" onclick="openImportModal('kaipiao')">
               <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
@@ -411,6 +422,185 @@
             </div>
           </div>
         </div>
+        </div><!-- /page-renkuan -->
+
+        <!-- ===== 页面二：已认款明细 ===== -->
+        <div class="page-view" id="page-mingxi">
+          <!-- 页面说明 -->
+          <div class="page-header">
+            <div class="page-title">已认款明细</div>
+            <div class="page-desc">
+              <p>展示所有已认款的关联订单认款记录，数据由「抖店认款订单」中<span class="highlight">点击订单号</span>后的认款明细汇总而来，支持按款项类别、款项月份、客户等维度筛选。</p>
+            </div>
+          </div>
+
+          <!-- 汇总统计 -->
+          <div class="stat-chips" id="mingxiStats"></div>
+
+          <!-- 筛选区域 -->
+          <div class="filter-card">
+            <div class="filter-row">
+              <div class="filter-item">
+                <label>款项类别</label>
+                <select id="mingxiFilterCategory" onchange="applyMingxiFilters()">
+                  <option value="">全部</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>款项月份</label>
+                <select id="mingxiFilterMonth" onchange="applyMingxiFilters()">
+                  <option value="">全部</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>客户名称</label>
+                <select id="mingxiFilterCustomer" onchange="applyMingxiFilters()">
+                  <option value="">全部</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>认领人</label>
+                <select id="mingxiFilterRecognizer" onchange="applyMingxiFilters()">
+                  <option value="">全部</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>认领时间</label>
+                <div class="date-range">
+                  <input type="date" id="mingxiFilterDateStart" onchange="applyMingxiFilters()">
+                  <span class="date-separator">至</span>
+                  <input type="date" id="mingxiFilterDateEnd" onchange="applyMingxiFilters()">
+                </div>
+              </div>
+              <div class="filter-item">
+                <button class="btn btn-default" onclick="resetMingxiFilters()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                  </svg>
+                  重置
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 数据表格 -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>总订单号</th>
+                      <th>关联订单号</th>
+                      <th class="num-col">关联金额</th>
+                      <th>认款状态</th>
+                      <th class="num-col">认领金额</th>
+                      <th>款项类别</th>
+                      <th>款项月份</th>
+                      <th>客户名称</th>
+                      <th>是否开票</th>
+                      <th class="num-col">开票金额</th>
+                      <th>备注</th>
+                      <th>认领时间</th>
+                      <th>认领人</th>
+                    </tr>
+                  </thead>
+                  <tbody id="mingxiTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="pagination">
+              <div>共 <span id="mingxiTotalCount">0</span> 条记录</div>
+              <div class="pagination-right" id="mingxiPagination"></div>
+            </div>
+          </div>
+        </div><!-- /page-mingxi -->
+
+        <!-- ===== 页面三：新零售已认款订单 ===== -->
+        <div class="page-view" id="page-xinlingshou">
+          <!-- 页面说明 -->
+          <div class="page-header">
+            <div class="page-title">新零售已认款订单</div>
+            <div class="page-desc">
+              <p>展示新零售渠道（世宇商城）已完成认款的订单，订单号、订单金额关联世宇商城获取，支持按款项类别、款项月份、客户维度筛选。</p>
+            </div>
+          </div>
+
+          <!-- 汇总统计 -->
+          <div class="stat-chips" id="xinlingshouStats"></div>
+
+          <!-- 筛选区域 -->
+          <div class="filter-card">
+            <div class="filter-row">
+              <div class="filter-item">
+                <label>客户名称</label>
+                <select id="xslFilterCustomer" onchange="applyXinlingshouFilters()">
+                  <option value="">全部</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>款项类别</label>
+                <select id="xslFilterCategory" onchange="applyXinlingshouFilters()">
+                  <option value="">全部</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>款项月份</label>
+                <select id="xslFilterMonth" onchange="applyXinlingshouFilters()">
+                  <option value="">全部</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>认领时间</label>
+                <div class="date-range">
+                  <input type="date" id="xslFilterDateStart" onchange="applyXinlingshouFilters()">
+                  <span class="date-separator">至</span>
+                  <input type="date" id="xslFilterDateEnd" onchange="applyXinlingshouFilters()">
+                </div>
+              </div>
+              <div class="filter-item">
+                <button class="btn btn-default" onclick="resetXinlingshouFilters()">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                  </svg>
+                  重置
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 数据表格 -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>订单号</th>
+                      <th>下单时间</th>
+                      <th class="num-col">订单金额</th>
+                      <th class="num-col">用户实付</th>
+                      <th class="num-col">已认款金额</th>
+                      <th>款项类别</th>
+                      <th>款项月份</th>
+                      <th>客户名称</th>
+                      <th>认领人</th>
+                      <th>认领时间</th>
+                      <th>备注</th>
+                    </tr>
+                  </thead>
+                  <tbody id="xinlingshouTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="pagination">
+              <div>共 <span id="xinlingshouTotalCount">0</span> 条记录</div>
+              <div class="pagination-right" id="xinlingshouPagination"></div>
+            </div>
+          </div>
+        </div><!-- /page-xinlingshou -->
       </main>
     </div>
   </div>
@@ -530,6 +720,67 @@
         <button class="btn btn-default" onclick="closeRemarkModal()">取消</button>
         <button class="btn btn-primary" onclick="saveRemark()">确定</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ===== 导入弹窗（导入认款 / 抖店开票导入 共用） ===== -->
+  <div class="modal-mask" id="importModal">
+    <div class="modal" style="max-width: 760px;">
+      <div class="modal-header">
+        <div class="modal-title" id="importModalTitle">导入认款</div>
+        <button class="modal-close" onclick="closeImportModal()">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- 步骤条 -->
+        <div class="import-steps" id="importSteps"></div>
+
+        <!-- 步骤1：上传文件 -->
+        <div id="importStepUpload">
+          <div class="upload-area" id="uploadArea" onclick="document.getElementById('importFileInput').click()">
+            <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <div class="upload-title">点击选择文件，或拖拽文件到此处</div>
+            <div class="upload-hint">支持 .xlsx / .xls / .csv 格式，单次最多导入 500 条</div>
+          </div>
+          <input type="file" id="importFileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleImportFile(this)">
+          <div class="file-pill" id="filePill" style="display:none"></div>
+          <div class="import-template">
+            <span>不确定格式？</span>
+            <a class="template-link" onclick="downloadImportTemplate()">下载导入模板</a>
+          </div>
+        </div>
+
+        <!-- 步骤2：数据预览 -->
+        <div id="importStepPreview" style="display:none">
+          <div class="import-tip" id="importPreviewTip"></div>
+          <div class="table-wrap preview-table-wrap">
+            <table class="data-table" id="importPreviewTable"></table>
+          </div>
+        </div>
+
+        <!-- 步骤3：导入结果 -->
+        <div id="importStepResult" style="display:none">
+          <div class="import-result">
+            <div class="result-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px;height:32px;">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div class="result-title">导入成功</div>
+            <div class="result-desc" id="importResultDesc"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" id="importModalFooter"></div>
     </div>
   </div>
 
