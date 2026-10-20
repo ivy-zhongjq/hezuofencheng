@@ -155,6 +155,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* —— Header —— */
@@ -241,7 +242,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 }
 
 /* —— Content —— */
-.content { padding: 16px 24px; flex: 1; }
+.content { padding: 16px 24px; flex: 1; overflow: hidden; }
 
 /* —— Card —— */
 .card {
